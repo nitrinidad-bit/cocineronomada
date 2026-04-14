@@ -420,10 +420,13 @@ body {
   <button class="top-btn" id="toc-toggle" aria-label="Indice" title="Indice">&#9776;</button>
   <span id="chapter-label"></span>
   <span style="display:flex;gap:6px;">
+    <button class="top-btn" id="music-btn" aria-label="Musica" title="Musica ambiental">&#9836;</button>
     <a href="../map.html" class="top-btn" aria-label="Mapa" title="Volver al mapa" style="text-decoration:none;">&#x1f5fa;&#xfe0f;</a>
     <button class="top-btn" id="bookmark-btn" aria-label="Guardar marcador" title="Guardar marcador">&#9733;</button>
   </span>
 </div>
+
+<audio id="bg-music" loop preload="none"></audio>
 
 <div id="book"></div>
 
@@ -783,7 +786,71 @@ body {
     indicator.textContent = (currentPage + 1) + ' / ' + pages.length;
     progressBar.style.width = ((currentPage + 1) / pages.length * 100) + '%';
     chapterLabel.textContent = pages[currentPage].label || '';
+    syncMusic();
   }
+
+  // ============================================================
+  // MUSICA AMBIENTAL (por region)
+  // ============================================================
+  const MUSIC_BASE = '../musicalibro/';
+  const MUSIC = {
+    sanjuan:  MUSIC_BASE + 'pFKSanjuan.mp3',
+    lima:     MUSIC_BASE + 'lima%20cumbia.mp3',
+    cusco:    MUSIC_BASE + 'cuzco%20vibes.mp3',
+    peru:     MUSIC_BASE + 'cumbia-del%20Peru%20.mp3',
+    mexico:   MUSIC_BASE + 'cumbia%20mx.mp3'
+  };
+
+  function trackForChapter(ch) {
+    if (!ch) return MUSIC.sanjuan;
+    const place = ((ch.place || '') + ' ' + (ch.title || '')).toLowerCase();
+    if (place.includes('puerto rico') || place.includes('san juan') || place.includes('vieques')) return MUSIC.sanjuan;
+    if (place.includes('new york') || place.includes('bronx')) return MUSIC.sanjuan;
+    if (place.includes('cusco') || place.includes('cuzco')) return MUSIC.cusco;
+    if (place.includes('lima') || place.includes('barranco') || place.includes('lince')) return MUSIC.lima;
+    if (place.includes('mexico') || place.includes('méxico') || place.includes('coyoacan') || place.includes('coyoacán')) return MUSIC.mexico;
+    if (place.includes('perú') || place.includes('peru') || place.includes('máncora') || place.includes('mancora') ||
+        place.includes('huaraz') || place.includes('ica')) return MUSIC.peru;
+    // Colombia/Ecuador usan cumbia peruana como fondo andino-caribeño
+    return MUSIC.peru;
+  }
+
+  const audio = document.getElementById('bg-music');
+  const musicBtn = document.getElementById('music-btn');
+  const MUSIC_KEY = 'nomada_music_on';
+  let musicOn = localStorage.getItem(MUSIC_KEY) === '1';
+
+  function updateMusicBtn() {
+    musicBtn.textContent = musicOn ? '\u266B' : '\u266A';
+    musicBtn.style.color = musicOn ? 'var(--gold)' : '';
+    musicBtn.style.borderColor = musicOn ? 'var(--gold)' : '';
+    musicBtn.title = musicOn ? 'Musica: on (click para silenciar)' : 'Musica: off (click para reproducir)';
+  }
+
+  function syncMusic() {
+    const ch = chapters[currentPage];
+    const src = trackForChapter(ch);
+    const absolute = new URL(src, location.href).href;
+    if (audio.src !== absolute) {
+      audio.src = src;
+      audio.volume = 0.45;
+    }
+    if (musicOn) audio.play().catch(() => {});
+  }
+
+  musicBtn.addEventListener('click', () => {
+    musicOn = !musicOn;
+    localStorage.setItem(MUSIC_KEY, musicOn ? '1' : '0');
+    updateMusicBtn();
+    if (musicOn) {
+      syncMusic();
+      audio.play().catch(() => {});
+    } else {
+      audio.pause();
+    }
+  });
+
+  updateMusicBtn();
 
   function goTo(index) {
     const dir = index > currentPage ? 'next' : 'prev';
