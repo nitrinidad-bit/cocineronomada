@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cocinero Nomada — Sabores sin Fronteras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ============================================================
+     ANIMATIONS
+     ============================================================ */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.15; } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
+  @keyframes flicker { 0%, 100% { opacity: 1; } 92% { opacity: 1; } 93% { opacity: 0.8; } 94% { opacity: 1; } }
+  @keyframes typewriter { from { width: 0; } to { width: 100%; } }
+  @keyframes blink-cursor { 0%, 100% { border-color: #c9973f; } 50% { border-color: transparent; } }
+  @keyframes pokeball-spin { 0% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(90deg) scale(1.1); } 50% { transform: rotate(180deg) scale(1); } 75% { transform: rotate(270deg) scale(0.9); } 100% { transform: rotate(360deg) scale(1); } }
+  @keyframes screen-on { 0% { clip-path: inset(50% 50% 50% 50%); opacity: 0; } 40% { clip-path: inset(48% 0 48% 0); opacity: 1; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
+  @keyframes chef-walk { 0%, 100% { transform: translateY(0); } 25% { transform: translateY(-3px) rotate(-2deg); } 75% { transform: translateY(-3px) rotate(2deg); } }
+  @keyframes slide-up { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 8px rgba(184, 50, 32, 0.3); } 50% { box-shadow: 0 0 20px rgba(184, 50, 32, 0.6), 0 0 40px rgba(184, 50, 32, 0.2); } }
+  @keyframes badge-pop { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.3); } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60%, 100% { content: '...'; } }
+  @keyframes pixel-reveal { 0% { background-size: 40px 40px; } 100% { background-size: 2px 2px; } }
+  @keyframes route-dash { to { stroke-dashoffset: -12; } }
+
+  body {
+    background: #0f0d0b;
+    color: #e8dcc8;
+    font-family: Georgia, 'Times New Roman', serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Palm leaf pattern background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url('assets/COCINERO_NOMADA/COCINERO-NOMADA-PALMS-PATTERN-BLACK.png');
+    background-size: 400px;
+    background-repeat: repeat;
+    opacity: 0.06;
+    animation: pulse 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* CRT scanline effect */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* ============================================================
+     INTRO SEQUENCE (Phase 1 - Boot screen)
+     ============================================================ */
+  #intro-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: #0a0a08;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease;
+  }
+  #intro-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .boot-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #7a6e62;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    margin-bottom: 8px;
+  }
+  .boot-text.visible { opacity: 1; }
+
+  .intro-logo {
+    width: 120px;
+    height: 120px;
+    margin: 20px 0;
+    opacity: 0;
+    filter: invert(1);
+    transition: opacity 0.5s ease;
+  }
+  .intro-logo.visible { opacity: 1; animation: pokeball-spin 1.5s ease-in-out; }
+
+  .intro-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    color: #e8dcc8;
+    letter-spacing: 0.08em;
+    opacity: 0;
+    text-align: center;
+    line-height: 1.8;
+  }
+  .intro-title.visible { opacity: 1; animation: screen-on 0.6s ease forwards; }
+
+  .intro-subtitle {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #d4622a;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 8px;
+    opacity: 0;
+  }
+  .intro-subtitle.visible { opacity: 1; }
+
+  .intro-badges {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .intro-badge {
+    font-size: 20px;
+    opacity: 0;
+    transform: scale(0);
+  }
+  .intro-badge.visible {
+    animation: badge-pop 0.4s ease forwards;
+  }
+
+  .intro-press-start {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #c9973f;
+    margin-top: 40px;
+    opacity: 0;
+    cursor: pointer;
+    animation: blink-cursor 1s steps(2) infinite;
+    padding: 12px 24px;
+    border: 2px solid #2e2820;
+    transition: all 0.2s;
+  }
+  .intro-press-start.visible { opacity: 1; }
+  .intro-press-start:hover {
+    border-color: #c9973f;
+    background: rgba(201, 151, 63, 0.1);
+  }
+
+  /* ============================================================
+     STORY SEQUENCE (Phase 2 - Pokemon professor intro)
+     ============================================================ */
+  #story-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: #0a0a08;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  #story-screen.active {
+    display: flex;
+    animation: screen-on 0.4s ease forwards;
+  }
+  #story-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+  }
+
+  .story-chef {
+    margin-bottom: 20px;
+    animation: chef-walk 1s ease-in-out infinite;
+  }
+
+  .story-dialog {
+    max-width: 420px;
+    width: 100%;
+    background: #0f0d0b;
+    border: 3px solid #e8dcc8;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: inset 0 0 0 2px #2e2820;
+    position: relative;
+  }
+
+  .story-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: #c9973f;
+    position: absolute;
+    top: -10px;
+    left: 16px;
+    background: #0f0d0b;
+    padding: 0 8px;
+  }
+
+  .story-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: #e8dcc8;
+    line-height: 2.2;
+    min-height: 80px;
+  }
+
+  .story-continue {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #7a6e62;
+    text-align: right;
+    margin-top: 12px;
+    cursor: pointer;
+    animation: blink-cursor 1s steps(2) infinite;
+  }
+
+  .story-progress {
+    display: flex;
+    gap: 6px;
+    margin-top: 16px;
+  }
+  .story-dot {
+    width: 8px;
+    height: 8px;
+    background: #2e2820;
+    border-radius: 50%;
+    transition: background 0.3s;
+  }
+  .story-dot.active { background: #c9973f; }
+  .story-dot.done { background: #b83220; }
+
+  /* ============================================================
+     MAIN CONTENT (Phase 3 - Choice screen)
+     ============================================================ */
+  #main-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    width: 100%;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    display: none;
+  }
+  #main-content.active {
+    display: block;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+
+  /* Logo */
+  .logo-wrapper {
+    opacity: 0;
+    margin-bottom: 1.5rem;
+  }
+  .logo-wrapper.visible {
+    animation: fadeIn 1s ease-out forwards, float 6s ease-in-out 1s infinite;
+  }
+  .logo-wrapper img {
+    width: 180px;
+    height: auto;
+    filter: invert(1);
+  }
+
+  /* Title */
+  .title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #e8dcc8;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+  }
+  .title.visible { animation: fadeIn 1s ease-out 0.2s forwards; }
+
+  .subtitle {
+    font-family: monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #d4622a;
+    margin-bottom: 0.4rem;
+    opacity: 0;
+  }
+  .subtitle.visible { animation: fadeIn 1s ease-out 0.1s forwards; }
+
+  .tagline {
+    font-style: italic;
+    color: #7a6e62;
+    font-size: 1rem;
+    margin-bottom: 3rem;
+    opacity: 0;
+  }
+  .tagline.visible { animation: fadeIn 1s ease-out 0.3s forwards; }
+
+  /* Divider */
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: #b83220;
+    margin: 0 auto 2.5rem;
+    opacity: 0;
+  }
+  .divider.visible { animation: fadeIn 1s ease-out 0.4s forwards; }
+
+  /* Section label */
+  .section-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #c9973f;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+  }
+  .section-label.visible { animation: fadeIn 1s ease-out 0.5s forwards; }
+
+  /* Cards */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+    opacity: 0;
+  }
+  .cards.visible { animation: slide-up 0.8s ease-out 0.6s forwards; }
+
+  .card {
+    border: 2px solid #2e2820;
+    background: #1a1612;
+    padding: 2rem 1.5rem;
+    text-decoration: none;
+    color: #e8dcc8;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+  .card:first-child::before { background: linear-gradient(90deg, #b83220, #d4622a); }
+  .card:last-child::before { background: linear-gradient(90deg, #c9973f, #d4622a); }
+
+  .card:hover {
+    border-color: #b83220;
+    background: #211d18;
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(184, 50, 32, 0.2);
+  }
+  .card:hover::before { transform: scaleX(1); }
+
+  .card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .card-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    margin-bottom: 0.6rem;
+    line-height: 1.4;
+    color: #e8dcc8;
+  }
+
+  .card-desc {
+    font-family: monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7a6e62;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+  }
+
+  .card-cta {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #b83220;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: gap 0.3s ease;
+  }
+  .card:hover .card-cta { gap: 14px; color: #d4622a; }
+
+  .card-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 6px;
+    background: #b83220;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  /* Route mini-map preview */
+  .route-preview {
+    margin: 0 auto 2rem;
+    opacity: 0;
+    max-width: 350px;
+  }
+  .route-preview.visible { animation: fadeIn 1s ease-out 0.7s forwards; }
+  .route-preview svg {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Stats */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    opacity: 0;
+  }
+  .stats.visible { animation: fadeIn 1s ease-out 0.8s forwards; }
+
+  .stat { text-align: center; }
+  .stat-number {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.2rem;
+    color: #c9973f;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #7a6e62;
+    margin-top: 6px;
+  }
+
+  /* YouTube link */
+  .yt-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #7a6e62;
+    text-decoration: none;
+    font-family: monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #2e2820;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+    opacity: 0;
+  }
+  .yt-link.visible { animation: fadeIn 1s ease-out 0.9s forwards; }
+  .yt-link:hover { border-color: #b83220; color: #b83220; }
+  .yt-icon { width: 16px; height: 16px; fill: currentColor; }
+
+  /* Home nav link */
+  .home-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #7a6e62;
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid #2e2820;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    transition: all 0.2s;
+    opacity: 0;
+  }
+  .home-nav.visible { animation: fadeIn 0.5s ease forwards; }
+  .home-nav:hover { border-color: #b83220; color: #b83220; }
+
+  /* Footer */
+  .footer {
+    font-family: monospace;
+    font-size: 0.45rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #7a6e62;
+    padding-top: 1rem;
+    border-top: 1px solid #2e2820;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    margin: 0 auto;
+    opacity: 0;
+  }
+  .footer.visible { animation: fadeIn 1s ease-out 1s forwards; }
+  .footer span { color: #b83220; }
+
+  /* Skip intro button */
+  .skip-btn {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #7a6e62;
+    background: none;
+    border: 1px solid #2e2820;
+    padding: 8px 16px;
+    cursor: pointer;
+    z-index: 200;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .skip-btn:hover { border-color: #b83220; color: #b83220; }
+  .skip-btn.hidden { display: none; }
+
+  /* Music toggle button */
+  .music-toggle {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 300;
+    background: rgba(15, 13, 11, 0.85);
+    border: 1px solid #2e2820;
+    color: #c9973f;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s;
+    backdrop-filter: blur(4px);
+  }
+  .music-toggle:hover { border-color: #c9973f; box-shadow: 0 0 12px rgba(201, 151, 63, 0.3); }
+  .music-toggle.muted { color: #7a6e62; border-color: #1a1816; }
+  .music-toggle .bar1, .music-toggle .bar2, .music-toggle .bar3 {
+    display: inline-block;
+    width: 3px;
+    background: #c9973f;
+    margin: 0 1px;
+    border-radius: 1px;
+    animation: musicBar 0.8s ease-in-out infinite alternate;
+  }
+  .music-toggle .bar1 { height: 8px; animation-delay: 0s; }
+  .music-toggle .bar2 { height: 14px; animation-delay: 0.2s; }
+  .music-toggle .bar3 { height: 10px; animation-delay: 0.4s; }
+  .music-toggle.muted .bar1, .music-toggle.muted .bar2, .music-toggle.muted .bar3 {
+    animation: none;
+    height: 3px;
+    background: #7a6e62;
+  }
+  @keyframes musicBar {
+    0% { height: 4px; }
+    100% { height: 16px; }
+  }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    .title { font-size: 2rem; }
+    .cards { grid-template-columns: 1fr; gap: 1rem; }
+    .card { padding: 1.5rem 1.2rem; }
+    .logo-wrapper img { width: 140px; }
+    .stats { gap: 1.5rem; }
+    .intro-title { font-size: 12px; }
+    .story-text { font-size: 8px; line-height: 2; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     SKIP INTRO BUTTON
+     ============================================================ -->
+<button class="skip-btn" id="skip-btn" onclick="skipToMain()">SKIP &raquo;</button>
+
+<!-- Music -->
+<audio id="intro-music" src="musicalibro/pFKSanjuan.mp3" loop preload="auto"></audio>
+<button class="music-toggle muted" id="music-toggle" title="Musica on/off">
+  <span class="bar1"></span><span class="bar2"></span><span class="bar3"></span>
+</button>
+
+<!-- ============================================================
+     PHASE 1: BOOT / INTRO SCREEN
+     ============================================================ -->
+<div id="intro-screen">
+  <div class="boot-text" id="boot-1">COCINERO NOMADA SYSTEM v1.0</div>
+  <div class="boot-text" id="boot-2">LOADING SABORES...</div>
+  <div class="boot-text" id="boot-3">6 PAISES DETECTADOS</div>
+  <div class="boot-text" id="boot-4">26 RECETAS CARGADAS</div>
+
+  <img src="assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-BLACK.png" alt="Cocinero Nomada" class="intro-logo" id="intro-logo">
+
+  <div class="intro-title" id="intro-title">COCINERO<br>NOMADA</div>
+  <div class="intro-subtitle" id="intro-subtitle">Sabores sin fronteras</div>
+
+  <div class="intro-badges" id="intro-badges">
+    <span class="intro-badge" data-delay="0">&#x1f1f5;&#x1f1f7;</span>
+    <span class="intro-badge" data-delay="150">&#x1f5fd;</span>
+    <span class="intro-badge" data-delay="300">&#x1f1e8;&#x1f1f4;</span>
+    <span class="intro-badge" data-delay="450">&#x1f1ea;&#x1f1e8;</span>
+    <span class="intro-badge" data-delay="600">&#x1f1f5;&#x1f1ea;</span>
+    <span class="intro-badge" data-delay="750">&#x1f1f2;&#x1f1fd;</span>
+  </div>
+
+  <div class="intro-press-start" id="intro-press-start" onclick="startStory()">&#9654; PRESS START</div>
+</div>
+
+<!-- ============================================================
+     PHASE 2: STORY SEQUENCE (Pokemon professor style)
+     ============================================================ -->
+<div id="story-screen">
+  <div class="story-chef" id="story-chef"><img src="personajes/E5EBDBD2-AAA1-4956-B400-81D48DC3D72B.png" alt="Nico" style="width:120px;height:auto;image-rendering:pixelated;"></div>
+  <div class="story-dialog">
+    <div class="story-name">SOY NICO</div>
+    <div class="story-text" id="story-text"></div>
+    <div class="story-continue" id="story-continue" onclick="nextStoryPage()">&#9660; CONTINUAR</div>
+  </div>
+  <div class="story-progress" id="story-progress"></div>
+</div>
+
+<!-- ============================================================
+     PHASE 3: MAIN CONTENT (Choice Screen)
+     ============================================================ -->
+<div id="main-content">
+
+  <div class="logo-wrapper" id="main-logo">
+    <img src="assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-BLACK.png" alt="Cocinero Nomada">
+  </div>
+
+  <div class="subtitle" id="main-subtitle">Sabores sin fronteras</div>
+  <h1 class="title" id="main-title">Cocinero Nomada</h1>
+  <p class="tagline" id="main-tagline">Un viaje culinario por America Latina</p>
+
+  <div class="divider" id="main-divider"></div>
+
+  <div class="section-label" id="main-label">&#9654; ELIGE TU AVENTURA</div>
+
+  <div class="cards" id="main-cards">
+
+    <a href="map.html" class="card">
+      <span class="card-badge">AVENTURA</span>
+      <span class="card-icon">&#x1f5fa;&#xfe0f;</span>
+      <div class="card-title">Explorar el Mapa</div>
+      <div class="card-desc">
+        Juego estilo Pokemon. Recorre las Americas con Nico, desbloquea capitulos, mira fotos y videos del viaje, y enfrenta las batallas del camino.
+      </div>
+      <div class="card-cta">
+        JUGAR <span>&#9654;</span>
+      </div>
+    </a>
+
+    <a href="libro/index.html" class="card">
+      <span class="card-badge">LECTURA</span>
+      <span class="card-icon">&#x1f4d6;</span>
+      <div class="card-title">Leer el Libro</div>
+      <div class="card-desc">
+        Lee capitulo por capitulo la historia completa con todas las recetas, cronicas y fotografias del camino.
+      </div>
+      <div class="card-cta">
+        LEER <span>&#9654;</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Mini route preview -->
+  <div class="route-preview" id="main-route">
+    <svg viewBox="0 0 350 50" xmlns="http://www.w3.org/2000/svg">
+      <line x1="10" y1="25" x2="340" y2="25" stroke="#2e2820" stroke-width="1" stroke-dasharray="4,4"/>
+      <!-- Country stops -->
+      <g>
+        <circle cx="30" cy="25" r="6" fill="#b83220" stroke="#e8dcc8" stroke-width="1"/>
+        <text x="30" y="42" fill="#7a6e62" font-family="'Press Start 2P', monospace" font-size="5" text-anchor="middle">PR</text>
+      </g>
+      <g>
+        <circle cx="80" cy="25" r="6" fill="#5a7d9a" stroke="#e8dcc8" stroke-width="1"/>
+        <text x="80" y="42" fill="#7a6e62" font-family="'Press Start 2P', monospace" font-size="5" text-anchor="middle">NYC</text>
+      </g>
+      <g>
+        <circle cx="140" cy="25" r="6" fill="#c9973f" stroke="#e8dcc8" stroke-width="1"/>
+        <text x="140" y="42" fill="#7a6e62" font-family="'Press Start 2P', monospace" font-size="5" text-anchor="middle">COL</text>
+      </g>
+      <g>
+        <circle cx="195" cy="25" r="6" fill="#6a5acd" stroke="#e8dcc8" stroke-width="1"/>
+        <text x="195" y="42" fill="#7a6e62" font-family="'Press Start 2P', monospace" font-size="5" text-anchor="middle">ECU</text>
+      </g>
+      <g>
+        <circle cx="255" cy="25" r="6" fill="#d4622a" stroke="#e8dcc8" stroke-width="1"/>
+        <text x="255" y="42" fill="#7a6e62" font-family="'Press Start 2P', monospace" font-size="5" text-anchor="middle">PERU</text>
+      </g>
+      <g>
+        <circle cx="320" cy="25" r="6" fill="#4a7a5f" stroke="#e8dcc8" stroke-width="1"/>
+        <text x="320" y="42" fill="#7a6e62" font-family="'Press Start 2P', monospace" font-size="5" text-anchor="middle">MEX</text>
+      </g>
+      <!-- Animated route line overlay -->
+      <line x1="10" y1="25" x2="340" y2="25" stroke="#c9973f" stroke-width="1.5" stroke-dasharray="6,6" opacity="0.5">
+        <animate attributeName="stroke-dashoffset" from="0" to="-12" dur="1s" repeatCount="indefinite"/>
+      </line>
+    </svg>
+  </div>
+
+  <div class="stats" id="main-stats">
+    <div class="stat">
+      <div class="stat-number">14</div>
+      <div class="stat-label">Ciudades</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">6</div>
+      <div class="stat-label">Paises</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">26</div>
+      <div class="stat-label">Recetas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">6</div>
+      <div class="stat-label">Videos</div>
+    </div>
+  </div>
+
+  <a href="https://youtube.com/@cocineronomadapr" target="_blank" rel="noopener" class="yt-link" id="main-yt">
+    <svg class="yt-icon" viewBox="0 0 24 24">
+      <path d="M23.5 6.2s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.8 2 12 2 12 2s-4.8 0-7.3.1c-.6.1-1.9.1-3 1.3C.8 4.2.5 6.2.5 6.2S.2 8.5.2 10.8v2.1c0 2.3.3 4.6.3 4.6s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.7 12 21.8 12 21.8s4.8 0 7.3-.3c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.6v-2.1c0-2.3-.3-4.6-.3-4.6zM9.7 15.5V8.3l8.1 3.6-8.1 3.6z"/>
+    </svg>
+    @cocineronomadapr
+  </a>
+
+  <div class="footer" id="main-footer">
+    &copy; <span>Cocinero Nomada</span> &middot; @cocineronomada
+  </div>
+
+</div>
+
+<!-- ============================================================
+     INTRO LOGIC
+     ============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // Story pages (Pokemon professor style)
+  var storyPages = [
+    "Bienvenido al mundo de\nCOCINERO NOMADA...\n\nMi nombre es Nico.\nEste mundo esta lleno de\nsabores por descubrir.",
+    "Sali de Puerto Rico con\nun cuchillo, un pasaporte\ny hambre. No hambre de\ncomer... hambre de entender\ncomo sabe el mundo.",
+    "Viaje por 6 paises.\n14 ciudades. Probe todo.\nCocine en cocinas ajenas.\nAprendi de abuelas,\nvendedores de calle\ny mercados ancestrales.",
+    "Ahora es tu turno.\n\nEXPLORA EL MAPA como\nun juego de Pokemon...\n\nLEE EL LIBRO para\nvivir la historia\ncompleta.",
+    "La aventura comienza\nahora. Elige tu camino.\n\n   Buen provecho."
+  ];
+
+  var currentStoryPage = 0;
+  var isTyping = false;
+  var typeTimeout = null;
+
+  // Phase 1: Boot sequence
+  function runIntro() {
+    var bootItems = ['boot-1', 'boot-2', 'boot-3', 'boot-4'];
+    var delay = 0;
+
+    bootItems.forEach(function(id, i) {
+      setTimeout(function() {
+        document.getElementById(id).classList.add('visible');
+      }, delay);
+      delay += 400;
+    });
+
+    // Show logo with spin
+    setTimeout(function() {
+      document.getElementById('intro-logo').classList.add('visible');
+    }, delay + 200);
+
+    // Show title
+    setTimeout(function() {
+      document.getElementById('intro-title').classList.add('visible');
+    }, delay + 900);
+
+    // Show subtitle
+    setTimeout(function() {
+      document.getElementById('intro-subtitle').classList.add('visible');
+    }, delay + 1400);
+
+    // Show badges one by one
+    setTimeout(function() {
+      var badges = document.querySelectorAll('.intro-badge');
+      badges.forEach(function(b) {
+        var d = parseInt(b.getAttribute('data-delay')) || 0;
+        setTimeout(function() {
+          b.classList.add('visible');
+        }, d);
+      });
+    }, delay + 1800);
+
+    // Show press start
+    setTimeout(function() {
+      document.getElementById('intro-press-start').classList.add('visible');
+    }, delay + 3000);
+  }
+
+  // Phase 2: Story sequence
+  window.startStory = function() {
+    var introScreen = document.getElementById('intro-screen');
+    introScreen.classList.add('fade-out');
+
+    setTimeout(function() {
+      introScreen.style.display = 'none';
+      var storyScreen = document.getElementById('story-screen');
+      storyScreen.classList.add('active');
+
+      // Build progress dots
+      var progress = document.getElementById('story-progress');
+      for (var i = 0; i < storyPages.length; i++) {
+        var dot = document.createElement('div');
+        dot.className = 'story-dot';
+        progress.appendChild(dot);
+      }
+
+      currentStoryPage = 0;
+      showStoryPage(0);
+    }, 800);
+  };
+
+  function showStoryPage(index) {
+    var textEl = document.getElementById('story-text');
+    var continueEl = document.getElementById('story-continue');
+    var dots = document.querySelectorAll('.story-dot');
+
+    continueEl.style.visibility = 'hidden';
+    isTyping = true;
+
+    // Update progress dots
+    dots.forEach(function(d, i) {
+      d.className = 'story-dot';
+      if (i < index) d.classList.add('done');
+      if (i === index) d.classList.add('active');
+    });
+
+    // Typewriter effect
+    var fullText = storyPages[index];
+    var charIndex = 0;
+    textEl.textContent = '';
+
+    function typeChar() {
+      if (charIndex < fullText.length) {
+        textEl.textContent += fullText[charIndex];
+        charIndex++;
+        typeTimeout = setTimeout(typeChar, 30);
+      } else {
+        isTyping = false;
+        if (index < storyPages.length - 1) {
+          continueEl.textContent = '\u25BC CONTINUAR';
+        } else {
+          continueEl.textContent = '\u25B6 COMENZAR AVENTURA';
+          continueEl.style.color = '#c9973f';
+        }
+        continueEl.style.visibility = 'visible';
+      }
+    }
+    typeChar();
+  }
+
+  window.nextStoryPage = function() {
+    if (isTyping) {
+      // Skip typewriter, show full text
+      clearTimeout(typeTimeout);
+      document.getElementById('story-text').textContent = storyPages[currentStoryPage];
+      isTyping = false;
+      var continueEl = document.getElementById('story-continue');
+      if (currentStoryPage < storyPages.length - 1) {
+        continueEl.textContent = '\u25BC CONTINUAR';
+      } else {
+        continueEl.textContent = '\u25B6 COMENZAR AVENTURA';
+        continueEl.style.color = '#c9973f';
+      }
+      continueEl.style.visibility = 'visible';
+      return;
+    }
+
+    currentStoryPage++;
+    if (currentStoryPage < storyPages.length) {
+      showStoryPage(currentStoryPage);
+    } else {
+      // Transition to main content
+      goToMain();
+    }
+  };
+
+  function goToMain() {
+    var storyScreen = document.getElementById('story-screen');
+    storyScreen.classList.add('fade-out');
+    document.getElementById('skip-btn').classList.add('hidden');
+
+    setTimeout(function() {
+      storyScreen.style.display = 'none';
+      showMainContent();
+    }, 800);
+  }
+
+  window.skipToMain = function() {
+    clearTimeout(typeTimeout);
+    var introScreen = document.getElementById('intro-screen');
+    var storyScreen = document.getElementById('story-screen');
+    introScreen.style.display = 'none';
+    storyScreen.style.display = 'none';
+    document.getElementById('skip-btn').classList.add('hidden');
+    showMainContent();
+  };
+
+  function showMainContent() {
+    document.body.style.overflow = 'auto';
+    var main = document.getElementById('main-content');
+    main.classList.add('active');
+
+    // Reveal elements sequentially
+    var elements = [
+      'main-logo', 'main-subtitle', 'main-title', 'main-tagline',
+      'main-divider', 'main-label', 'main-cards', 'main-route',
+      'main-stats', 'main-yt', 'main-footer'
+    ];
+    elements.forEach(function(id) {
+      document.getElementById(id).classList.add('visible');
+    });
+  }
+
+  // Keyboard support
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      var introScreen = document.getElementById('intro-screen');
+      var storyScreen = document.getElementById('story-screen');
+
+      if (introScreen.style.display !== 'none' && document.getElementById('intro-press-start').classList.contains('visible')) {
+        e.preventDefault();
+        startStory();
+      } else if (storyScreen.classList.contains('active') && !storyScreen.classList.contains('fade-out')) {
+        e.preventDefault();
+        nextStoryPage();
+      }
+    }
+    if (e.key === 'Escape') {
+      skipToMain();
+    }
+  });
+
+  // Touch support for story
+  document.getElementById('story-screen').addEventListener('click', function(e) {
+    if (e.target.id !== 'story-continue') {
+      nextStoryPage();
+    }
+  });
+
+  // --- Music system ---
+  var introMusic = document.getElementById('intro-music');
+  var musicToggle = document.getElementById('music-toggle');
+  var musicPlaying = false;
+  introMusic.volume = 0;
+
+  function fadeInMusic(audio, targetVol, duration) {
+    var step = targetVol / (duration / 50);
+    audio.volume = 0;
+    var fade = setInterval(function() {
+      if (audio.volume + step >= targetVol) {
+        audio.volume = targetVol;
+        clearInterval(fade);
+      } else {
+        audio.volume = Math.min(audio.volume + step, 1);
+      }
+    }, 50);
+  }
+
+  function startMusic() {
+    if (musicPlaying) return;
+    introMusic.play().then(function() {
+      musicPlaying = true;
+      musicToggle.classList.remove('muted');
+      fadeInMusic(introMusic, 0.35, 2000);
+    }).catch(function() {});
+  }
+
+  function toggleMusic() {
+    if (musicPlaying) {
+      introMusic.pause();
+      musicPlaying = false;
+      musicToggle.classList.add('muted');
+    } else {
+      introMusic.play().then(function() {
+        musicPlaying = true;
+        musicToggle.classList.remove('muted');
+        if (introMusic.volume < 0.1) fadeInMusic(introMusic, 0.35, 1000);
+      }).catch(function() {});
+    }
+  }
+
+  musicToggle.addEventListener('click', toggleMusic);
+
+  // Start music on first user interaction (PRESS START)
+  var origStartStory = window.startStory;
+  window.startStory = function() {
+    startMusic();
+    origStartStory();
+  };
+
+  // Start the intro
+  runIntro();
+
+})();
+</script>
+
+</body>
+</html>

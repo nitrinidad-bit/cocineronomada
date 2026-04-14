@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cocinero Nomada — Sabores sin fronteras</title>
+<style>
+/* ============================================================
+   COCINERO NOMADA — Digital Cookbook
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0f0d0b;
+  --page: #1a1612;
+  --header: #211d18;
+  --border: #2e2820;
+  --red: #b83220;
+  --orange: #d4622a;
+  --gold: #c9973f;
+  --cream: #e8dcc8;
+  --muted: #7a6e62;
+  --teal: #8ab;
+  --max-w: 680px;
+}
+
+html { font-size: 16px; }
+
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.7;
+  overflow: hidden;
+  height: 100dvh;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Progress Bar --- */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--orange), var(--gold));
+  z-index: 1000; transition: width 0.4s ease;
+}
+
+/* --- Book Container --- */
+#book {
+  position: relative;
+  width: 100%; height: 100%;
+  overflow: hidden;
+}
+
+/* --- Page Base --- */
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow-y: auto; overflow-x: hidden;
+  display: flex; justify-content: center;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.45s ease;
+  will-change: transform, opacity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.page::-webkit-scrollbar { width: 6px; }
+.page::-webkit-scrollbar-track { background: transparent; }
+.page::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.page.current { transform: translateX(0); opacity: 1; z-index: 2; }
+.page.left    { transform: translateX(-100%); opacity: 0; z-index: 1; }
+.page.right   { transform: translateX(100%); opacity: 0; z-index: 1; }
+.page.hidden  { display: none; }
+
+.page-inner {
+  width: 100%; max-width: var(--max-w);
+  padding: 60px 28px 120px;
+}
+
+/* --- Cover Page --- */
+.cover-page {
+  background: var(--black);
+  position: relative;
+}
+
+.cover-page::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url('../assets/COCINERO_NOMADA/COCINERO-NOMADA-PALMS-PATTERN-BLACK.png');
+  background-size: 400px; background-repeat: repeat;
+  opacity: 0.12; pointer-events: none;
+}
+
+.cover-content {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  min-height: 100dvh; text-align: center;
+  position: relative; z-index: 1;
+  padding: 40px 28px;
+}
+
+.cover-logo {
+  width: 200px; height: auto;
+  margin-bottom: 40px;
+  filter: drop-shadow(0 4px 24px rgba(0,0,0,0.5));
+}
+
+.cover-title {
+  font-size: 2.4rem; letter-spacing: 0.18em;
+  font-weight: normal; color: var(--cream);
+  margin-bottom: 16px; text-transform: uppercase;
+}
+
+.cover-subtitle {
+  font-size: 1.05rem; color: var(--muted);
+  font-style: italic; max-width: 380px;
+  line-height: 1.6; margin-bottom: 48px;
+}
+
+.cover-btn {
+  background: none; border: 1px solid var(--gold);
+  color: var(--gold); padding: 14px 36px;
+  font-family: Georgia, serif; font-size: 1rem;
+  cursor: pointer; letter-spacing: 0.08em;
+  transition: all 0.3s ease; border-radius: 2px;
+}
+
+.cover-btn:hover {
+  background: var(--gold); color: var(--black);
+}
+
+/* --- TOC Page --- */
+.toc-page .page-inner { padding-top: 48px; }
+
+.toc-heading {
+  font-size: 1.8rem; text-align: center;
+  margin-bottom: 8px; font-weight: normal;
+  letter-spacing: 0.1em;
+}
+
+.toc-line {
+  width: 60px; height: 1px; background: var(--gold);
+  margin: 0 auto 36px;
+}
+
+.toc-list { list-style: none; }
+
+.toc-item {
+  display: flex; align-items: baseline;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: color 0.2s;
+  gap: 12px;
+}
+
+.toc-item:hover { color: var(--gold); }
+
+.toc-chapter-num {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem; color: var(--orange);
+  min-width: 36px;
+}
+
+.toc-chapter-title { flex: 1; font-size: 1.05rem; }
+
+.toc-chapter-flag { font-size: 1rem; }
+
+.toc-section-header {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  color: var(--muted); text-transform: uppercase;
+  margin-top: 28px; margin-bottom: 8px;
+  padding-top: 12px; border-top: 1px solid var(--border);
+}
+
+/* --- Chapter Opener --- */
+.chapter-opener { background: var(--black); }
+.chapter-opener .page-inner {
+  display: flex; flex-direction: column;
+  justify-content: center; min-height: 100dvh;
+  padding-top: 40px; padding-bottom: 40px;
+}
+
+.chapter-num {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem; letter-spacing: 0.15em;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+
+.chapter-city {
+  font-size: 2.6rem; font-weight: normal;
+  line-height: 1.15; margin-bottom: 10px;
+}
+
+.chapter-country {
+  font-size: 1rem; color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.chapter-subtitle {
+  font-size: 1rem; font-style: italic;
+  color: var(--gold); margin-bottom: 24px;
+}
+
+.chapter-divider {
+  width: 50px; height: 2px;
+  margin-bottom: 28px;
+}
+
+.chapter-story {
+  font-size: 1.05rem; line-height: 1.85;
+  color: var(--cream); opacity: 0.92;
+}
+
+/* --- Full Story Page --- */
+.story-page { background: var(--page); }
+
+.story-page .page-inner { padding-top: 48px; }
+
+.story-label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.story-text p {
+  font-size: 1.08rem; line-height: 2;
+  margin-bottom: 24px; text-indent: 1.5em;
+  color: var(--cream); opacity: 0.93;
+}
+
+.story-text p:first-child { text-indent: 0; }
+
+.story-text p:first-child::first-letter {
+  font-size: 3.2rem; float: left;
+  line-height: 1; padding-right: 8px;
+  color: var(--gold); font-weight: normal;
+}
+
+/* --- Recipe Page --- */
+.recipe-page { background: var(--page); }
+
+.recipe-page .page-inner { padding-top: 40px; }
+
+.recipe-emoji { font-size: 3.5rem; margin-bottom: 12px; }
+
+.recipe-name {
+  font-size: 1.8rem; font-weight: normal;
+  margin-bottom: 10px; line-height: 1.25;
+}
+
+.recipe-desc {
+  font-size: 1rem; color: var(--muted);
+  line-height: 1.7; margin-bottom: 16px;
+  font-style: italic;
+}
+
+.recipe-tags {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 28px;
+}
+
+.recipe-tag {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem; letter-spacing: 0.06em;
+  padding: 4px 10px; border: 1px solid var(--border);
+  color: var(--muted); border-radius: 2px;
+}
+
+.recipe-card {
+  background: var(--header);
+  border: 1px solid var(--border);
+  border-radius: 4px; padding: 28px 24px;
+}
+
+.recipe-meta {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  margin-bottom: 24px;
+}
+
+.recipe-badge {
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem; letter-spacing: 0.04em;
+  padding: 5px 12px; border-radius: 2px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--cream);
+}
+
+.recipe-section-title {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 14px; margin-top: 4px;
+}
+
+.recipe-ingredients {
+  list-style: none; margin-bottom: 28px;
+}
+
+.recipe-ingredients li {
+  padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.95rem; line-height: 1.6;
+  padding-left: 18px; position: relative;
+}
+
+.recipe-ingredients li::before {
+  content: '\2022'; position: absolute; left: 0;
+  color: var(--orange);
+}
+
+.recipe-steps { list-style: none; counter-reset: step; }
+
+.recipe-steps li {
+  counter-increment: step;
+  padding: 10px 0; padding-left: 36px;
+  position: relative; font-size: 0.95rem;
+  line-height: 1.75; border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.recipe-steps li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem; color: var(--gold);
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); border-radius: 50%;
+}
+
+.recipe-steps li:last-child { border-bottom: none; }
+
+/* --- Chronicle Page --- */
+.chronicle-page { background: var(--page); }
+
+.chronicle-page .page-inner { padding-top: 48px; }
+
+.chronicle-title {
+  font-size: 1.8rem; font-weight: normal;
+  margin-bottom: 10px; line-height: 1.25;
+}
+
+.chronicle-route {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem; color: var(--muted);
+  letter-spacing: 0.06em; margin-bottom: 20px;
+}
+
+.chronicle-epigraph {
+  font-style: italic; color: var(--gold);
+  border-left: 2px solid var(--gold);
+  padding-left: 16px; margin-bottom: 28px;
+  font-size: 1.02rem; line-height: 1.7;
+}
+
+.chronicle-body p {
+  font-size: 1.05rem; line-height: 2;
+  margin-bottom: 20px;
+}
+
+/* --- Videos Page --- */
+.videos-page { background: var(--page); }
+
+.videos-page .page-inner { padding-top: 48px; }
+
+.video-item {
+  display: block; padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none; color: inherit;
+  transition: opacity 0.2s;
+}
+
+.video-item:hover { opacity: 0.8; }
+
+.video-country {
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem; color: var(--muted);
+  letter-spacing: 0.06em; margin-bottom: 6px;
+}
+
+.video-title {
+  font-size: 1.15rem; color: var(--cream);
+  margin-bottom: 4px;
+}
+
+.video-desc {
+  font-size: 0.9rem; color: var(--muted);
+  line-height: 1.6;
+}
+
+.video-link-icon {
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem; color: var(--red);
+  margin-top: 6px; display: inline-block;
+}
+
+/* --- Bottom Nav --- */
+#nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, var(--black) 30%);
+  padding: 24px 16px 16px; z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; pointer-events: none;
+}
+
+#nav-bar > * { pointer-events: auto; }
+
+.nav-btn {
+  background: var(--header); border: 1px solid var(--border);
+  color: var(--cream); padding: 10px 20px;
+  font-family: Georgia, serif; font-size: 0.85rem;
+  cursor: pointer; border-radius: 2px;
+  transition: all 0.2s; min-width: 90px;
+  text-align: center;
+}
+
+.nav-btn:hover:not(:disabled) {
+  border-color: var(--gold); color: var(--gold);
+}
+
+.nav-btn:disabled {
+  opacity: 0.3; cursor: default;
+}
+
+#page-indicator {
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem; color: var(--muted);
+  letter-spacing: 0.06em; min-width: 100px;
+  text-align: center;
+}
+
+/* --- TOC Overlay --- */
+#toc-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(15,13,11,0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+  overflow-y: auto;
+}
+
+#toc-overlay.open { opacity: 1; pointer-events: auto; }
+
+#toc-overlay .toc-inner {
+  max-width: var(--max-w);
+  margin: 0 auto; padding: 40px 28px 80px;
+}
+
+#toc-close {
+  position: fixed; top: 16px; right: 20px;
+  background: none; border: 1px solid var(--border);
+  color: var(--cream); width: 40px; height: 40px;
+  cursor: pointer; font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 2px; z-index: 501;
+  transition: border-color 0.2s;
+}
+
+#toc-close:hover { border-color: var(--gold); color: var(--gold); }
+
+/* --- TOC Toggle Button --- */
+#toc-toggle {
+  position: fixed; top: 14px; left: 16px; z-index: 200;
+  background: var(--header); border: 1px solid var(--border);
+  color: var(--cream); width: 40px; height: 40px;
+  cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 2px; transition: all 0.2s;
+}
+
+#toc-toggle:hover { border-color: var(--gold); color: var(--gold); }
+
+/* --- Bookmark Button --- */
+#bookmark-btn {
+  position: fixed; top: 14px; right: 16px; z-index: 200;
+  background: var(--header); border: 1px solid var(--border);
+  color: var(--cream); width: 40px; height: 40px;
+  cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 2px; transition: all 0.2s;
+}
+
+#bookmark-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* --- Resume Toast --- */
+#resume-toast {
+  position: fixed; bottom: 80px; left: 50%;
+  transform: translateX(-50%); z-index: 300;
+  background: var(--header); border: 1px solid var(--gold);
+  padding: 14px 24px; border-radius: 4px;
+  display: none; align-items: center; gap: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  max-width: 90vw;
+}
+
+#resume-toast.show { display: flex; }
+
+#resume-toast span {
+  font-size: 0.88rem; color: var(--cream);
+}
+
+.resume-btn {
+  background: none; border: 1px solid var(--gold);
+  color: var(--gold); padding: 6px 16px;
+  font-family: Georgia, serif; font-size: 0.8rem;
+  cursor: pointer; border-radius: 2px;
+  white-space: nowrap; transition: all 0.2s;
+}
+
+.resume-btn:hover {
+  background: var(--gold); color: var(--black);
+}
+
+.resume-dismiss {
+  background: none; border: none;
+  color: var(--muted); font-size: 1rem;
+  cursor: pointer; padding: 4px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .page-inner { padding: 40px 20px 110px; }
+  .cover-title { font-size: 1.6rem; letter-spacing: 0.12em; }
+  .cover-logo { width: 140px; }
+  .cover-subtitle { font-size: 0.92rem; }
+  .chapter-city { font-size: 1.8rem; }
+  .recipe-name { font-size: 1.4rem; }
+  .recipe-card { padding: 20px 16px; }
+  .chronicle-title { font-size: 1.4rem; }
+  .story-text p:first-child::first-letter { font-size: 2.4rem; }
+  .toc-heading { font-size: 1.4rem; }
+  .nav-btn { padding: 8px 14px; font-size: 0.8rem; min-width: 70px; }
+  #page-indicator { font-size: 0.65rem; min-width: 80px; }
+  #toc-toggle, #bookmark-btn { width: 36px; height: 36px; font-size: 0.9rem; }
+}
+
+/* --- Print --- */
+@media print { body { overflow: visible; } .page { position: relative; page-break-after: always; } #nav-bar, #toc-toggle, #bookmark-btn, #progress-bar { display: none; } }
+
+/* --- Utility --- */
+.color-red { color: var(--red); }
+.color-orange { color: var(--orange); }
+.color-gold { color: var(--gold); }
+.color-muted { color: var(--muted); }
+
+/* --- Cross-nav buttons (Hub + Map links) --- */
+.cross-nav {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  gap: 8px;
+}
+.cross-nav-btn {
+  font-family: 'Courier New', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 14px;
+  background: var(--header);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.cross-nav-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* --- Map link in chapter --- */
+.chapter-map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-top: 20px;
+  transition: all 0.2s;
+}
+.chapter-map-link:hover {
+  border-color: var(--gold);
+  background: rgba(201, 151, 63, 0.1);
+}
+
+@media (max-width: 600px) {
+  .cross-nav { top: auto; bottom: 62px; }
+  .cross-nav-btn { font-size: 0.58rem; padding: 6px 10px; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar" style="width: 0%"></div>
+
+<button id="toc-toggle" aria-label="Tabla de contenido" title="Tabla de contenido">&#9776;</button>
+<button id="bookmark-btn" aria-label="Guardar marcador" title="Guardar marcador">&#9733;</button>
+
+<!-- Cross-navigation to Hub and Map -->
+<div class="cross-nav">
+  <a href="../index.html" class="cross-nav-btn">&#9664; HUB</a>
+  <a href="../app/index.html" class="cross-nav-btn">&#x1f5fa; MAPA</a>
+</div>
+
+<div id="book"></div>
+
+<div id="nav-bar">
+  <button class="nav-btn" id="btn-prev" disabled>&larr; Anterior</button>
+  <span id="page-indicator">1 / 1</span>
+  <button class="nav-btn" id="btn-next">Siguiente &rarr;</button>
+</div>
+
+<div id="toc-overlay">
+  <button id="toc-close" aria-label="Cerrar">&times;</button>
+  <div class="toc-inner" id="toc-overlay-content"></div>
+</div>
+
+<div id="resume-toast">
+  <span>Continuar leyendo donde dejaste?</span>
+  <button class="resume-btn" id="resume-yes">Continuar</button>
+  <button class="resume-dismiss" id="resume-no">&times;</button>
+</div>
+
+<script src="../shared/data.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // ============================================================
+  // PAGE BUILDER
+  // ============================================================
+
+  const pages = [];
+  const chapterIndex = {}; // chapterNum -> page index
+
+  function esc(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function buildPages() {
+    // -- COVER (page 0) --
+    pages.push({
+      type: 'cover',
+      html: `
+        <div class="cover-page page">
+          <div class="cover-content">
+            <img class="cover-logo" src="../assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-WHITE.png" alt="Cocinero Nomada" />
+            <h1 class="cover-title">Cocinero Nomada</h1>
+            <p class="cover-subtitle">Sabores sin fronteras &mdash; Un viaje culinario por Am&eacute;rica Latina</p>
+            <button class="cover-btn" id="cover-open">Abrir libro &rarr;</button>
+          </div>
+        </div>`
+    });
+
+    // -- TABLE OF CONTENTS (page 1) --
+    let tocItems = '';
+    LOCATIONS.forEach(loc => {
+      tocItems += `<li class="toc-item" data-goto-chapter="${loc.chapter}">
+        <span class="toc-chapter-num">Cap. ${String(loc.chapter).padStart(2,'0')}</span>
+        <span class="toc-chapter-title">${esc(loc.city)}</span>
+        <span class="toc-chapter-flag">${loc.flag} <span class="color-muted" style="font-size:0.82rem">${esc(loc.country)}</span></span>
+      </li>`;
+    });
+
+    pages.push({
+      type: 'toc',
+      html: `
+        <div class="toc-page page">
+          <div class="page-inner">
+            <h2 class="toc-heading">Contenido</h2>
+            <div class="toc-line"></div>
+            <ul class="toc-list">
+              ${tocItems}
+              <div class="toc-section-header">Extras</div>
+              <li class="toc-item" data-goto-section="chronicles">
+                <span class="toc-chapter-num">&bull;</span>
+                <span class="toc-chapter-title">Cr&oacute;nicas del Viaje</span>
+                <span class="toc-chapter-flag"></span>
+              </li>
+              <li class="toc-item" data-goto-section="videos">
+                <span class="toc-chapter-num">&bull;</span>
+                <span class="toc-chapter-title">Videos del Camino</span>
+                <span class="toc-chapter-flag"></span>
+              </li>
+            </ul>
+          </div>
+        </div>`
+    });
+
+    // -- CHAPTER PAGES --
+    LOCATIONS.forEach(loc => {
+      const countryColor = COUNTRY_COLORS[loc.country] || 'var(--orange)';
+
+      // Chapter opener
+      chapterIndex[loc.chapter] = pages.length;
+      pages.push({
+        type: 'chapter-opener',
+        chapter: loc.chapter,
+        html: `
+          <div class="chapter-opener page" id="chapter-${loc.chapter}">
+            <div class="page-inner">
+              <div class="chapter-num" style="color:${countryColor}">Cap&iacute;tulo ${String(loc.chapter).padStart(2,'0')}</div>
+              <h2 class="chapter-city">${esc(loc.city)}</h2>
+              <div class="chapter-country">${loc.flag} ${esc(loc.country)}</div>
+              <div class="chapter-subtitle">${esc(loc.subtitle)}</div>
+              <div class="chapter-divider" style="background:${countryColor}"></div>
+              <p class="chapter-story">${esc(loc.story)}</p>
+              <a href="../app/index.html#city-${loc.id}" class="chapter-map-link">&#x1f5fa; Ver ${esc(loc.city)} en el Mapa</a>
+            </div>
+          </div>`
+      });
+
+      // Full story page
+      const storyParas = loc.fullStory.split('\n\n').map(p => `<p>${esc(p)}</p>`).join('');
+      pages.push({
+        type: 'story',
+        chapter: loc.chapter,
+        html: `
+          <div class="story-page page">
+            <div class="page-inner">
+              <div class="story-label">${loc.flag} ${esc(loc.city)} &mdash; La Historia</div>
+              <div class="story-text">${storyParas}</div>
+            </div>
+          </div>`
+      });
+
+      // Recipe pages
+      loc.recipes.forEach(recipe => {
+        const r = recipe.fullRecipe;
+        const tagsHtml = recipe.tags.map(t => `<span class="recipe-tag">${esc(t)}</span>`).join('');
+        const ingHtml = r.ingredients.map(i => `<li>${esc(i)}</li>`).join('');
+        const stepsHtml = r.steps.map(s => `<li>${esc(s)}</li>`).join('');
+
+        pages.push({
+          type: 'recipe',
+          chapter: loc.chapter,
+          html: `
+            <div class="recipe-page page">
+              <div class="page-inner">
+                <div class="recipe-emoji">${recipe.emoji}</div>
+                <h3 class="recipe-name">${esc(recipe.name)}</h3>
+                <p class="recipe-desc">${esc(recipe.desc)}</p>
+                <div class="recipe-tags">${tagsHtml}</div>
+                <div class="recipe-card">
+                  <div class="recipe-meta">
+                    <span class="recipe-badge">${esc(r.servings)}</span>
+                    <span class="recipe-badge">${esc(r.time)}</span>
+                    <span class="recipe-badge">${esc(r.difficulty)}</span>
+                  </div>
+                  <div class="recipe-section-title">Ingredientes</div>
+                  <ul class="recipe-ingredients">${ingHtml}</ul>
+                  <div class="recipe-section-title">Preparaci&oacute;n</div>
+                  <ol class="recipe-steps">${stepsHtml}</ol>
+                </div>
+              </div>
+            </div>`
+        });
+      });
+
+      // Photo pages (if location has photos)
+      const photos = (typeof LOCATION_PHOTOS !== 'undefined' && LOCATION_PHOTOS[loc.id]) ? LOCATION_PHOTOS[loc.id] : [];
+      if (photos.length > 0) {
+        const photosHtml = photos.map(photo =>
+          `<div style="margin-bottom:12px;border:1px solid #2e2820;border-radius:6px;overflow:hidden;">
+            <img src="${photo.file}" alt="${esc(photo.caption)}" style="width:100%;height:200px;object-fit:cover;display:block;" loading="lazy">
+            <div style="padding:8px 10px;font-family:monospace;font-size:0.65rem;color:#7a6e62;line-height:1.4;background:#1a1612;">${esc(photo.caption)}</div>
+          </div>`
+        ).join('');
+
+        pages.push({
+          type: 'photos',
+          chapter: loc.chapter,
+          html: `
+            <div class="story-page page">
+              <div class="page-inner">
+                <div class="story-label">${loc.flag} ${esc(loc.city)} &mdash; Fotos del Viaje</div>
+                <div style="margin-top:16px;">${photosHtml}</div>
+              </div>
+            </div>`
+        });
+      }
+    });
+
+    // -- CHRONICLES --
+    const chroniclesStart = pages.length;
+    CHRONICLES.forEach(ch => {
+      const bodyHtml = ch.body.map(p => `<p>${esc(p)}</p>`).join('');
+      pages.push({
+        type: 'chronicle',
+        html: `
+          <div class="chronicle-page page">
+            <div class="page-inner">
+              <div class="story-label">${ch.flag} Cr&oacute;nica</div>
+              <h3 class="chronicle-title">${esc(ch.title)}</h3>
+              <div class="chronicle-route">${esc(ch.route)}</div>
+              <blockquote class="chronicle-epigraph">${esc(ch.epigraph)}</blockquote>
+              <div class="chronicle-body">${bodyHtml}</div>
+            </div>
+          </div>`
+      });
+    });
+
+    // -- VIDEOS --
+    const videosStart = pages.length;
+    let videoItemsHtml = '';
+    VIDEOS.forEach(v => {
+      videoItemsHtml += `
+        <a class="video-item" href="https://youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">
+          <div class="video-country">${esc(v.country)}</div>
+          <div class="video-title">${esc(v.title)}</div>
+          <div class="video-desc">${esc(v.desc)}</div>
+          <span class="video-link-icon">&#9654; Ver en YouTube</span>
+        </a>`;
+    });
+
+    pages.push({
+      type: 'videos',
+      html: `
+        <div class="videos-page page">
+          <div class="page-inner">
+            <h2 class="toc-heading">Videos del Camino</h2>
+            <div class="toc-line"></div>
+            ${videoItemsHtml}
+          </div>
+        </div>`
+    });
+
+    // Store section indices for TOC jumps
+    window._sectionIndex = {
+      chronicles: chroniclesStart,
+      videos: videosStart
+    };
+  }
+
+  // ============================================================
+  // RENDERER
+  // ============================================================
+
+  let currentPage = 0;
+  let totalPages = 0;
+  const bookEl = document.getElementById('book');
+
+  function renderPage(index) {
+    // We keep three pages in DOM: prev, current, next
+    bookEl.innerHTML = '';
+
+    for (let i = index - 1; i <= index + 1; i++) {
+      if (i < 0 || i >= totalPages) continue;
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = pages[i].html.trim();
+      const pageEl = wrapper.firstElementChild;
+
+      if (i < index) pageEl.classList.add('left');
+      else if (i > index) pageEl.classList.add('right');
+      else pageEl.classList.add('current');
+
+      pageEl.dataset.pageIndex = i;
+      bookEl.appendChild(pageEl);
+    }
+
+    currentPage = index;
+    updateUI();
+  }
+
+  function goToPage(index, direction) {
+    if (index < 0 || index >= totalPages || index === currentPage) return;
+
+    const currentEl = bookEl.querySelector('.page.current');
+
+    // Create new page
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = pages[index].html.trim();
+    const newEl = wrapper.firstElementChild;
+    newEl.dataset.pageIndex = index;
+
+    if (direction === 'next') {
+      newEl.classList.add('right');
+      bookEl.appendChild(newEl);
+      // Force reflow
+      newEl.offsetHeight;
+      requestAnimationFrame(() => {
+        if (currentEl) currentEl.classList.replace('current', 'left');
+        newEl.classList.replace('right', 'current');
+      });
+    } else {
+      newEl.classList.add('left');
+      bookEl.appendChild(newEl);
+      newEl.offsetHeight;
+      requestAnimationFrame(() => {
+        if (currentEl) currentEl.classList.replace('current', 'right');
+        newEl.classList.replace('left', 'current');
+      });
+    }
+
+    currentPage = index;
+    updateUI();
+
+    // Clean up old pages after transition
+    setTimeout(() => {
+      const allPages = bookEl.querySelectorAll('.page');
+      allPages.forEach(p => {
+        if (!p.classList.contains('current')) p.remove();
+      });
+      // Preload adjacent pages
+      preloadAdjacent(index);
+    }, 500);
+  }
+
+  function preloadAdjacent(index) {
+    // Remove non-current pages
+    const extras = bookEl.querySelectorAll('.page:not(.current)');
+    extras.forEach(e => e.remove());
+
+    // Add prev
+    if (index > 0) {
+      const w = document.createElement('div');
+      w.innerHTML = pages[index - 1].html.trim();
+      const el = w.firstElementChild;
+      el.classList.add('left');
+      el.dataset.pageIndex = index - 1;
+      bookEl.appendChild(el);
+    }
+    // Add next
+    if (index < totalPages - 1) {
+      const w = document.createElement('div');
+      w.innerHTML = pages[index + 1].html.trim();
+      const el = w.firstElementChild;
+      el.classList.add('right');
+      el.dataset.pageIndex = index + 1;
+      bookEl.appendChild(el);
+    }
+  }
+
+  function goNext() { if (currentPage < totalPages - 1) goToPage(currentPage + 1, 'next'); }
+  function goPrev() { if (currentPage > 0) goToPage(currentPage - 1, 'prev'); }
+
+  function jumpToPage(index) {
+    if (index < 0 || index >= totalPages) return;
+    const dir = index > currentPage ? 'next' : 'prev';
+    // For big jumps, just render directly instead of animating
+    if (Math.abs(index - currentPage) > 1) {
+      renderPage(index);
+      preloadAdjacent(index);
+    } else {
+      goToPage(index, dir);
+    }
+  }
+
+  // ============================================================
+  // UI UPDATES
+  // ============================================================
+
+  const progressBar = document.getElementById('progress-bar');
+  const pageIndicator = document.getElementById('page-indicator');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const bookmarkBtn = document.getElementById('bookmark-btn');
+
+  function updateUI() {
+    const pct = totalPages > 1 ? (currentPage / (totalPages - 1)) * 100 : 0;
+    progressBar.style.width = pct + '%';
+    pageIndicator.textContent = `${currentPage + 1} / ${totalPages}`;
+    btnPrev.disabled = currentPage === 0;
+    btnNext.disabled = currentPage === totalPages - 1;
+
+    // Scroll page to top
+    const currentEl = bookEl.querySelector('.page.current');
+    if (currentEl) currentEl.scrollTop = 0;
+
+    // Update bookmark star
+    const saved = localStorage.getItem('cn-ebook-bookmark');
+    bookmarkBtn.innerHTML = (saved && parseInt(saved) === currentPage) ? '&#9733;' : '&#9734;';
+    bookmarkBtn.style.color = (saved && parseInt(saved) === currentPage) ? 'var(--gold)' : '';
+  }
+
+  // ============================================================
+  // TOC OVERLAY
+  // ============================================================
+
+  const tocOverlay = document.getElementById('toc-overlay');
+  const tocToggle = document.getElementById('toc-toggle');
+  const tocClose = document.getElementById('toc-close');
+
+  function buildTocOverlay() {
+    let html = '<h2 class="toc-heading">Contenido</h2><div class="toc-line"></div><ul class="toc-list">';
+
+    LOCATIONS.forEach(loc => {
+      html += `<li class="toc-item" data-goto-chapter="${loc.chapter}">
+        <span class="toc-chapter-num">Cap. ${String(loc.chapter).padStart(2,'0')}</span>
+        <span class="toc-chapter-title">${esc(loc.city)}</span>
+        <span class="toc-chapter-flag">${loc.flag}</span>
+      </li>`;
+    });
+
+    html += `<div class="toc-section-header">Extras</div>
+      <li class="toc-item" data-goto-section="chronicles">
+        <span class="toc-chapter-num">&bull;</span>
+        <span class="toc-chapter-title">Cr&oacute;nicas del Viaje</span>
+        <span class="toc-chapter-flag"></span>
+      </li>
+      <li class="toc-item" data-goto-section="videos">
+        <span class="toc-chapter-num">&bull;</span>
+        <span class="toc-chapter-title">Videos del Camino</span>
+        <span class="toc-chapter-flag"></span>
+      </li>`;
+
+    html += '</ul>';
+    document.getElementById('toc-overlay-content').innerHTML = html;
+  }
+
+  function openToc() { tocOverlay.classList.add('open'); }
+  function closeToc() { tocOverlay.classList.remove('open'); }
+
+  tocToggle.addEventListener('click', openToc);
+  tocClose.addEventListener('click', closeToc);
+
+  // Delegate TOC clicks
+  document.addEventListener('click', function(e) {
+    const item = e.target.closest('[data-goto-chapter]');
+    if (item) {
+      const ch = parseInt(item.dataset.gotoChapter);
+      if (chapterIndex[ch] !== undefined) {
+        jumpToPage(chapterIndex[ch]);
+        closeToc();
+      }
+      return;
+    }
+    const sectionItem = e.target.closest('[data-goto-section]');
+    if (sectionItem) {
+      const sec = sectionItem.dataset.gotoSection;
+      if (window._sectionIndex[sec] !== undefined) {
+        jumpToPage(window._sectionIndex[sec]);
+        closeToc();
+      }
+      return;
+    }
+  });
+
+  // Cover button
+  document.addEventListener('click', function(e) {
+    if (e.target.id === 'cover-open') {
+      goNext();
+    }
+  });
+
+  // ============================================================
+  // NAVIGATION
+  // ============================================================
+
+  btnNext.addEventListener('click', goNext);
+  btnPrev.addEventListener('click', goPrev);
+
+  // Keyboard
+  document.addEventListener('keydown', function(e) {
+    if (tocOverlay.classList.contains('open')) {
+      if (e.key === 'Escape') closeToc();
+      return;
+    }
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+    if (e.key === 'Escape') closeToc();
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartTime = 0;
+  let isSwiping = false;
+
+  document.addEventListener('touchstart', function(e) {
+    if (tocOverlay.classList.contains('open')) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartTime = Date.now();
+    isSwiping = true;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    if (!isSwiping) return;
+    isSwiping = false;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    const dt = Date.now() - touchStartTime;
+
+    // Only swipe if horizontal movement > vertical and threshold met
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50 && dt < 500) {
+      if (dx < 0) goNext();
+      else goPrev();
+    }
+  }, { passive: true });
+
+  // ============================================================
+  // BOOKMARK
+  // ============================================================
+
+  bookmarkBtn.addEventListener('click', function() {
+    localStorage.setItem('cn-ebook-bookmark', currentPage);
+    updateUI();
+  });
+
+  // Resume toast
+  function checkResume() {
+    const saved = localStorage.getItem('cn-ebook-bookmark');
+    if (saved && parseInt(saved) > 0) {
+      const toast = document.getElementById('resume-toast');
+      toast.classList.add('show');
+
+      document.getElementById('resume-yes').addEventListener('click', function() {
+        jumpToPage(parseInt(saved));
+        toast.classList.remove('show');
+      });
+
+      document.getElementById('resume-no').addEventListener('click', function() {
+        toast.classList.remove('show');
+      });
+
+      // Auto-dismiss after 8s
+      setTimeout(() => toast.classList.remove('show'), 8000);
+    }
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+
+  buildPages();
+  totalPages = pages.length;
+  buildTocOverlay();
+  renderPage(0);
+  preloadAdjacent(0);
+
+  // Deep linking: handle #chapter-N from map links
+  function handleDeepLink() {
+    var hash = window.location.hash;
+    if (hash && hash.indexOf('#chapter-') === 0) {
+      var chNum = parseInt(hash.replace('#chapter-', ''));
+      if (chapterIndex[chNum] !== undefined) {
+        jumpToPage(chapterIndex[chNum]);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Check deep link first, then resume
+  if (!handleDeepLink()) {
+    setTimeout(checkResume, 600);
+  }
+
+  // Handle hash changes (back/forward)
+  window.addEventListener('hashchange', handleDeepLink);
+
+})();
+</script>
+</body>
+</html>

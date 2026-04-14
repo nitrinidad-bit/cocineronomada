@@ -1,0 +1,18 @@
+# Privados — no subir a GitHub
+legal/
+assets/COCINERO_NOMADA/Invoice.pdf
+
+# Material fuente (no usado en el sitio publicado)
+enlaces de contenido mapa/
+INSTRUCCIONES_CLAUDECODE_v2.md
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~

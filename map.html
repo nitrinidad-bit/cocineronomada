@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cocinero Nomada — Mapa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    /* Verde (solo dentro de la pantalla del mapa) */
+    --gb-darkest: #0f380f;
+    --gb-dark:    #306230;
+    --gb-light:   #8bac0f;
+    --gb-lightest:#9bbc0f;
+    --gb-cream:   #cadc9f;
+    --ink:        #0f380f;
+    /* Paleta uniforme del libro (chrome, topbar, controles) */
+    --black:  #0f0d0b;
+    --page:   #1a1612;
+    --header: #211d18;
+    --border: #2e2820;
+    --muted:  #7a6e62;
+    --cream:  #e8dcc8;
+    --red:    #b83220;
+    --orange: #d4622a;
+    --gold:   #c9973f;
+  }
+
+  @keyframes pinPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1);   box-shadow: 0 0 0 0    rgba(184,50,32,0.65); }
+    70%      { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 0 12px rgba(184,50,32,0);   }
+  }
+  @keyframes scanline { 0% { top:-100%; } 100% { top: 100%; } }
+  @keyframes flash    { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+
+  html, body {
+    height: 100%;
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Press Start 2P', monospace;
+    -webkit-font-smoothing: none;
+    image-rendering: pixelated;
+    overflow: hidden;
+  }
+
+  /* ============ CHROME SHELL (paleta negra del libro + print hojas) ============ */
+  .gb-shell {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    background-color: var(--black);
+    background-image: url('assets/COCINERO_NOMADA/COCINERO-NOMADA-PALMS-PATTERN-BLACK.png');
+    background-size: 260px;
+    background-repeat: repeat;
+    padding: 12px;
+    gap: 10px;
+  }
+  .gb-shell::before {
+    /* Veil oscuro para mantener el print de hojas visible pero tenue */
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at top, rgba(33,29,24,0.55) 0%, rgba(15,13,11,0.88) 75%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .gb-shell > * { position: relative; z-index: 1; }
+
+  /* Top bar: brand + breadcrumb + back */
+  .gb-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--header);
+    border: 2px solid var(--border);
+    box-shadow:
+      inset 0 -4px 0 rgba(0,0,0,0.35),
+      0 4px 0 rgba(0,0,0,0.6);
+    border-radius: 4px;
+  }
+
+  .gb-brand {
+    display: flex; align-items: center; gap: 10px;
+    min-width: 0;
+  }
+  .gb-brand img {
+    width: 44px; height: 44px;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 4px rgba(201,151,63,0.35));
+  }
+  .gb-brand-text {
+    display: flex; flex-direction: column; gap: 3px;
+    min-width: 0;
+  }
+  .gb-brand-title {
+    font-size: 9px; letter-spacing: 1px;
+    color: var(--cream);
+    text-shadow: 1px 1px 0 #000;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .gb-brand-sub {
+    font-size: 7px; color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  .gb-crumbs {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 7px; color: var(--cream);
+    flex-wrap: wrap; justify-content: flex-end;
+  }
+  .gb-crumb {
+    padding: 4px 7px;
+    background: var(--black);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    color: var(--muted);
+  }
+  .gb-crumb.active { color: var(--gold); background: var(--page); border-color: var(--gold); }
+  .gb-crumb.sep { background: none; border: none; padding: 0 2px; cursor: default; color: var(--border); }
+  .gb-crumb:hover:not(.sep) { color: var(--gold); }
+
+  /* ============ MAP VIEWPORT (solo el mapa mantiene verde) ============ */
+  .gb-screen-wrap {
+    flex: 1;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    padding: 6px;
+    background: var(--page);
+    border: 3px solid var(--border);
+    border-radius: 6px;
+    box-shadow:
+      inset 0 0 30px rgba(0,0,0,0.6),
+      0 4px 0 rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .gb-screen-wrap::before {
+    /* scanlines */
+    content: "";
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.18) 0 2px,
+      rgba(0,0,0,0)    2px 4px
+    );
+    pointer-events: none;
+    z-index: 5;
+  }
+  .gb-screen-wrap::after {
+    content: "";
+    position: absolute; left:0; right:0; height: 40%;
+    background: linear-gradient(180deg, rgba(155,188,15,0.08), transparent);
+    animation: scanline 6s linear infinite;
+    pointer-events: none; z-index: 6;
+  }
+
+  .gb-screen {
+    position: relative;
+    max-width: 100%; max-height: 100%;
+    aspect-ratio: 2 / 3;
+    width: auto; height: 100%;
+    background: #0f380f;
+    border: 2px solid var(--gb-light);
+    box-shadow: 0 0 0 2px var(--gb-darkest);
+    overflow: hidden;
+  }
+  .gb-screen img.layer {
+    display: block;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* Logo badge overlay (integrates Cocinero Nomada into the gameboy screen) */
+  .gb-logo-badge {
+    position: absolute; top: 8px; left: 8px;
+    width: 82px; height: 82px;
+    background: var(--gb-darkest);
+    border: 3px solid var(--gb-lightest);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 4;
+    box-shadow:
+      0 0 0 2px var(--gb-darkest),
+      0 3px 0 #000,
+      0 0 12px rgba(155,188,15,0.35);
+  }
+  .gb-logo-badge img {
+    width: 66px; height: 66px;
+    filter: brightness(0) invert(1) sepia(1) saturate(8) hue-rotate(35deg) brightness(1.3);
+    image-rendering: pixelated;
+  }
+
+  /* Logotipo de texto (negro) en esquina superior izquierda del mapa principal */
+  .gb-logo-text {
+    position: absolute; top: 10px; left: 10px;
+    width: 42%;
+    max-width: 200px;
+    z-index: 4;
+    display: none;
+    image-rendering: auto;
+    filter: drop-shadow(0 1px 0 rgba(155,188,15,0.35));
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* HUD (status bar within screen) */
+  .gb-hud {
+    position: absolute; bottom: 6px; left: 6px; right: 6px;
+    padding: 6px 8px;
+    background: rgba(15,56,15,0.85);
+    border: 2px solid var(--gb-lightest);
+    color: var(--gb-lightest);
+    font-size: 7px;
+    letter-spacing: 1px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 8px;
+    z-index: 4;
+  }
+  .gb-hud .lv { color: var(--gb-cream); }
+  .gb-hud .hint { color: var(--gb-cream); animation: flash 1.8s infinite; }
+
+  /* ============ LABEL PATCHES (cover black label banners on source maps) ============ */
+  .patch {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    /* terrain-green crosshatch that blends with the GameBoy map textures */
+    background-color: #4a6b1a;
+    background-image:
+      repeating-linear-gradient( 45deg, rgba(15,56,15,0.55) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(-45deg, rgba(155,188,15,0.30) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(  0deg, rgba(15,56,15,0.35) 0 1px, transparent 1px 4px);
+    box-shadow: inset 0 0 8px rgba(15,56,15,0.6);
+  }
+  .patch.ocean {
+    background-color: #2d4a14;
+  }
+
+  /* ============ PINS ============ */
+  .pin {
+    position: absolute;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--red);
+    border: 2px solid var(--gb-lightest);
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    animation: pinPulse 1.8s infinite;
+    z-index: 3;
+  }
+  .pin.zone {
+    width: 26px; height: 26px;
+    background: var(--gold);
+  }
+  .pin:hover,
+  .pin:focus {
+    outline: none;
+    background: var(--gb-lightest);
+    animation: none;
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+  .pin[data-kind="zone"]::after {
+    content: "";
+    position: absolute; inset: 4px;
+    border: 2px dashed var(--gb-darkest);
+    border-radius: 50%;
+  }
+
+  .pin-tip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    transform: translateX(-50%);
+    background: var(--gb-darkest);
+    color: var(--gb-lightest);
+    border: 2px solid var(--gb-lightest);
+    padding: 5px 7px;
+    font-size: 7px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 80ms;
+    z-index: 10;
+    box-shadow: 0 2px 0 #000;
+  }
+  .pin-tip .tip-name { color: var(--gb-lightest); }
+  .pin-tip .tip-sub  { color: var(--gb-cream); font-size: 6px; display:block; margin-top:3px; }
+
+  .pin:hover .pin-tip,
+  .pin:focus .pin-tip,
+  .pin.show-tip .pin-tip { opacity: 1; }
+
+  /* ============ CONTROLS (paleta negra uniforme) ============ */
+  .gb-controls {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px;
+    background: var(--header);
+    border: 2px solid var(--border);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.6);
+    border-radius: 4px;
+  }
+  .dpad { position: relative; width: 70px; height: 70px; }
+  .dpad button {
+    position: absolute;
+    background: var(--black);
+    border: 2px solid var(--border);
+    color: var(--cream);
+    font-family: inherit; font-size: 10px;
+    cursor: pointer;
+    width: 24px; height: 24px;
+    padding: 0;
+  }
+  .dpad .up    { top:0; left:23px; }
+  .dpad .down  { bottom:0; left:23px; }
+  .dpad .left  { top:23px; left:0; }
+  .dpad .right { top:23px; right:0; }
+  .dpad .ctr   { top:23px; left:23px; background: var(--page); border-color: var(--border); }
+
+  .ab-cluster {
+    display: flex; gap: 14px; align-items: center;
+    transform: rotate(-20deg);
+  }
+  .ab-btn {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--red);
+    border: 3px solid var(--black);
+    color: var(--cream);
+    font-family: inherit; font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.7);
+  }
+  .ab-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.7); }
+  .ab-btn.back { background: var(--header); color: var(--muted); }
+
+  .startsel {
+    display: flex; flex-direction: column; gap: 6px; align-items: center;
+    font-size: 6px; color: var(--muted);
+  }
+  .startsel button {
+    background: var(--black); border: 2px solid var(--border);
+    color: var(--cream); padding: 3px 10px;
+    font-family: inherit; font-size: 6px; letter-spacing: 1px;
+    cursor: pointer;
+  }
+  .startsel button:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ============ DIALOG (zone entered / city card) ============ */
+  .gb-dialog {
+    position: fixed; inset: 0;
+    display: none;
+    align-items: center; justify-content: center;
+    background: rgba(15, 13, 11, 0.82);
+    z-index: 50;
+    padding: 20px;
+  }
+  .gb-dialog.open { display: flex; }
+  .gb-dialog-box {
+    background: var(--page);
+    color: var(--cream);
+    border: 2px solid var(--border);
+    box-shadow: 0 6px 0 rgba(0,0,0,0.6);
+    max-width: 360px;
+    width: 100%;
+    padding: 18px;
+    font-size: 8px;
+    line-height: 1.6;
+  }
+  .gb-dialog-title {
+    font-size: 10px;
+    color: var(--gold);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .gb-dialog-sub { font-size: 7px; color: var(--muted); margin-bottom: 12px; }
+  .gb-dialog-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .gb-dialog-actions button,
+  .gb-dialog-actions a {
+    background: var(--black); color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 8px 10px;
+    font-family: inherit; font-size: 7px; letter-spacing: 1px;
+    cursor: pointer; text-decoration: none;
+    display: inline-block;
+  }
+  .gb-dialog-actions .secondary {
+    background: var(--page); color: var(--muted); border-color: var(--border);
+  }
+
+  /* Zone enter flash overlay */
+  .zone-flash {
+    position: fixed; inset: 0; background: #9bbc0f; opacity: 0;
+    pointer-events: none; z-index: 99;
+    transition: opacity 180ms;
+  }
+  .zone-flash.on { opacity: 1; }
+
+  /* Responsive tweaks */
+  @media (max-width: 520px) {
+    .gb-brand img { width: 36px; height: 36px; }
+    .gb-brand-title { font-size: 8px; }
+    .gb-logo-badge { width: 66px; height: 66px; border-width: 2px; }
+    .gb-logo-badge img { width: 52px; height: 52px; }
+    .dpad { transform: scale(0.85); }
+  }
+  @media (max-height: 640px) {
+    .gb-controls { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="gb-shell">
+
+  <!-- TOP BAR -->
+  <div class="gb-topbar">
+    <div class="gb-brand">
+      <img src="assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-WHITE.png" alt="Cocinero Nomada">
+      <div class="gb-brand-text">
+        <div class="gb-brand-title">COCINERO NOMADA</div>
+        <div class="gb-brand-sub" id="brand-sub">MAPA MUNDIAL</div>
+      </div>
+    </div>
+    <nav class="gb-crumbs" id="crumbs"></nav>
+  </div>
+
+  <!-- MAP SCREEN -->
+  <div class="gb-screen-wrap">
+    <div class="gb-screen" id="screen">
+      <img class="layer" id="layer-img" src="assets/mapas/mundo-clean.png" alt="Mapa">
+
+      <div id="patches"></div>
+
+      <div class="gb-logo-badge" id="logo-badge" aria-hidden="true">
+        <img src="assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-WHITE.png" alt="">
+      </div>
+
+      <img class="gb-logo-text" id="logo-text"
+           src="assets/COCINERO_NOMADA/COCINERO-NOMADA-LOGOTIPO-BLACK.png"
+           alt="Cocinero Nomada" aria-hidden="true">
+
+
+      <div id="pins"></div>
+
+      <div class="gb-hud">
+        <span class="lv" id="hud-layer">LV.1 MUNDIAL</span>
+        <span class="hint" id="hud-hint">&#9654; TOCA UN PUNTO</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="gb-controls">
+    <div class="dpad" aria-hidden="true">
+      <button class="up">&#9650;</button>
+      <button class="left">&#9664;</button>
+      <button class="ctr">&#9679;</button>
+      <button class="right">&#9654;</button>
+      <button class="down">&#9660;</button>
+    </div>
+    <div class="startsel">
+      <button id="btn-home">HOME</button>
+      <button id="btn-libro">LIBRO</button>
+      SELECT &nbsp; START
+    </div>
+    <div class="ab-cluster">
+      <button class="ab-btn back" id="btn-back" title="Volver">B</button>
+      <button class="ab-btn" id="btn-a" title="Accion">A</button>
+    </div>
+  </div>
+</div>
+
+<!-- DIALOG -->
+<div class="gb-dialog" id="dialog">
+  <div class="gb-dialog-box">
+    <div class="gb-dialog-title" id="dlg-title">Titulo</div>
+    <div class="gb-dialog-sub"   id="dlg-sub">Subtitulo</div>
+    <div id="dlg-body"></div>
+    <div class="gb-dialog-actions" id="dlg-actions"></div>
+  </div>
+</div>
+
+<div class="zone-flash" id="zone-flash"></div>
+
+<script>
+/* ===========================================================
+   DATA: Layers + Pins
+   Coordinates are percentages relative to each map image.
+   =========================================================== */
+const LAYERS = {
+  mundial: {
+    label: "MAPA MUNDIAL",
+    level: 1,
+    img: "assets/mapas/mundo-clean.png",
+    parent: null,
+    hideBadge: true,
+    showTextLogo: true,
+    patches: [],
+    pins: [
+      { x: 22, y: 40, name: "Americas",  zone: "AMERICAS \u2022 La ruta",  kind: "zone", target: "americas" },
+      { x: 82, y: 33, name: "Japon",     zone: "ASIA \u2022 Japon",        kind: "zone", target: "japon" },
+      { x: 73, y: 44, name: "Tailandia", zone: "ASIA \u2022 Sudeste",      kind: "zone", target: "tailandia" }
+    ]
+  },
+  americas: {
+    label: "AMERICAS",
+    level: 2,
+    img: "assets/mapas/americas-clean.png",
+    parent: "mundial",
+    /* Imagen limpia — el logo viene integrado en la esquina superior izquierda */
+    hideBadge: true,
+    patches: [],
+    pins: [
+      { x: 38, y: 12,  name: "New York",      zone: "USA \u2022 Cap. 4",         kind: "city", chapter: 5,  target: "libro" },
+      { x: 15, y: 18,  name: "Mexico",        zone: "MEXICO \u2022 3 capitulos", kind: "zone", target: "mexico" },
+      { x: 80, y: 27,  name: "San Juan",      zone: "Caribe \u2022 Puerto Rico", kind: "zone", target: "caribe" },
+      { x: 42, y: 33,  name: "Costa Caribe",  zone: "Colombia \u2022 Norte",     kind: "zone", target: "colombia" },
+      { x: 45, y: 42,  name: "Bogota",        zone: "Colombia \u2022 Andes",     kind: "city", chapter: 11, target: "libro" },
+      { x: 40, y: 50,  name: "Ipiales",       zone: "Ecuador \u2022 Quito",      kind: "city", chapter: 14, target: "libro" },
+      { x: 40, y: 62,  name: "Peru",          zone: "PERU \u2022 7 ciudades",    kind: "zone", target: "peru" }
+    ]
+  },
+  caribe: {
+    label: "CARIBE",
+    level: 3,
+    img: "assets/mapas/americas-clean.png",
+    parent: "americas",
+    crop: "72% 16%",
+    hideBadge: true,
+    patches: [],
+    pins: [
+      { x: 80, y: 27, name: "San Juan", zone: "Puerto Rico \u2022 Cap. 1", kind: "city", chapter: 2, target: "libro" },
+      { x: 84, y: 29, name: "Vieques",  zone: "Puerto Rico \u2022 Cap. 2", kind: "city", chapter: 3, target: "libro" }
+    ]
+  },
+  colombia: {
+    label: "COLOMBIA",
+    level: 3,
+    img: "assets/mapas/colombia-clean.png",
+    parent: "americas",
+    hideBadge: true,
+    patches: [],
+    pins: [
+      { x: 52, y: 14, name: "Palomino",       zone: "Guajira \u2022 Cap. 9",        kind: "city", chapter: 10, target: "libro" },
+      { x: 45, y: 20, name: "Santa Marta",    zone: "Magdalena \u2022 Cap. 7",      kind: "city", chapter: 8,  target: "libro" },
+      { x: 48, y: 25, name: "Minca",          zone: "Sierra Nevada \u2022 Cap. 8",  kind: "city", chapter: 9,  target: "libro" },
+      { x: 30, y: 22, name: "Cartagena",      zone: "Bolivar \u2022 Cap. 5",        kind: "city", chapter: 6,  target: "libro" },
+      { x: 32, y: 38, name: "Rincon del Mar", zone: "Sucre \u2022 Cap. 6",          kind: "city", chapter: 7,  target: "libro" },
+      { x: 50, y: 55, name: "Bogota",         zone: "Cundinamarca \u2022 Cap. 10",  kind: "city", chapter: 11, target: "libro" },
+      { x: 58, y: 48, name: "Barichara",      zone: "Santander \u2022 Cap. 12",     kind: "city", chapter: 13, target: "libro" }
+    ]
+  },
+  peru: {
+    label: "PERU",
+    level: 3,
+    img: "assets/mapas/americas-clean.png",
+    parent: "americas",
+    hideBadge: true,
+    patches: [],
+    pins: [
+      { x: 40, y: 55, name: "Mancora",  zone: "Piura \u2022 Cap. 15",          kind: "city", chapter: 16, target: "libro" },
+      { x: 45, y: 60, name: "Huaraz",   zone: "Ancash \u2022 Cap. 16",         kind: "city", chapter: 17, target: "libro" },
+      { x: 38, y: 65, name: "Lima",     zone: "Lima \u2022 Cap. 17",           kind: "city", chapter: 18, target: "libro" },
+      { x: 37, y: 67, name: "Barranco", zone: "Lima \u2022 Cap. 18",           kind: "city", chapter: 19, target: "libro" },
+      { x: 40, y: 67, name: "Lince",    zone: "Lima \u2022 Cap. 22",           kind: "city", chapter: 23, target: "libro" },
+      { x: 43, y: 70, name: "Ica",      zone: "Ica \u2022 Cap. 23",            kind: "city", chapter: 24, target: "libro" },
+      { x: 49, y: 68, name: "Cusco",    zone: "Cusco \u2022 Cap. 24",          kind: "city", chapter: 25, target: "libro" }
+    ]
+  },
+  mexico: {
+    label: "MEXICO",
+    level: 3,
+    img: "assets/mapas/americas-clean.png",
+    parent: "americas",
+    hideBadge: true,
+    patches: [],
+    pins: [
+      { x: 15, y: 18, name: "Ciudad de Mexico", zone: "CDMX \u2022 Cap. 26", kind: "city", chapter: 27, target: "libro" },
+      { x: 17, y: 20, name: "Coyoacan",         zone: "CDMX \u2022 Cap. 27", kind: "city", chapter: 28, target: "libro" },
+      { x: 13, y: 20, name: "Casa Azul",        zone: "CDMX \u2022 Cap. 28", kind: "city", chapter: 29, target: "libro" }
+    ]
+  },
+  japon: {
+    label: "JAPON",
+    level: 2,
+    img: "assets/mapas/mundo-clean.png",
+    parent: "mundial",
+    hideBadge: true,
+    showTextLogo: true,
+    patches: [],
+    pins: [
+      { x: 82, y: 33, name: "Narita", zone: "Honshu \u2022 Capital", kind: "city", chapter: 30, target: "libro" }
+    ]
+  },
+  tailandia: {
+    label: "TAILANDIA",
+    level: 2,
+    img: "assets/mapas/mundo-clean.png",
+    parent: "mundial",
+    hideBadge: true,
+    showTextLogo: true,
+    patches: [],
+    pins: [
+      { x: 73, y: 44, name: "Bangkok", zone: "Centro \u2022 Capital", kind: "city", chapter: 40, target: "libro" }
+    ]
+  }
+};
+
+/* ===========================================================
+   STATE + RENDER
+   =========================================================== */
+const state = { current: "mundial", history: [] };
+
+const $screen   = document.getElementById("screen");
+const $layerImg = document.getElementById("layer-img");
+const $pins     = document.getElementById("pins");
+const $patches  = document.getElementById("patches");
+const $logoBadge = document.getElementById("logo-badge");
+const $logoText  = document.getElementById("logo-text");
+const $crumbs   = document.getElementById("crumbs");
+const $brandSub = document.getElementById("brand-sub");
+const $hudLayer = document.getElementById("hud-layer");
+const $hudHint  = document.getElementById("hud-hint");
+const $dialog   = document.getElementById("dialog");
+const $flash    = document.getElementById("zone-flash");
+
+function render() {
+  const layer = LAYERS[state.current];
+  $layerImg.src = layer.img;
+  $layerImg.style.objectPosition = layer.crop || "center";
+  $brandSub.textContent = layer.label;
+  $hudLayer.textContent = "LV." + layer.level + " " + layer.label;
+  $hudHint.textContent  = layer.pins.length
+    ? "\u25B6 TOCA UN PUNTO"
+    : "\u25B6 ZONA POR EXPLORAR";
+
+  /* Badge overlay: ocultar cuando el mapa ya trae logo integrado */
+  if ($logoBadge) $logoBadge.style.display = layer.hideBadge ? "none" : "flex";
+  /* Logotipo de texto en negro (solo capas marcadas) */
+  if ($logoText)  $logoText.style.display  = layer.showTextLogo ? "block" : "none";
+
+  /* patches (cover original printed labels) */
+  $patches.innerHTML = "";
+  (layer.patches || []).forEach(p => {
+    const el = document.createElement("div");
+    el.className = "patch" + (p.ocean ? " ocean" : "");
+    el.style.left   = p.x + "%";
+    el.style.top    = p.y + "%";
+    el.style.width  = p.w + "%";
+    el.style.height = p.h + "%";
+    $patches.appendChild(el);
+  });
+
+  /* pins */
+  $pins.innerHTML = "";
+  layer.pins.forEach((p, i) => {
+    const el = document.createElement("button");
+    el.className = "pin" + (p.kind === "zone" ? " zone" : "");
+    el.dataset.kind = p.kind;
+    el.style.left = p.x + "%";
+    el.style.top  = p.y + "%";
+    el.setAttribute("aria-label", p.name + " - " + p.zone);
+    el.innerHTML =
+      '<span class="pin-tip">' +
+        '<span class="tip-name">' + p.name.toUpperCase() + '</span>' +
+        '<span class="tip-sub">' + p.zone + '</span>' +
+      '</span>';
+    el.addEventListener("click", (ev) => { ev.stopPropagation(); onPinClick(p, el); });
+    /* touch: toggle visible tooltip without firing nav */
+    el.addEventListener("touchstart", (ev) => {
+      if (!el.classList.contains("show-tip")) {
+        ev.preventDefault();
+        document.querySelectorAll(".pin.show-tip").forEach(n => n.classList.remove("show-tip"));
+        el.classList.add("show-tip");
+      }
+    }, { passive: false });
+    $pins.appendChild(el);
+  });
+
+  renderCrumbs();
+}
+
+function renderCrumbs() {
+  const chain = [];
+  let k = state.current;
+  while (k) { chain.unshift(k); k = LAYERS[k].parent; }
+  $crumbs.innerHTML = "";
+  chain.forEach((key, idx) => {
+    if (idx > 0) {
+      const s = document.createElement("span");
+      s.className = "gb-crumb sep"; s.textContent = ">";
+      $crumbs.appendChild(s);
+    }
+    const c = document.createElement("span");
+    c.className = "gb-crumb" + (key === state.current ? " active" : "");
+    c.textContent = LAYERS[key].label;
+    c.addEventListener("click", () => goto(key, false));
+    $crumbs.appendChild(c);
+  });
+}
+
+function onPinClick(pin, el) {
+  if (pin.kind === "zone" && LAYERS[pin.target]) {
+    /* First tap on a zone shows tooltip; second tap enters */
+    if (!el.classList.contains("show-tip")) {
+      document.querySelectorAll(".pin.show-tip").forEach(n => n.classList.remove("show-tip"));
+      el.classList.add("show-tip");
+      setTimeout(() => enterZone(pin.target), 420);
+    } else {
+      enterZone(pin.target);
+    }
+  } else if (pin.target === "libro" && pin.chapter) {
+    openCityDialog(pin);
+  }
+}
+
+function enterZone(key) {
+  $flash.classList.add("on");
+  setTimeout(() => {
+    goto(key, true);
+    setTimeout(() => $flash.classList.remove("on"), 120);
+  }, 180);
+}
+
+function goto(key, pushHistory) {
+  if (!LAYERS[key]) return;
+  if (pushHistory) state.history.push(state.current);
+  state.current = key;
+  render();
+}
+
+function goBack() {
+  const prev = state.history.pop();
+  if (prev) { state.current = prev; render(); return; }
+  const parent = LAYERS[state.current].parent;
+  if (parent) { state.current = parent; render(); return; }
+  window.location.href = "index.html";
+}
+
+function openCityDialog(pin) {
+  document.getElementById("dlg-title").textContent = pin.name.toUpperCase();
+  document.getElementById("dlg-sub").textContent   = pin.zone;
+  document.getElementById("dlg-body").innerHTML    =
+    "<p>Capitulo " + pin.chapter + " del viaje.</p>" +
+    "<p style='margin-top:8px;font-size:7px;color:var(--gb-dark)'>\u25B6 Abrir para leer la cronica, recetas y fotos.</p>";
+  const acts = document.getElementById("dlg-actions");
+  acts.innerHTML = "";
+  const aOpen = document.createElement("a");
+  aOpen.href = "libro/index.html?page=" + pin.chapter;
+  aOpen.textContent = "A - LEER CAPITULO";
+  const aClose = document.createElement("button");
+  aClose.className = "secondary";
+  aClose.textContent = "B - VOLVER";
+  aClose.addEventListener("click", closeDialog);
+  acts.appendChild(aOpen); acts.appendChild(aClose);
+  $dialog.classList.add("open");
+}
+function closeDialog() { $dialog.classList.remove("open"); }
+
+/* close tooltip when tapping outside a pin */
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".pin")) {
+    document.querySelectorAll(".pin.show-tip").forEach(n => n.classList.remove("show-tip"));
+  }
+});
+
+/* buttons */
+document.getElementById("btn-back").addEventListener("click", goBack);
+document.getElementById("btn-a").addEventListener("click", () => {
+  /* A triggers first pin of current layer for quick navigation */
+  const first = document.querySelector(".pin");
+  if (first) first.click();
+});
+document.getElementById("btn-home").addEventListener("click", () => {
+  state.current = "mundial"; state.history = []; render();
+});
+document.getElementById("btn-libro").addEventListener("click", () => {
+  window.location.href = "libro/index.html";
+});
+
+/* keyboard: B/Escape = back, Enter = A */
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" || e.key === "b" || e.key === "B") goBack();
+  if (e.key === "Enter") document.getElementById("btn-a").click();
+});
+
+render();
+</script>
+</body>
+</html>

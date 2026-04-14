@@ -1,0 +1,3120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cocinero Nomada — Sabores sin fronteras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  background: #0f0d0b;
+  color: #e8dcc8;
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: #d4622a; text-decoration: none; }
+a:hover { color: #c9973f; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.section-title {
+  font-family: Georgia, serif;
+  font-size: 1.3rem;
+  color: #c9973f;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #2e2820;
+}
+.section-title .accent { color: #d4622a; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header {
+  background: #0f0d0b;
+  border-bottom: 1px solid #2e2820;
+  padding: 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.header-logo { height: 50px; width: auto; }
+.header-text { flex: 1; }
+.header-brand {
+  font-family: Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #e8dcc8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.header-tagline {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #7a6e62;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   MAP SECTION
+   ============================================================ */
+/* ============================================================
+   POKEMON MAP — Styles
+   ============================================================ */
+.map-section {
+  padding: 24px 0 16px;
+}
+
+/* Trainer card header */
+.trainer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1a1612;
+  border: 3px solid #2e2820;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 12px 16px;
+}
+.trainer-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.trainer-avatar {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #c9973f, #d4622a);
+  border: 3px solid #b83220;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: inset -2px -2px 0 rgba(0,0,0,0.3), 0 2px 0 #0f0d0b;
+}
+.trainer-meta h3 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: #e8dcc8;
+  margin-bottom: 4px;
+}
+.trainer-meta p {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #7a6e62;
+}
+.trainer-badges {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+.trainer-badges .badge-slot {
+  width: 18px;
+  height: 18px;
+  background: #0f0d0b;
+  border: 2px solid #2e2820;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+.trainer-badges .badge-slot.earned {
+  border-color: #c9973f;
+  box-shadow: 0 0 4px rgba(201,151,63,0.4);
+}
+.trainer-location {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #c9973f;
+  text-align: right;
+}
+.trainer-location .blink {
+  animation: poke-blink 1.2s steps(2, start) infinite;
+}
+@keyframes poke-blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Game Boy screen frame */
+.gameboy-screen {
+  background: #0f0d0b;
+  border: 3px solid #2e2820;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+  position: relative;
+}
+.gameboy-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(75,120,80,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 60%, rgba(75,100,120,0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* SVG Map inside game screen */
+.map-wrapper {
+  position: relative;
+  background: #0a0f08;
+  overflow: hidden;
+}
+.map-wrapper svg { position: relative; z-index: 1; }
+.map-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: contrast(1.1);
+}
+
+/* Route lines between cities */
+.route-line {
+  stroke: rgba(201,151,63,0.3);
+  stroke-width: 1.2;
+  stroke-dasharray: 3, 3;
+  fill: none;
+  animation: route-march 1s linear infinite;
+}
+@keyframes route-march {
+  to { stroke-dashoffset: -6; }
+}
+.route-line.active {
+  stroke: rgba(201,151,63,0.7);
+  stroke-width: 1.8;
+}
+
+/* City markers — Pokemon building style */
+.map-dot {
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.map-dot .dot-building {
+  fill: #1a1612;
+  stroke: #e8dcc8;
+  stroke-width: 0.8;
+  transition: all 0.2s ease;
+}
+.map-dot .dot-roof {
+  fill: #b83220;
+  transition: fill 0.2s ease;
+}
+.map-dot .dot-ring {
+  fill: none;
+  stroke: #c9973f;
+  stroke-width: 0;
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+.map-dot .dot-core {
+  fill: #e8dcc8;
+  transition: all 0.2s ease;
+}
+.map-dot.selected .dot-ring {
+  stroke-width: 1.2;
+  opacity: 1;
+  animation: poke-pulse 0.8s ease infinite;
+}
+.map-dot.selected .dot-roof { fill: #c9973f; }
+.map-dot.selected .dot-core { fill: #c9973f; }
+.map-dot:hover .dot-core { fill: #d4622a; }
+.map-dot:hover .dot-ring { stroke-width: 1; opacity: 0.6; }
+@keyframes poke-pulse {
+  0%, 100% { r: 5; opacity: 0.8; }
+  50% { r: 7; opacity: 0.3; }
+}
+.map-dot .dot-label {
+  fill: #e8dcc8;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 3px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  paint-order: stroke;
+  stroke: #0f0d0b;
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+}
+.map-dot:hover .dot-label { opacity: 1; }
+.map-dot.selected .dot-label { opacity: 1; fill: #c9973f; }
+
+/* Chef sprite on map */
+.chef-sprite {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  z-index: 10;
+}
+.chef-sprite text {
+  font-size: 8px;
+  filter: drop-shadow(0.5px 0.5px 0 #0f0d0b);
+}
+.chef-sprite image {
+  filter: drop-shadow(0.5px 0.5px 0 #0f0d0b);
+}
+.chef-sprite .sprite-shadow {
+  fill: rgba(0,0,0,0.25);
+  rx: 2;
+  ry: 1;
+}
+.chef-walking {
+  animation: chef-bounce 0.3s steps(2) infinite;
+}
+@keyframes chef-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+
+/* Map stats bar */
+.map-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #7a6e62;
+  border-top: 1px solid #2e2820;
+  letter-spacing: 0.04em;
+  background: #1a1612;
+}
+.map-stats .count { color: #c9973f; }
+
+/* Country filter pills */
+.country-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-top: 1px solid #2e2820;
+  background: #1a1612;
+}
+.country-pill {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  padding: 4px 8px;
+  border: 1.5px solid #2e2820;
+  border-radius: 12px;
+  background: transparent;
+  color: #7a6e62;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.country-pill:hover {
+  border-color: #c9973f;
+  color: #e8dcc8;
+}
+.country-pill.active {
+  border-color: var(--pill-color, #c9973f);
+  color: var(--pill-color, #c9973f);
+  background: rgba(201,151,63,0.1);
+  box-shadow: 0 0 6px rgba(201,151,63,0.2);
+}
+
+/* SVG zoom transition */
+.map-wrapper.zoomed .map-svg {
+  filter: contrast(1.15);
+}
+
+/* Smooth marker repositioning — uses SVG transform attribute, animated via JS */
+
+/* Zone boundary markers */
+.zone-boundary {
+  fill: none;
+  stroke-dasharray: 2.5, 3.5;
+  stroke-width: 0.5;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.zone-dot {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Zoom geography (detailed country outlines) */
+.zoom-geo-path {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.zoom-geo-label {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  font-family: 'Press Start 2P', monospace;
+  pointer-events: none;
+}
+.map-wrapper.zoomed .zoom-geo-path,
+.map-wrapper.zoomed .zoom-geo-label {
+  opacity: 1;
+}
+.map-wrapper.zoomed .zone-boundary,
+.map-wrapper.zoomed .zone-dot {
+  opacity: 1;
+}
+
+/* Show all labels when zoomed into a country */
+.map-wrapper.zoomed .map-dot.in-zone .dot-label {
+  opacity: 1;
+  font-size: 2.8px;
+  fill: #e8dcc8;
+}
+.map-wrapper.zoomed .map-dot.in-zone.selected .dot-label {
+  fill: #c9973f;
+  font-size: 3.2px;
+}
+.map-wrapper.zoomed .map-dot:not(.in-zone) {
+  opacity: 0.08;
+  pointer-events: none;
+}
+.map-wrapper.zoomed .route-line:not(.in-zone-route) {
+  opacity: 0.05;
+}
+
+/* D-Pad controls (mobile) */
+.dpad-controls {
+  display: none;
+  padding: 16px;
+  background: #1a1612;
+  border-top: 1px solid #2e2820;
+  justify-content: space-around;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .dpad-controls { display: flex; }
+}
+.dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 40px);
+  grid-template-rows: repeat(3, 40px);
+  gap: 2px;
+}
+.dpad button {
+  background: #2e2820;
+  border: 2px solid #3a342c;
+  border-radius: 4px;
+  color: #e8dcc8;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.dpad button:active {
+  background: #3a342c;
+  transform: scale(0.92);
+}
+.dpad .up { grid-column: 2; grid-row: 1; }
+.dpad .left { grid-column: 1; grid-row: 2; }
+.dpad .center { grid-column: 2; grid-row: 2; background: #0f0d0b; border-color: #2e2820; pointer-events: none; }
+.dpad .right { grid-column: 3; grid-row: 2; }
+.dpad .down { grid-column: 2; grid-row: 3; }
+.btn-a {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #b83220;
+  border: 3px solid #8a2518;
+  color: #e8dcc8;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  box-shadow: 0 4px 0 #6b1c12;
+  transition: all 0.1s;
+}
+.btn-a:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+.btn-a:disabled { opacity: 0.4; }
+
+/* City preview dialog (Pokemon text box style) */
+.city-dialog {
+  position: fixed;
+  bottom: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 420px;
+  background: #0f0d0b;
+  border: 3px solid #e8dcc8;
+  border-radius: 8px;
+  padding: 16px;
+  z-index: 90;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.5), inset 0 0 0 2px #2e2820;
+  transition: bottom 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.city-dialog.visible {
+  bottom: 20px;
+}
+.city-dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 2px dashed #2e2820;
+}
+.city-dialog-flag {
+  font-size: 28px;
+}
+.city-dialog-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  color: #e8dcc8;
+}
+.city-dialog-country {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #7a6e62;
+  margin-top: 4px;
+}
+.city-dialog-recipes {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #d4622a;
+  margin-top: 4px;
+}
+.city-dialog-story {
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  color: #7a6e62;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.city-dialog-enter {
+  width: 100%;
+  padding: 12px;
+  background: #b83220;
+  border: none;
+  border-bottom: 4px solid #8a2518;
+  color: #e8dcc8;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.1s;
+  letter-spacing: 0.05em;
+}
+.city-dialog-enter:hover { background: #c9392a; }
+.city-dialog-enter:active {
+  transform: translateY(4px);
+  border-bottom: none;
+}
+.city-dialog-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: #7a6e62;
+  cursor: pointer;
+  padding: 4px;
+}
+.city-dialog-close:hover { color: #e8dcc8; }
+
+/* Transition overlay — circle wipe like Pokemon */
+.poke-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.poke-transition .wipe {
+  position: absolute;
+  inset: 0;
+  background: #0f0d0b;
+  clip-path: circle(0% at 50% 50%);
+}
+.poke-transition.active .wipe {
+  animation: circle-wipe 1.2s ease-in-out forwards;
+}
+@keyframes circle-wipe {
+  0% { clip-path: circle(0% at 50% 50%); }
+  40% { clip-path: circle(100% at 50% 50%); }
+  60% { clip-path: circle(100% at 50% 50%); }
+  100% { clip-path: circle(0% at 50% 50%); }
+}
+.poke-transition .wipe-text {
+  position: relative;
+  z-index: 1;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  color: #e8dcc8;
+  text-align: center;
+  opacity: 0;
+}
+.poke-transition.active .wipe-text {
+  animation: wipe-text-show 1.2s ease forwards;
+}
+@keyframes wipe-text-show {
+  0%, 30% { opacity: 0; transform: scale(0.8); }
+  45%, 55% { opacity: 1; transform: scale(1); }
+  70%, 100% { opacity: 0; transform: scale(0.8); }
+}
+
+/* Nav hint */
+.nav-hint {
+  text-align: center;
+  padding: 8px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #3a342c;
+  background: #1a1612;
+}
+@media (max-width: 768px) {
+  .nav-hint { display: none; }
+}
+
+/* ============================================================
+   LOCAL VIDEOS / MEDIA SECTION in panel
+   ============================================================ */
+.panel-local-media-section {
+  margin: 16px 0;
+}
+.panel-local-media-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #c9973f;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #2e2820;
+}
+.local-media-card {
+  background: #1a1612;
+  border: 1px solid #2e2820;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.local-media-card video,
+.local-media-card img.local-photo {
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid #2e2820;
+}
+.local-media-info {
+  padding: 12px;
+}
+.local-media-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #e8dcc8;
+  margin-bottom: 6px;
+}
+.local-media-intro {
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  color: #7a6e62;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.local-media-nico {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #0f0d0b;
+  border-radius: 6px;
+  padding: 10px;
+  border-left: 3px solid #d4622a;
+}
+.local-media-nico-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #d4622a;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.local-media-nico-text {
+  font-family: Georgia, serif;
+  font-size: 0.78rem;
+  color: #d4622a;
+  font-style: italic;
+  line-height: 1.4;
+}
+.local-media-nico-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: #7a6e62;
+  display: block;
+  margin-bottom: 4px;
+  font-style: normal;
+}
+
+/* Interactive intro choices */
+.intro-choices {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.intro-choice-btn {
+  padding: 6px 12px;
+  background: #2e2820;
+  border: 1px solid #3a342c;
+  border-radius: 16px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: #c9973f;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.intro-choice-btn:hover {
+  background: #3a342c;
+  border-color: #c9973f;
+  transform: scale(1.05);
+}
+.intro-choice-btn.active {
+  background: #d4622a;
+  border-color: #d4622a;
+  color: #0f0d0b;
+}
+.intro-response {
+  margin-top: 10px;
+  padding: 10px;
+  background: #0f0d0b;
+  border-radius: 6px;
+  border-left: 3px solid #c9973f;
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  color: #e8dcc8;
+  line-height: 1.5;
+  display: none;
+}
+.intro-response.visible {
+  display: block;
+  animation: fadeSlideIn 0.3s ease;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   DESTINATIONS GRID
+   ============================================================ */
+.destinations-section { padding: 24px 0; }
+.dest-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.dest-card {
+  background: #1a1612;
+  border: 1px solid #2e2820;
+  border-radius: 6px;
+  padding: 14px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.dest-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../assets/COCINERO_NOMADA/COCINERO-NOMADA-PALMS-PATTERN-WHITE.png');
+  background-size: 100px;
+  background-repeat: repeat;
+  opacity: 0.12;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.dest-card:hover::after {
+  opacity: 0.2;
+}
+.dest-card:hover {
+  border-color: #d4622a;
+  transform: translateY(-2px);
+}
+.dest-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: var(--country-color, #d4622a);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 1;
+}
+.dest-card:hover::before { opacity: 1; }
+.dest-flag { font-size: 1.5rem; margin-bottom: 6px; }
+.dest-city {
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
+  color: #e8dcc8;
+  line-height: 1.3;
+}
+.dest-country {
+  font-family: monospace;
+  font-size: 0.65rem;
+  color: #7a6e62;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+.dest-recipes {
+  font-family: monospace;
+  font-size: 0.65rem;
+  color: #d4622a;
+  margin-top: 6px;
+}
+
+/* ============================================================
+   CHRONICLES
+   ============================================================ */
+.chronicles-section { padding: 24px 0; }
+.chronicle-card {
+  background: #1a1612;
+  border: 1px solid #2e2820;
+  border-radius: 6px;
+  padding: 20px 16px;
+  margin-bottom: 12px;
+}
+.chronicle-header {
+  font-family: monospace;
+  font-size: 0.65rem;
+  color: #7a6e62;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.chronicle-title {
+  font-family: Georgia, serif;
+  font-size: 1.15rem;
+  color: #c9973f;
+  margin-bottom: 6px;
+}
+.chronicle-route {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #d4622a;
+  margin-bottom: 12px;
+}
+.chronicle-epigraph {
+  font-style: italic;
+  color: #d4622a;
+  font-size: 0.9rem;
+  padding-left: 12px;
+  border-left: 2px solid #2e2820;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.chronicle-body p {
+  color: #e8dcc8;
+  font-size: 0.88rem;
+  margin-bottom: 10px;
+  line-height: 1.65;
+  opacity: 0.9;
+}
+
+/* ============================================================
+   VIDEO GALLERY
+   ============================================================ */
+.videos-section { padding: 24px 0; }
+.subscribe-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.subscribe-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #b83220;
+  color: #fff;
+  font-family: monospace;
+  font-size: 0.72rem;
+  padding: 6px 14px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: background 0.2s;
+}
+.subscribe-btn:hover { background: #d4622a; color: #fff; }
+.subscribe-btn svg { width: 14px; height: 14px; fill: #fff; }
+
+.video-card {
+  background: #1a1612;
+  border: 1px solid #2e2820;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.video-thumb {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #211d18;
+  cursor: pointer;
+  overflow: hidden;
+}
+.video-thumb img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s;
+}
+.video-thumb .play-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px; height: 56px;
+  background: rgba(184, 50, 32, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  z-index: 2;
+}
+.video-thumb:hover .play-btn { background: #b83220; transform: translate(-50%, -50%) scale(1.1); }
+.play-btn svg { width: 22px; height: 22px; fill: #fff; margin-left: 3px; }
+.video-thumb iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+.video-info { padding: 12px 14px; }
+.video-title {
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
+  color: #e8dcc8;
+  margin-bottom: 4px;
+}
+.video-desc {
+  font-size: 0.78rem;
+  color: #7a6e62;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.video-country {
+  font-family: monospace;
+  font-size: 0.65rem;
+  color: #d4622a;
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  border-top: 1px solid #2e2820;
+  padding: 24px 0;
+  text-align: center;
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #7a6e62;
+  letter-spacing: 0.06em;
+}
+
+/* ============================================================
+   DETAIL PANEL (overlay)
+   ============================================================ */
+.panel-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 13, 11, 0.7);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.panel-overlay.active { opacity: 1; pointer-events: auto; }
+
+.detail-panel {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  max-height: 80vh;
+  background: #1a1612;
+  border-top: 2px solid #d4622a;
+  border-radius: 16px 16px 0 0;
+  z-index: 210;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.detail-panel.active { transform: translateY(0); }
+
+.panel-handle {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 4px;
+  flex-shrink: 0;
+}
+.panel-handle-bar {
+  width: 40px; height: 4px;
+  background: #2e2820;
+  border-radius: 2px;
+}
+.panel-scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 20px 24px;
+  flex: 1;
+}
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.panel-country-label {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #d4622a;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.panel-city {
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+  color: #e8dcc8;
+  line-height: 1.2;
+}
+.panel-subtitle {
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: #7a6e62;
+  margin-top: 4px;
+  letter-spacing: 0.04em;
+}
+.panel-close {
+  width: 32px; height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #211d18;
+  border: 1px solid #2e2820;
+  border-radius: 50%;
+  color: #7a6e62;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.panel-close:hover { background: #2e2820; color: #e8dcc8; }
+
+.panel-story {
+  font-style: italic;
+  color: #7a6e62;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.panel-full-story {
+  display: none;
+  color: #e8dcc8;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+.panel-full-story.expanded { display: block; }
+.panel-full-story p { margin-bottom: 10px; }
+.read-more-btn {
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: #d4622a;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+  display: inline-block;
+  transition: color 0.2s;
+}
+.read-more-btn:hover { color: #c9973f; }
+
+.panel-recipes-title {
+  font-family: Georgia, serif;
+  font-size: 1.05rem;
+  color: #c9973f;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #2e2820;
+}
+
+.recipe-card {
+  background: #211d18;
+  border: 1px solid #2e2820;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.recipe-head {
+  padding: 14px;
+  cursor: default;
+}
+.recipe-emoji {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+.recipe-name {
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  color: #e8dcc8;
+  margin-bottom: 4px;
+}
+.recipe-desc {
+  font-size: 0.82rem;
+  color: #7a6e62;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.recipe-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.recipe-tag {
+  font-family: monospace;
+  font-size: 0.6rem;
+  color: #c9973f;
+  background: rgba(201, 151, 63, 0.1);
+  border: 1px solid rgba(201, 151, 63, 0.2);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.recipe-expand-btn {
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: #d4622a;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+.recipe-expand-btn:hover { color: #c9973f; }
+
+.recipe-full {
+  display: none;
+  border-top: 1px solid #2e2820;
+  padding: 14px;
+}
+.recipe-full.expanded { display: block; }
+
+.recipe-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.recipe-badge {
+  font-family: monospace;
+  font-size: 0.62rem;
+  color: #e8dcc8;
+  background: #1a1612;
+  border: 1px solid #2e2820;
+  padding: 3px 10px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+}
+.recipe-badge .badge-label { color: #7a6e62; }
+
+.recipe-sub-title {
+  font-family: monospace;
+  font-size: 0.68rem;
+  color: #c9973f;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.recipe-ingredients {
+  list-style: none;
+  margin-bottom: 16px;
+}
+.recipe-ingredients li {
+  font-size: 0.82rem;
+  color: #e8dcc8;
+  padding: 4px 0;
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.4;
+}
+.recipe-ingredients li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: #d4622a;
+  font-weight: bold;
+}
+.recipe-steps {
+  list-style: none;
+  counter-reset: step;
+}
+.recipe-steps li {
+  font-size: 0.82rem;
+  color: #e8dcc8;
+  padding: 6px 0 6px 28px;
+  position: relative;
+  line-height: 1.5;
+  counter-increment: step;
+}
+.recipe-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 6px;
+  width: 20px; height: 20px;
+  background: #b83220;
+  color: #fff;
+  font-family: monospace;
+  font-size: 0.65rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   PHOTO GALLERY
+   ============================================================ */
+.photo-gallery-title {
+  font-family: Georgia, serif;
+  font-size: 1.05rem;
+  color: #c9973f;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #2e2820;
+}
+.photo-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.photo-card {
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #2e2820;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.photo-card:hover {
+  transform: scale(1.02);
+  border-color: #d4622a;
+}
+.photo-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+.photo-card .photo-caption {
+  font-family: monospace;
+  font-size: 0.55rem;
+  color: #7a6e62;
+  padding: 6px 8px;
+  line-height: 1.4;
+  background: #1a1612;
+}
+.photo-card.wide {
+  grid-column: span 2;
+}
+.photo-card.wide img {
+  height: 180px;
+}
+
+/* Photo lightbox */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+}
+.lightbox.active { display: flex; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.lightbox-caption {
+  font-family: Georgia, serif;
+  font-size: 0.9rem;
+  color: #e8dcc8;
+  text-align: center;
+  margin-top: 12px;
+  max-width: 480px;
+  line-height: 1.5;
+}
+.lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #2e2820;
+  color: #7a6e62;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.lightbox-close:hover { color: #e8dcc8; border-color: #b83220; }
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2e2820; border-radius: 2px; }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeInUp 0.4s ease forwards; }
+
+/* ============================================================
+   NAV BUTTONS (Hub + Book links)
+   ============================================================ */
+.home-btn, .book-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #7a6e62;
+  text-decoration: none;
+  padding: 6px 10px;
+  border: 2px solid #2e2820;
+  border-radius: 4px;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.home-btn:hover, .book-btn:hover {
+  border-color: #b83220;
+  color: #b83220;
+  background: rgba(184, 50, 32, 0.1);
+}
+
+/* ============================================================
+   UNLOCK SYSTEM — City discovery badges
+   ============================================================ */
+.unlock-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #1a1612;
+  border: 2px solid #2e2820;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+.unlock-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #c9973f;
+  white-space: nowrap;
+}
+.unlock-progress {
+  flex: 1;
+  height: 8px;
+  background: #0f0d0b;
+  border: 1px solid #2e2820;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.unlock-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #b83220, #d4622a, #c9973f);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+.unlock-count {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #7a6e62;
+}
+.dest-card.locked {
+  opacity: 0.4;
+  filter: grayscale(0.8);
+  pointer-events: none;
+}
+.dest-card .unlock-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 12px;
+}
+
+/* ============================================================
+   BOOK LINK in detail panel
+   ============================================================ */
+.panel-book-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #c9973f;
+  text-decoration: none;
+  padding: 10px 16px;
+  border: 2px solid #2e2820;
+  border-radius: 6px;
+  margin: 12px 0 20px;
+  transition: all 0.2s;
+  background: #211d18;
+}
+.panel-book-link:hover {
+  border-color: #c9973f;
+  background: rgba(201, 151, 63, 0.1);
+  color: #e8dcc8;
+}
+
+/* Video section in panel */
+.panel-video-section {
+  margin: 16px 0;
+}
+.panel-video-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  color: #c9973f;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.panel-video-container {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid #2e2820;
+  aspect-ratio: 16 / 9;
+  background: #0f0d0b;
+}
+.panel-video-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.panel-video-play {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px; height: 56px;
+  background: rgba(184, 50, 32, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, background 0.2s;
+}
+.panel-video-play svg {
+  width: 24px; height: 24px;
+  fill: #e8dcc8;
+}
+.panel-video-container:hover .panel-video-play {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: rgba(212, 98, 42, 0.95);
+}
+.panel-video-container.playing {
+  cursor: default;
+}
+.panel-video-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  position: absolute;
+  top: 0; left: 0;
+}
+
+/* ============================================================
+   MAP HOTSPOT TOOLTIP
+   ============================================================ */
+.map-tooltip {
+  position: absolute;
+  background: #0f0d0b;
+  border: 2px solid #e8dcc8;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #e8dcc8;
+  pointer-events: none;
+  z-index: 50;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.map-tooltip.visible { opacity: 1; }
+.map-tooltip .tip-flag { margin-right: 4px; }
+.map-tooltip .tip-recipes { color: #d4622a; display: block; margin-top: 4px; }
+
+/* ============================================================
+   CITY UNLOCKED NOTIFICATION
+   ============================================================ */
+@keyframes unlock-slide {
+  0% { transform: translateY(-100%); opacity: 0; }
+  15% { transform: translateY(0); opacity: 1; }
+  85% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+.unlock-notification {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1612;
+  border: 2px solid #c9973f;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #c9973f;
+  z-index: 300;
+  box-shadow: 0 4px 20px rgba(201, 151, 63, 0.3);
+  animation: unlock-slide 3s ease forwards;
+  text-align: center;
+}
+.unlock-notification .notif-icon { font-size: 16px; display: block; margin-bottom: 4px; }
+
+/* ============================================================
+   MUSIC SYSTEM
+   ============================================================ */
+.music-toggle {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 300;
+  background: rgba(15, 13, 11, 0.85);
+  border: 1px solid #2e2820;
+  color: #c9973f;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s;
+  backdrop-filter: blur(4px);
+}
+.music-toggle:hover { border-color: #c9973f; box-shadow: 0 0 12px rgba(201, 151, 63, 0.3); }
+.music-toggle.muted { color: #7a6e62; border-color: #1a1816; }
+.music-toggle .bar1, .music-toggle .bar2, .music-toggle .bar3 {
+  display: inline-block;
+  width: 3px;
+  background: #c9973f;
+  margin: 0 1px;
+  border-radius: 1px;
+  animation: musicBar 0.8s ease-in-out infinite alternate;
+}
+.music-toggle .bar1 { height: 8px; animation-delay: 0s; }
+.music-toggle .bar2 { height: 14px; animation-delay: 0.2s; }
+.music-toggle .bar3 { height: 10px; animation-delay: 0.4s; }
+.music-toggle.muted .bar1, .music-toggle.muted .bar2, .music-toggle.muted .bar3 {
+  animation: none;
+  height: 3px;
+  background: #7a6e62;
+}
+@keyframes musicBar {
+  0% { height: 4px; }
+  100% { height: 16px; }
+}
+.music-region-label {
+  position: fixed;
+  bottom: 66px;
+  right: 10px;
+  z-index: 300;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: #7a6e62;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+  max-width: 70px;
+  line-height: 1.4;
+}
+.music-region-label.visible { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="home-btn" title="Volver al inicio">&#9664; HUB</a>
+    <img src="../assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-WHITE.png" alt="Cocinero Nomada" class="header-logo">
+    <div class="header-text">
+      <div class="header-brand">Cocinero Nomada</div>
+      <div class="header-tagline">Sabores sin fronteras</div>
+    </div>
+    <a href="../ebook/index.html" class="book-btn" title="Ir al Libro">&#x1f4d6; LIBRO</a>
+  </div>
+</header>
+
+<!-- ============================================================
+     MAP SECTION — Pokemon Style
+     ============================================================ -->
+<section class="map-section" id="map-section">
+  <div class="container">
+
+    <!-- Unlock Progress Bar -->
+    <div class="unlock-bar" id="unlock-bar">
+      <span class="unlock-label">EXPLORADO</span>
+      <div class="unlock-progress"><div class="unlock-fill" id="unlock-fill" style="width: 0%"></div></div>
+      <span class="unlock-count" id="unlock-count">0/16</span>
+    </div>
+
+    <!-- Trainer Card Header -->
+    <div class="trainer-header">
+      <div class="trainer-left">
+        <div class="trainer-avatar"><img src="../assets/nico-avatar.png" alt="Nico" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"></div>
+        <div class="trainer-meta">
+          <h3>Cocinero Nómada</h3>
+          <p>Lvl. 27 &middot; Chef Viajero</p>
+          <div class="trainer-badges">
+            <span class="badge-slot earned">🇵🇷</span>
+            <span class="badge-slot earned">🇨🇴</span>
+            <span class="badge-slot earned">🇪🇨</span>
+            <span class="badge-slot earned">🇵🇪</span>
+            <span class="badge-slot earned">🇲🇽</span>
+            <span class="badge-slot earned">🇺🇸</span>
+          </div>
+        </div>
+      </div>
+      <div class="trainer-location" id="trainer-location">
+        MUNDO CULINARY<br><span class="blink">▼</span>
+      </div>
+    </div>
+
+    <!-- Game Boy Screen -->
+    <div class="gameboy-screen">
+      <div class="map-wrapper">
+        <svg class="map-svg" viewBox="-5 -2 170 155" xmlns="http://www.w3.org/2000/svg" id="map-svg">
+          <defs>
+            <filter id="land-tint">
+              <feColorMatrix type="matrix" values="0.6 0 0 0 0.1  0 0.8 0 0 0.15  0 0 0.5 0 0.05  0 0 0 1 0"/>
+            </filter>
+            <!-- Glow effect for visited cities -->
+            <filter id="city-glow">
+              <feGaussianBlur stdDeviation="1.5" result="blur"/>
+              <feFlood flood-color="#c9973f" flood-opacity="0.4"/>
+              <feComposite in2="blur" operator="in"/>
+              <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- === OCEAN GRID (Game Boy style) === -->
+          <pattern id="ocean-grid" width="8" height="8" patternUnits="userSpaceOnUse">
+            <rect width="8" height="8" fill="none"/>
+            <circle cx="4" cy="4" r="0.3" fill="rgba(90,125,154,0.15)"/>
+          </pattern>
+          <rect x="-5" y="-2" width="170" height="155" fill="url(#ocean-grid)"/>
+
+          <!-- === LAND MASSES (improved geography) === -->
+          <!-- USA south coast -->
+          <path d="M0,0 L50,0 Q55,0 58,2 L62,3 Q58,5 52,5 L40,4 Q30,3 20,2 L10,1 Z" fill="rgba(60,80,50,0.15)" stroke="rgba(140,180,120,0.25)" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <!-- USA East coast (for NYC) -->
+          <path d="M78,0 L95,0 L96,2 Q95,4 93,5 L90,5.5 Q88,5 86,3 L82,1 Z" fill="rgba(90,125,154,0.15)" stroke="rgba(90,125,154,0.4)" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <!-- Mexico mainland -->
+          <path d="M0,3 L8,1 Q14,0 20,1 L26,3 Q28,3.5 30,5 L32,7 Q33,9 33.5,11 L34,14 Q34,16 33,18 L31,21 Q29,24 27,27 L25,29 Q23,31 21,32.5 L19,33 Q17,33.5 15,33 L14,31 Q12,28 11,25 L9,21 Q7,17 6,13 L4,9 Q2,6 0,4 Z" fill="rgba(74,122,95,0.2)" stroke="rgba(74,122,95,0.6)" stroke-width="0.8" stroke-dasharray="3,2" stroke-linejoin="round"/>
+          <!-- Yucatan peninsula -->
+          <path d="M26,3 Q30,4 33,7 L35,10 Q36.5,13 37,16 L37.5,19 Q37,21 35,22 L33,22 Q31,21 30,19 L29,16 Q28,12 27,8 L26,5 Z" fill="rgba(74,122,95,0.15)" stroke="rgba(74,122,95,0.5)" stroke-width="0.6" stroke-dasharray="2.5,2"/>
+          <!-- Baja California -->
+          <path d="M0,3 L1,1 Q2,0 3,1 L3.5,4 Q3,8 2.5,12 L2,16 Q1.5,18 1,18 L0.5,15 Q0,11 0,7 Z" fill="rgba(74,122,95,0.1)" stroke="rgba(74,122,95,0.4)" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <!-- Central America -->
+          <path d="M21,32.5 Q23,31 25,31 L28,31.5 Q30,32 31,33 L30,34 Q28,34.5 26,34 L23,33.5 Z" fill="rgba(60,100,70,0.15)" stroke="rgba(120,160,100,0.4)" stroke-width="0.5" stroke-dasharray="2,1.5"/>
+          <path d="M31,33 Q33,32.5 35,33 L37,34 Q38,34.5 38,35.5 L36,36 Q34,36 32,35.5 L30,34.5 Z" fill="rgba(60,100,70,0.15)" stroke="rgba(120,160,100,0.4)" stroke-width="0.5" stroke-dasharray="2,1.5"/>
+          <path d="M36,36 Q38,35.5 40,36 L42,37 Q43,38 42.5,39 L40,39.5 Q38,39 36.5,38 L36,37 Z" fill="rgba(60,100,70,0.15)" stroke="rgba(120,160,100,0.4)" stroke-width="0.5" stroke-dasharray="2,1.5"/>
+          <path d="M42.5,39 Q44,39 45.5,40 L46.5,41 Q46.5,42 45,42.5 L43.5,42 Q42,41.5 42,40.5 Z" fill="rgba(60,100,70,0.15)" stroke="rgba(120,160,100,0.4)" stroke-width="0.5" stroke-dasharray="2,1.5"/>
+          <!-- Panama -->
+          <path d="M45,42.5 Q47,41.5 49,41 L51.5,41 Q53.5,41.5 55,42.5 L56,44 Q55,44.5 53,44 L50,43.5 Q47.5,43 46,43 Z" fill="rgba(60,100,70,0.15)" stroke="rgba(120,160,100,0.4)" stroke-width="0.5" stroke-dasharray="2,1.5"/>
+          <!-- Cuba -->
+          <path d="M40,11 Q44,9 50,8 L56,7.5 Q62,7.5 67,8.5 L71,10 Q73,11 73.5,12 L72,13 Q68,14 62,14.5 L56,14.5 Q50,14.5 46,13.5 L42,12.5 Q40,12 40,11 Z" fill="rgba(60,100,70,0.15)" stroke="rgba(120,160,100,0.5)" stroke-width="0.6" stroke-dasharray="3,2"/>
+          <!-- Jamaica -->
+          <path d="M58,18.5 Q61,17 64,17.5 L66,18.5 Q66.5,19.5 64.5,20 L61,19.5 Q59,19 58,18.5 Z" fill="rgba(60,100,70,0.1)" stroke="rgba(120,160,100,0.35)" stroke-width="0.5" stroke-dasharray="1.5,1.5"/>
+          <!-- Hispaniola -->
+          <path d="M74,11 Q78,10 82,10 L86,10.5 Q89,11.5 90,13 L89,14.5 Q86,15.5 82,16 L78,16 Q75.5,15.5 74.5,14 L74,12.5 Z" fill="rgba(60,100,70,0.15)" stroke="rgba(120,160,100,0.5)" stroke-width="0.6" stroke-dasharray="3,2"/>
+          <!-- Puerto Rico (highlighted) -->
+          <path d="M92,13 Q94,12.5 96.5,13 L98.5,14 Q99,15 98,16 L95.5,16.5 Q93,16 92,15 Z" fill="rgba(184,50,32,0.25)" stroke="rgba(184,50,32,0.7)" stroke-width="0.8" stroke-dasharray="2,1.5"/>
+          <!-- Puerto Rico label -->
+          <text x="95" y="19" fill="rgba(184,50,32,0.5)" font-family="'Press Start 2P', monospace" font-size="2.2" text-anchor="middle">BORINQUEN</text>
+          <!-- Lesser Antilles chain -->
+          <circle cx="100.5" cy="15" r="0.6" fill="none" stroke="rgba(120,160,100,0.3)" stroke-width="0.4"/>
+          <circle cx="101.5" cy="17.5" r="0.7" fill="none" stroke="rgba(120,160,100,0.3)" stroke-width="0.4"/>
+          <circle cx="102.5" cy="19.5" r="0.6" fill="none" stroke="rgba(120,160,100,0.3)" stroke-width="0.4"/>
+          <circle cx="103" cy="21.5" r="0.7" fill="none" stroke="rgba(120,160,100,0.3)" stroke-width="0.4"/>
+          <circle cx="103.5" cy="23.5" r="0.6" fill="none" stroke="rgba(120,160,100,0.3)" stroke-width="0.4"/>
+          <circle cx="103" cy="25.5" r="0.7" fill="none" stroke="rgba(120,160,100,0.3)" stroke-width="0.4"/>
+          <circle cx="102" cy="27.5" r="0.6" fill="none" stroke="rgba(120,160,100,0.3)" stroke-width="0.4"/>
+          <!-- Trinidad & Tobago -->
+          <path d="M99,29 Q100,28 101.5,28.5 L102,29.5 Q101.5,30.5 100,30.5 L99,30 Z" fill="rgba(60,100,70,0.1)" stroke="rgba(120,160,100,0.3)" stroke-width="0.5" stroke-dasharray="1.5,1.5"/>
+          <!-- Colombia (highlighted with country color) -->
+          <path d="M42,36 Q45,33 49,31.5 L53,30 Q57,29 61,30 L65,32 Q68,34 69,37 L70,40 Q70,44 68,48 L65,52 Q63,55 60,57.5 L57,59.5 Q54,61 51,62 L47,63 Q43,63 40,61 L37,58 Q35,55 34,51 L33.5,47 Q34,43 35.5,39 Z" fill="rgba(201,151,63,0.15)" stroke="rgba(201,151,63,0.55)" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <!-- Venezuela -->
+          <path d="M61,30 Q65,28.5 69,27 L74,25 Q79,23.5 84,23.5 L88,24 Q92,25.5 94,28 L95,31 Q95,34 93,36 L89,38 Q85,39.5 80,40 L75,40 Q70,39.5 67,38 L64,36 Q62,34 61,31 Z" fill="rgba(60,100,70,0.1)" stroke="rgba(120,160,100,0.35)" stroke-width="0.6" stroke-dasharray="3,2"/>
+          <!-- Guyana/Suriname/French Guiana -->
+          <path d="M94,28 Q98,27 102,29 L105,32 Q107,35 107,38 L106,42 Q104,44 100,44 L96,43 Q94,41 93,38 L93,34 Z" fill="rgba(60,100,70,0.08)" stroke="rgba(120,160,100,0.25)" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <!-- Ecuador (highlighted) -->
+          <path d="M29,56 Q31,53 34,51 L36,53 Q38,55 38.5,58 L38,61 Q37,63 35,65 L33,66 Q31,66 29,64.5 L27.5,62 Q27.5,59 29,56 Z" fill="rgba(106,90,205,0.18)" stroke="rgba(106,90,205,0.55)" stroke-width="0.7" stroke-dasharray="2.5,2"/>
+          <!-- Peru (highlighted) -->
+          <path d="M27.5,62 Q29,64.5 33,66 L35,68 Q37.5,71 40,74 L42,78 Q43,82 42,86 L40,90 Q38,94 36,97 L33,100 Q31,101 29,100 L26,98 Q24,95 22,91 L20,86 Q19,81 19.5,76 L21,71 Q23,66 25.5,63 Z" fill="rgba(212,98,42,0.15)" stroke="rgba(212,98,42,0.55)" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <!-- Brazil -->
+          <path d="M68,48 Q74,46 80,44 L88,43 Q96,43 102,44 L108,47 Q113,51 116,57 L118,63 Q120,70 119,77 L117,83 Q114,89 109,93 L103,97 Q97,100 90,101 L83,101 Q76,100 70,97 L64,93 Q59,88 56,82 L53,76 Q51,70 51,64 L53,58 Q57,52 62,49 Z" fill="rgba(60,100,70,0.08)" stroke="rgba(120,160,100,0.25)" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <!-- Bolivia -->
+          <path d="M42,86 Q46,83 51,82 L56,82 Q60,84 62,88 L63,92 Q62,96 59,100 L55,103 Q51,104 47,103 L43,100 Q41,96 41,92 Z" fill="rgba(60,100,70,0.08)" stroke="rgba(120,160,100,0.25)" stroke-width="0.5" stroke-dasharray="2.5,2"/>
+          <!-- Chile -->
+          <path d="M33,100 Q34,102 35,105 L36,109 Q36,113 35,117 L33,122 Q31,127 29,132 L27,137 Q25.5,142 24,147 L22,150 Q21,150 20.5,147 L21,142 Q22,136 23,131 L25,125 Q27,118 29,112 L31,106 Z" fill="rgba(60,100,70,0.08)" stroke="rgba(120,160,100,0.25)" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <!-- Argentina -->
+          <path d="M35,105 Q39,102 43,102 L47,103 Q51,105 53,109 L55,114 Q55,119 53,124 L50,129 Q47,134 43,138 L39,141 Q35,142 32,140 L29,137 Q27,133 27,128 L28,123 Q30,116 32,110 Z" fill="rgba(60,100,70,0.08)" stroke="rgba(120,160,100,0.25)" stroke-width="0.5" stroke-dasharray="2.5,2"/>
+
+          <!-- === COMPASS ROSE === -->
+          <g transform="translate(145,10)">
+            <circle cx="0" cy="0" r="6" fill="none" stroke="rgba(201,151,63,0.3)" stroke-width="0.5"/>
+            <line x1="0" y1="-5" x2="0" y2="5" stroke="rgba(201,151,63,0.4)" stroke-width="0.4"/>
+            <line x1="-5" y1="0" x2="5" y2="0" stroke="rgba(201,151,63,0.4)" stroke-width="0.4"/>
+            <text x="0" y="-7" fill="rgba(201,151,63,0.5)" font-family="'Press Start 2P', monospace" font-size="2.5" text-anchor="middle">N</text>
+          </g>
+
+          <!-- === ZOOM GEOGRAPHY (injected by JS) === -->
+          <g id="zoom-geo"></g>
+
+          <!-- === ROUTE LINES (injected by JS) === -->
+          <g id="route-lines"></g>
+
+          <!-- === CITY MARKERS (injected by JS) === -->
+
+          <!-- === CHEF SPRITE (injected by JS) === -->
+        </svg>
+      </div>
+
+      <!-- Country filter pills -->
+      <div class="country-filters" id="country-filters">
+        <button class="country-pill active" data-country="all" style="--pill-color:#c9973f">TODOS</button>
+        <button class="country-pill" data-country="Puerto Rico" style="--pill-color:#b83220">PR</button>
+        <button class="country-pill" data-country="Estados Unidos" style="--pill-color:#5a7d9a">USA</button>
+        <button class="country-pill" data-country="Mexico" style="--pill-color:#4a7a5f">MX</button>
+        <button class="country-pill" data-country="Colombia" style="--pill-color:#c9973f">COL</button>
+        <button class="country-pill" data-country="Ecuador" style="--pill-color:#6a5acd">ECU</button>
+        <button class="country-pill" data-country="Peru" style="--pill-color:#d4622a">PERU</button>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="map-stats">
+        <span class="count" id="map-count">16</span> ciudades &middot; ← → navegar &middot; ENTER explorar
+      </div>
+
+      <!-- D-Pad Controls (mobile) -->
+      <div class="dpad-controls">
+        <div class="dpad">
+          <button class="up" id="dpad-up">▲</button>
+          <button class="left" id="dpad-left">◀</button>
+          <div class="center">+</div>
+          <button class="right" id="dpad-right">▶</button>
+          <button class="down" id="dpad-down">▼</button>
+        </div>
+        <button class="btn-a" id="btn-a" disabled>A</button>
+      </div>
+
+      <!-- Keyboard hint -->
+      <div class="nav-hint">↑ ↓ ← → NAVEGAR &middot; ENTER EXPLORAR</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- City Dialog (Pokemon text box) -->
+<div class="city-dialog" id="city-dialog">
+  <span class="city-dialog-close" id="city-dialog-close">✕</span>
+  <div class="city-dialog-header">
+    <span class="city-dialog-flag" id="dialog-flag"></span>
+    <div>
+      <div class="city-dialog-name" id="dialog-name"></div>
+      <div class="city-dialog-country" id="dialog-country"></div>
+      <div class="city-dialog-recipes" id="dialog-recipes"></div>
+    </div>
+  </div>
+  <div class="city-dialog-story" id="dialog-story"></div>
+  <button class="city-dialog-enter" id="dialog-enter">▶ EXPLORAR CIUDAD</button>
+</div>
+
+<!-- Transition Overlay -->
+<div class="poke-transition" id="poke-transition">
+  <div class="wipe"></div>
+  <div class="wipe-text" id="wipe-text"></div>
+</div>
+
+<!-- ============================================================
+     DESTINATIONS GRID
+     ============================================================ -->
+<section class="destinations-section" id="destinations-section">
+  <div class="container">
+    <h2 class="section-title"><span class="accent">&bull;</span> Destinos</h2>
+    <div class="dest-grid" id="dest-grid"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CHRONICLES
+     ============================================================ -->
+<section class="chronicles-section" id="chronicles-section">
+  <div class="container">
+    <h2 class="section-title"><span class="accent">&bull;</span> Cronicas del Viaje</h2>
+    <div id="chronicles-list"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     VIDEO GALLERY
+     ============================================================ -->
+<section class="videos-section" id="videos-section">
+  <div class="container">
+    <div class="subscribe-row">
+      <h2 class="section-title" style="margin-bottom:0;border:none;padding:0"><span class="accent">&bull;</span> Videos</h2>
+      <a href="https://youtube.com/@cocineronomadapr" target="_blank" rel="noopener" class="subscribe-btn">
+        <svg viewBox="0 0 24 24"><path d="M23.5 6.2c-.3-1-1-1.8-2-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.5.6c-1 .3-1.8 1.1-2 2.1C0 8.1 0 12 0 12s0 3.9.5 5.8c.3 1 1 1.8 2 2.1 1.9.6 9.5.6 9.5.6s7.6 0 9.5-.6c1-.3 1.8-1.1 2-2.1.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+        Suscribete
+      </a>
+    </div>
+    <div id="videos-list"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="container">
+    <div style="margin-bottom:12px;">
+      <a href="../index.html" style="font-family:'Press Start 2P',monospace;font-size:7px;color:#7a6e62;text-decoration:none;padding:6px 12px;border:2px solid #2e2820;border-radius:4px;transition:all 0.2s;display:inline-block;">&#9664; VOLVER AL HUB</a>
+      <a href="../ebook/index.html" style="font-family:'Press Start 2P',monospace;font-size:7px;color:#7a6e62;text-decoration:none;padding:6px 12px;border:2px solid #2e2820;border-radius:4px;transition:all 0.2s;display:inline-block;margin-left:8px;">&#x1f4d6; LEER LIBRO</a>
+    </div>
+    &copy; Cocinero Nomada &middot; @cocineronomada
+  </div>
+</footer>
+
+<!-- ============================================================
+     DETAIL PANEL OVERLAY
+     ============================================================ -->
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
+<div class="panel-overlay" id="panel-overlay"></div>
+<div class="detail-panel" id="detail-panel">
+  <div class="panel-handle"><div class="panel-handle-bar"></div></div>
+  <div class="panel-scroll" id="panel-scroll"></div>
+</div>
+
+<!-- ============================================================
+     MUSIC SYSTEM
+     ============================================================ -->
+<audio id="music-caribbean" src="../musicalibro/pFKSanjuan.mp3" loop preload="auto"></audio>
+<audio id="music-peru-costa" src="../musicalibro/lima cumbia.mp3" loop preload="auto"></audio>
+<audio id="music-peru-andes" src="../musicalibro/cuzco vibes.mp3" loop preload="auto"></audio>
+<audio id="music-peru-general" src="../musicalibro/cumbia-del Peru .mp3" loop preload="auto"></audio>
+<audio id="music-mexico" src="../musicalibro/cumbia mx.mp3" loop preload="auto"></audio>
+
+<button class="music-toggle muted" id="music-toggle" title="Musica on/off">
+  <span class="bar1"></span><span class="bar2"></span><span class="bar3"></span>
+</button>
+<div class="music-region-label" id="music-region-label"></div>
+
+<!-- ============================================================
+     DATA
+     ============================================================ -->
+<script src="../shared/data.js"></script>
+
+<!-- ============================================================
+     APP LOGIC
+     ============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // -----------------------------------------------------------
+  // Helpers
+  // -----------------------------------------------------------
+  function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+  function $$(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
+
+  // -----------------------------------------------------------
+  // AMBIENT MUSIC SYSTEM — crossfade by region
+  // -----------------------------------------------------------
+  var MUSIC_TRACKS = {
+    caribbean:     document.getElementById('music-caribbean'),
+    'peru-costa':  document.getElementById('music-peru-costa'),
+    'peru-andes':  document.getElementById('music-peru-andes'),
+    'peru-general':document.getElementById('music-peru-general'),
+    mexico:        document.getElementById('music-mexico')
+  };
+
+  // Map each city to a music region
+  var CITY_MUSIC = {
+    'san-juan':  'caribbean',
+    'new-york':  'caribbean',
+    'cartagena': 'caribbean',
+    'rincon-del-mar': 'caribbean',
+    'palomino':  'caribbean',
+    'taganga':   'caribbean',
+    'bogota':    'caribbean',
+    'barichara': 'caribbean',
+    'quito':     'peru-general',
+    'mancora':   'peru-costa',
+    'huaraz':    'peru-andes',
+    'lima':      'peru-costa',
+    'barranco':  'peru-costa',
+    'ica':       'peru-costa',
+    'cusco':     'peru-andes',
+    'cdmx':      'mexico'
+  };
+
+  var REGION_LABELS = {
+    'caribbean':    'CARIBE',
+    'peru-costa':   'PERU COSTA',
+    'peru-andes':   'PERU ANDES',
+    'peru-general': 'ECUADOR',
+    'mexico':       'MEXICO'
+  };
+
+  var currentMusicRegion = null;
+  var musicEnabled = false;
+  var musicVolume = 0.3;
+  var fadeDuration = 1500;
+
+  // Set all tracks to 0 volume initially
+  Object.keys(MUSIC_TRACKS).forEach(function(k) {
+    MUSIC_TRACKS[k].volume = 0;
+  });
+
+  function fadeAudio(audio, from, to, duration, onDone) {
+    var steps = 30;
+    var interval = duration / steps;
+    var delta = (to - from) / steps;
+    var current = from;
+    var step = 0;
+    audio.volume = Math.max(0, Math.min(1, from));
+
+    var timer = setInterval(function() {
+      step++;
+      current += delta;
+      audio.volume = Math.max(0, Math.min(1, current));
+      if (step >= steps) {
+        clearInterval(timer);
+        audio.volume = Math.max(0, Math.min(1, to));
+        if (onDone) onDone();
+      }
+    }, interval);
+  }
+
+  function crossfadeToRegion(region) {
+    if (region === currentMusicRegion) return;
+    if (!musicEnabled) { currentMusicRegion = region; return; }
+
+    var newTrack = MUSIC_TRACKS[region];
+    if (!newTrack) return;
+
+    // Fade out current
+    if (currentMusicRegion && MUSIC_TRACKS[currentMusicRegion]) {
+      var oldTrack = MUSIC_TRACKS[currentMusicRegion];
+      fadeAudio(oldTrack, oldTrack.volume, 0, fadeDuration, function() {
+        oldTrack.pause();
+        oldTrack.currentTime = 0;
+      });
+    }
+
+    // Fade in new
+    newTrack.volume = 0;
+    newTrack.play().then(function() {
+      fadeAudio(newTrack, 0, musicVolume, fadeDuration);
+    }).catch(function() {});
+
+    currentMusicRegion = region;
+
+    // Update region label
+    var label = document.getElementById('music-region-label');
+    label.textContent = REGION_LABELS[region] || '';
+    label.classList.add('visible');
+    clearTimeout(label._hideTimer);
+    label._hideTimer = setTimeout(function() { label.classList.remove('visible'); }, 3000);
+  }
+
+  var musicUserInteracted = false;
+  function startMusicForCity(cityId) {
+    var region = CITY_MUSIC[cityId];
+    if (!region) return;
+    // Auto-enable on first real user gesture
+    if (musicUserInteracted && !musicEnabled) {
+      enableMusic();
+    }
+    crossfadeToRegion(region);
+  }
+
+  // Track first user interaction for autoplay policy
+  document.addEventListener('click', function onFirstClick() {
+    musicUserInteracted = true;
+    document.removeEventListener('click', onFirstClick);
+    // If music not yet enabled, enable it and play current region
+    if (!musicEnabled && currentMusicRegion) {
+      enableMusic();
+      var r = currentMusicRegion;
+      currentMusicRegion = null;
+      crossfadeToRegion(r);
+    }
+  });
+
+  function enableMusic() {
+    musicEnabled = true;
+    document.getElementById('music-toggle').classList.remove('muted');
+    if (currentMusicRegion && MUSIC_TRACKS[currentMusicRegion]) {
+      var track = MUSIC_TRACKS[currentMusicRegion];
+      track.volume = 0;
+      track.play().then(function() {
+        fadeAudio(track, 0, musicVolume, 1000);
+      }).catch(function() {});
+    }
+  }
+
+  function disableMusic() {
+    musicEnabled = false;
+    document.getElementById('music-toggle').classList.add('muted');
+    Object.keys(MUSIC_TRACKS).forEach(function(k) {
+      var t = MUSIC_TRACKS[k];
+      fadeAudio(t, t.volume, 0, 500, function() { t.pause(); });
+    });
+  }
+
+  document.getElementById('music-toggle').addEventListener('click', function() {
+    if (musicEnabled) {
+      disableMusic();
+    } else {
+      enableMusic();
+      // If we have a region queued, play it
+      if (currentMusicRegion) {
+        var r = currentMusicRegion;
+        currentMusicRegion = null;
+        crossfadeToRegion(r);
+      }
+    }
+  });
+
+  // -----------------------------------------------------------
+  // UNLOCK SYSTEM — Track explored cities via localStorage
+  // -----------------------------------------------------------
+  var STORAGE_KEY = 'cocinero-nomada-explored';
+  function getExplored() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) { return []; }
+  }
+  function markExplored(cityId) {
+    var explored = getExplored();
+    if (explored.indexOf(cityId) === -1) {
+      explored.push(cityId);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(explored));
+      showUnlockNotification(cityId);
+    }
+    updateUnlockBar();
+  }
+  function updateUnlockBar() {
+    var explored = getExplored();
+    var total = LOCATIONS.length;
+    var count = explored.length;
+    var pct = Math.round((count / total) * 100);
+    var fill = document.getElementById('unlock-fill');
+    var countEl = document.getElementById('unlock-count');
+    if (fill) fill.style.width = pct + '%';
+    if (countEl) countEl.textContent = count + '/' + total;
+  }
+  function showUnlockNotification(cityId) {
+    var loc = LOCATIONS.find(function(l) { return l.id === cityId; });
+    if (!loc) return;
+    var notif = document.createElement('div');
+    notif.className = 'unlock-notification';
+    notif.innerHTML = '<span class="notif-icon">' + loc.flag + '</span>' + loc.city + ' DESBLOQUEADA!';
+    document.body.appendChild(notif);
+    setTimeout(function() { notif.remove(); }, 3200);
+  }
+
+  function getCountryColor(country) {
+    return COUNTRY_COLORS[country] || '#d4622a';
+  }
+
+  // -----------------------------------------------------------
+  // POKEMON MAP: routes, city markers, chef sprite, navigation
+  // -----------------------------------------------------------
+
+  // Route connections between cities (travel path)
+  var ROUTES = [
+    ['san-juan', 'new-york'],
+    ['san-juan', 'cartagena'],
+    ['san-juan', 'cdmx'],
+    ['cartagena', 'rincon-del-mar'],
+    ['rincon-del-mar', 'palomino'],
+    ['palomino', 'taganga'],
+    ['cartagena', 'taganga'],
+    ['taganga', 'bogota'],
+    ['bogota', 'barichara'],
+    ['bogota', 'quito'],
+    ['quito', 'mancora'],
+    ['mancora', 'huaraz'],
+    ['huaraz', 'lima'],
+    ['lima', 'barranco'],
+    ['lima', 'ica'],
+    ['ica', 'cusco']
+  ];
+
+  // Navigation state
+  var currentCityIndex = 0;
+  var selectedCity = null;
+  var isTransitioning = false;
+
+  // Build location lookup
+  var locById = {};
+  LOCATIONS.forEach(function(loc) { locById[loc.id] = loc; });
+
+  // Adjacency list for keyboard navigation
+  var adjacency = {};
+  LOCATIONS.forEach(function(loc) { adjacency[loc.id] = []; });
+  ROUTES.forEach(function(r) {
+    if (adjacency[r[0]] && adjacency[r[1]]) {
+      adjacency[r[0]].push(r[1]);
+      adjacency[r[1]].push(r[0]);
+    }
+  });
+
+  function renderMap() {
+    var svg = $('#map-svg');
+    var ns = 'http://www.w3.org/2000/svg';
+
+    // Update count
+    $('#map-count').textContent = LOCATIONS.length;
+
+    // --- Draw route lines ---
+    var routeGroup = $('#route-lines');
+    ROUTES.forEach(function(r) {
+      var a = locById[r[0]], b = locById[r[1]];
+      if (!a || !b) return;
+      var line = document.createElementNS(ns, 'line');
+      line.setAttribute('x1', a.mapX);
+      line.setAttribute('y1', a.mapY);
+      line.setAttribute('x2', b.mapX);
+      line.setAttribute('y2', b.mapY);
+      line.setAttribute('class', 'route-line');
+      line.setAttribute('data-from', r[0]);
+      line.setAttribute('data-to', r[1]);
+      routeGroup.appendChild(line);
+    });
+
+    // --- Draw city markers ---
+    LOCATIONS.forEach(function(loc, idx) {
+      var g = document.createElementNS(ns, 'g');
+      g.setAttribute('class', 'map-dot');
+      g.setAttribute('data-id', loc.id);
+
+      // Pulse ring
+      var ring = document.createElementNS(ns, 'circle');
+      ring.setAttribute('cx', loc.mapX);
+      ring.setAttribute('cy', loc.mapY);
+      ring.setAttribute('r', '5');
+      ring.setAttribute('class', 'dot-ring');
+      g.appendChild(ring);
+
+      // Building base (small rect for Pokemon city look)
+      var building = document.createElementNS(ns, 'rect');
+      building.setAttribute('x', loc.mapX - 2.5);
+      building.setAttribute('y', loc.mapY - 2);
+      building.setAttribute('width', '5');
+      building.setAttribute('height', '4');
+      building.setAttribute('rx', '0.5');
+      building.setAttribute('class', 'dot-building');
+      g.appendChild(building);
+
+      // Roof triangle
+      var roof = document.createElementNS(ns, 'polygon');
+      var rx = loc.mapX;
+      var ry = loc.mapY;
+      roof.setAttribute('points',
+        (rx - 3) + ',' + (ry - 2) + ' ' +
+        rx + ',' + (ry - 5) + ' ' +
+        (rx + 3) + ',' + (ry - 2)
+      );
+      roof.setAttribute('class', 'dot-roof');
+      g.appendChild(roof);
+
+      // Core dot (door)
+      var core = document.createElementNS(ns, 'circle');
+      core.setAttribute('cx', loc.mapX);
+      core.setAttribute('cy', loc.mapY);
+      core.setAttribute('r', '1');
+      core.setAttribute('class', 'dot-core');
+      g.appendChild(core);
+
+      // Label
+      var label = document.createElementNS(ns, 'text');
+      label.setAttribute('x', loc.mapX + 5);
+      label.setAttribute('y', loc.mapY - 3);
+      label.setAttribute('class', 'dot-label');
+      label.textContent = loc.city;
+      g.appendChild(label);
+
+      // Click handler
+      g.addEventListener('click', function() {
+        selectCity(idx);
+      });
+
+      svg.appendChild(g);
+    });
+
+    // --- Create chef sprite ---
+    var chef = document.createElementNS(ns, 'g');
+    chef.setAttribute('class', 'chef-sprite');
+    chef.setAttribute('id', 'chef-sprite');
+
+    var shadow = document.createElementNS(ns, 'ellipse');
+    shadow.setAttribute('cx', '0');
+    shadow.setAttribute('cy', '4');
+    shadow.setAttribute('rx', '3');
+    shadow.setAttribute('ry', '1.2');
+    shadow.setAttribute('class', 'sprite-shadow');
+    chef.appendChild(shadow);
+
+    var chefIcon = document.createElementNS(ns, 'image');
+    chefIcon.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '../assets/nico-avatar.png');
+    chefIcon.setAttribute('x', '-5');
+    chefIcon.setAttribute('y', '-6');
+    chefIcon.setAttribute('width', '10');
+    chefIcon.setAttribute('height', '10');
+    chefIcon.setAttribute('clip-path', 'circle(5px at 5px 5px)');
+    chefIcon.style.borderRadius = '50%';
+    // Create a circular clip for the sprite
+    var clipDef = document.createElementNS(ns, 'defs');
+    var clipPath = document.createElementNS(ns, 'clipPath');
+    clipPath.setAttribute('id', 'chef-clip');
+    var clipCircle = document.createElementNS(ns, 'circle');
+    clipCircle.setAttribute('cx', '0');
+    clipCircle.setAttribute('cy', '-1');
+    clipCircle.setAttribute('r', '5');
+    clipPath.appendChild(clipCircle);
+    clipDef.appendChild(clipPath);
+    chef.appendChild(clipDef);
+    chefIcon.setAttribute('clip-path', 'url(#chef-clip)');
+    chef.appendChild(chefIcon);
+
+    svg.appendChild(chef);
+
+    // Select initial city
+    selectCity(0);
+  }
+
+  // --- Select a city (navigate chef there) ---
+  function selectCity(index) {
+    if (isTransitioning) return;
+    currentCityIndex = index;
+    selectedCity = LOCATIONS[index];
+
+    var chef = $('#chef-sprite');
+    if (chef) {
+      // Use zoomed position if available
+      var cx = getCityX(selectedCity.id);
+      var cy = getCityY(selectedCity.id);
+      chef.classList.add('chef-walking');
+      chef.setAttribute('transform', 'translate(' + cx + ',' + (cy + 6) + ')');
+      setTimeout(function() { chef.classList.remove('chef-walking'); }, 500);
+    }
+
+    // Update selected class on markers
+    $$('.map-dot').forEach(function(dot) {
+      dot.classList.toggle('selected', dot.getAttribute('data-id') === selectedCity.id);
+    });
+
+    // Highlight active routes
+    $$('.route-line').forEach(function(line) {
+      var from = line.getAttribute('data-from');
+      var to = line.getAttribute('data-to');
+      var isActive = (from === selectedCity.id || to === selectedCity.id);
+      line.classList.toggle('active', isActive);
+    });
+
+    // Update trainer header
+    var trainerLoc = $('#trainer-location');
+    trainerLoc.innerHTML = selectedCity.flag + ' ' + selectedCity.city.toUpperCase() + '<br><span class="blink">▶ ENTER</span>';
+
+    // Update and show city dialog
+    showCityDialog(selectedCity);
+
+    // Crossfade ambient music to this city's region
+    startMusicForCity(selectedCity.id);
+
+    // Enable A button on mobile
+    var btnA = $('#btn-a');
+    if (btnA) btnA.disabled = false;
+  }
+
+  // --- Show city dialog box ---
+  function showCityDialog(loc) {
+    $('#dialog-flag').textContent = loc.flag;
+    $('#dialog-name').textContent = loc.city;
+    $('#dialog-country').textContent = loc.country;
+    $('#dialog-recipes').textContent = loc.recipes.length + ' receta' + (loc.recipes.length !== 1 ? 's' : '') + ' disponibles';
+    $('#dialog-story').textContent = loc.story;
+    $('#city-dialog').classList.add('visible');
+  }
+
+  function hideCityDialog() {
+    $('#city-dialog').classList.remove('visible');
+    selectedCity = null;
+    $$('.map-dot').forEach(function(dot) { dot.classList.remove('selected'); });
+    $$('.route-line').forEach(function(line) { line.classList.remove('active'); });
+    $('#trainer-location').innerHTML = 'MUNDO CULINARY<br><span class="blink">▼</span>';
+    var btnA = $('#btn-a');
+    if (btnA) btnA.disabled = true;
+  }
+
+  // --- Enter city with Pokemon transition ---
+  function enterCity() {
+    if (!selectedCity || isTransitioning) return;
+    isTransitioning = true;
+
+    var overlay = $('#poke-transition');
+    var wipeText = $('#wipe-text');
+    wipeText.textContent = '¡' + selectedCity.city + '!';
+    overlay.classList.add('active');
+
+    var cityId = selectedCity.id;
+    hideCityDialog();
+
+    setTimeout(function() {
+      overlay.classList.remove('active');
+      isTransitioning = false;
+      openPanel(cityId);
+    }, 1300);
+  }
+
+  // --- Keyboard & D-Pad navigation ---
+  function navigateDirection(dir) {
+    if (!selectedCity || isTransitioning) return;
+
+    var neighbors = adjacency[selectedCity.id] || [];
+    if (neighbors.length === 0) return;
+
+    var current = selectedCity;
+    var best = null;
+    var bestScore = -Infinity;
+
+    neighbors.forEach(function(nId) {
+      var n = locById[nId];
+      if (!n) return;
+      var dx = n.mapX - current.mapX;
+      var dy = n.mapY - current.mapY;
+      var score = 0;
+
+      switch(dir) {
+        case 'up':    score = -dy - Math.abs(dx) * 0.3; break;
+        case 'down':  score = dy - Math.abs(dx) * 0.3; break;
+        case 'left':  score = -dx - Math.abs(dy) * 0.3; break;
+        case 'right': score = dx - Math.abs(dy) * 0.3; break;
+      }
+
+      if (score > bestScore) {
+        bestScore = score;
+        best = nId;
+      }
+    });
+
+    if (best) {
+      var idx = LOCATIONS.findIndex(function(l) { return l.id === best; });
+      if (idx >= 0) selectCity(idx);
+    }
+  }
+
+  // Keyboard handler
+  document.addEventListener('keydown', function(e) {
+    if (isTransitioning) return;
+
+    // Don't capture keys if panel is open
+    if (document.querySelector('.overlay.active')) return;
+
+    switch(e.key) {
+      case 'ArrowUp': e.preventDefault(); navigateDirection('up'); break;
+      case 'ArrowDown': e.preventDefault(); navigateDirection('down'); break;
+      case 'ArrowLeft': e.preventDefault(); navigateDirection('left'); break;
+      case 'ArrowRight': e.preventDefault(); navigateDirection('right'); break;
+      case 'Enter':
+      case ' ':
+        if (selectedCity) { e.preventDefault(); enterCity(); }
+        break;
+    }
+  });
+
+  // D-Pad click handlers
+  document.addEventListener('DOMContentLoaded', function() {
+    var directions = { 'dpad-up': 'up', 'dpad-down': 'down', 'dpad-left': 'left', 'dpad-right': 'right' };
+    Object.keys(directions).forEach(function(id) {
+      var btn = document.getElementById(id);
+      if (btn) btn.addEventListener('click', function() { navigateDirection(directions[id]); });
+    });
+
+    var btnA = document.getElementById('btn-a');
+    if (btnA) btnA.addEventListener('click', enterCity);
+
+    var dialogEnter = document.getElementById('dialog-enter');
+    if (dialogEnter) dialogEnter.addEventListener('click', enterCity);
+
+    var dialogClose = document.getElementById('city-dialog-close');
+    if (dialogClose) dialogClose.addEventListener('click', hideCityDialog);
+  });
+
+  // -----------------------------------------------------------
+  // COUNTRY ZOOM — Repositioned markers + detailed geography
+  // -----------------------------------------------------------
+
+  // Zoomed coordinates: spread cities out so they're clear when zoomed
+  var ZOOM_COORDS = {
+    "Colombia": {
+      vb: "26 14 56 56",
+      cities: {
+        "cartagena":     { x: 36, y: 36 },
+        "rincon-del-mar": { x: 46, y: 30 },
+        "palomino":      { x: 62, y: 22 },
+        "taganga":       { x: 56, y: 28 },
+        "bogota":        { x: 42, y: 54 },
+        "barichara":     { x: 60, y: 48 }
+      },
+      // Detailed geography paths for zoomed view
+      geo: [
+        { type: 'path', d: 'M30,18 Q38,16 46,17 L54,18 Q60,19 66,22 L72,26 Q76,30 78,35 L78,42 Q77,50 74,56 L70,62 Q65,66 58,68 L50,69 Q42,69 36,66 L30,62 Q27,57 26,50 L26,42 Q26,34 28,26 Z', label: 'Colombia' },
+        { type: 'path', d: 'M30,32 Q34,30 38,29 L42,28 Q44,28 45,30 L44,32 Q42,34 38,34 Z', label: 'Costa Caribe' },
+        { type: 'text', x: 68, y: 18, text: 'MAR CARIBE', size: 2 },
+        { type: 'text', x: 30, y: 68, text: 'PACIFICO', size: 2 },
+        { type: 'text', x: 66, y: 58, text: 'AMAZONIA', size: 1.8 }
+      ]
+    },
+    "Peru": {
+      vb: "4 56 54 48",
+      cities: {
+        "mancora":  { x: 26, y: 64 },
+        "huaraz":   { x: 20, y: 72 },
+        "lima":     { x: 14, y: 80 },
+        "barranco": { x: 24, y: 85 },
+        "ica":      { x: 16, y: 92 },
+        "cusco":    { x: 42, y: 88 }
+      },
+      geo: [
+        { type: 'path', d: 'M22,58 Q28,57 34,58 L40,60 Q46,63 50,68 L52,74 Q53,80 52,86 L50,92 Q47,97 42,100 L36,102 Q30,103 24,101 L18,98 Q14,94 12,88 L10,82 Q9,76 10,70 L12,64 Q15,60 18,58 Z', label: 'Peru' },
+        { type: 'text', x: 8, y: 74, text: 'PACIFICO', size: 2 },
+        { type: 'text', x: 46, y: 78, text: 'ANDES', size: 1.8 },
+        { type: 'text', x: 48, y: 96, text: 'SELVA', size: 1.8 }
+      ]
+    },
+    "Mexico": {
+      vb: "0 0 42 34",
+      cities: {
+        "cdmx": { x: 18, y: 16 }
+      },
+      geo: [
+        { type: 'path', d: 'M0,3 L8,1 Q14,0 22,2 L30,6 Q34,10 34,16 L33,22 Q30,28 24,32 L18,34 Q12,34 8,30 L4,24 Q1,18 0,12 Z', label: 'Mexico' },
+        { type: 'text', x: 36, y: 10, text: 'GOLFO', size: 2 },
+        { type: 'text', x: 2, y: 20, text: 'PACIFICO', size: 1.8 }
+      ]
+    },
+    "Ecuador": {
+      vb: "18 44 32 32",
+      cities: {
+        "quito": { x: 33, y: 59 }
+      },
+      geo: [
+        { type: 'path', d: 'M24,50 Q28,48 32,48 L36,49 Q40,51 42,54 L43,58 Q43,62 41,66 L38,70 Q34,72 30,72 L26,71 Q22,68 21,64 L20,60 Q21,54 24,50 Z', label: 'Ecuador' },
+        { type: 'text', x: 20, y: 56, text: 'PACIFICO', size: 2 },
+        { type: 'text', x: 38, y: 66, text: 'AMAZONIA', size: 1.6 }
+      ]
+    },
+    "Puerto Rico": {
+      vb: "82 4 28 24",
+      cities: {
+        "san-juan": { x: 96, y: 14 }
+      },
+      geo: [
+        { type: 'path', d: 'M89,12 Q92,10 96,10 L100,11 Q103,12.5 104,15 L103,17.5 Q100,19 96,19.5 L92,19 Q89,17.5 88,15 Z', label: 'Puerto Rico' },
+        { type: 'text', x: 96, y: 8, text: 'ATLANTICO', size: 2 },
+        { type: 'text', x: 96, y: 24, text: 'MAR CARIBE', size: 2 }
+      ]
+    },
+    "Estados Unidos": {
+      vb: "78 -4 28 20",
+      cities: {
+        "new-york": { x: 92, y: 5 }
+      },
+      geo: [
+        { type: 'path', d: 'M80,0 L100,0 L102,3 Q101,6 98,8 L94,9 Q90,8 86,6 L82,3 Z', label: 'East Coast' },
+        { type: 'text', x: 100, y: 12, text: 'ATLANTICO', size: 2 }
+      ]
+    }
+  };
+
+  var currentZoom = 'all';
+  var DEFAULT_VB = '-5 -2 170 155';
+
+  // Get current position for a city (zoomed or original)
+  function getCityX(cityId) {
+    if (currentZoom !== 'all') {
+      var zc = ZOOM_COORDS[currentZoom];
+      if (zc && zc.cities[cityId]) return zc.cities[cityId].x;
+    }
+    return locById[cityId] ? locById[cityId].mapX : 0;
+  }
+  function getCityY(cityId) {
+    if (currentZoom !== 'all') {
+      var zc = ZOOM_COORDS[currentZoom];
+      if (zc && zc.cities[cityId]) return zc.cities[cityId].y;
+    }
+    return locById[cityId] ? locById[cityId].mapY : 0;
+  }
+
+  function animateViewBox(svg, targetVB, duration) {
+    var current = svg.getAttribute('viewBox').split(' ').map(Number);
+    var target = targetVB.split(' ').map(Number);
+    var start = performance.now();
+    duration = duration || 600;
+
+    function step(now) {
+      var t = Math.min((now - start) / duration, 1);
+      t = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      var vb = current.map(function(c, i) {
+        return (c + (target[i] - c) * t).toFixed(2);
+      }).join(' ');
+      svg.setAttribute('viewBox', vb);
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Reposition a single city marker to new x,y using SVG transform
+  function repositionMarker(cityId, newX, newY) {
+    var dot = document.querySelector('.map-dot[data-id="' + cityId + '"]');
+    if (!dot) return;
+    var loc = locById[cityId];
+    var dx = newX - loc.mapX;
+    var dy = newY - loc.mapY;
+    dot.setAttribute('transform', 'translate(' + dx + ',' + dy + ')');
+  }
+
+  // Reset all markers to original positions
+  function resetMarkerPositions() {
+    $$('.map-dot').forEach(function(dot) {
+      dot.removeAttribute('transform');
+    });
+  }
+
+  // Update route line endpoints for zoomed positions
+  function updateRouteLines(country) {
+    $$('.route-line').forEach(function(line) {
+      var fromId = line.getAttribute('data-from');
+      var toId = line.getAttribute('data-to');
+      var fromLoc = locById[fromId];
+      var toLoc = locById[toId];
+      if (!fromLoc || !toLoc) return;
+
+      var inZone = fromLoc.country === country && toLoc.country === country;
+      line.classList.toggle('in-zone-route', inZone);
+
+      if (country && country !== 'all') {
+        var zc = ZOOM_COORDS[country];
+        if (zc) {
+          var fx = zc.cities[fromId] ? zc.cities[fromId].x : fromLoc.mapX;
+          var fy = zc.cities[fromId] ? zc.cities[fromId].y : fromLoc.mapY;
+          var tx = zc.cities[toId] ? zc.cities[toId].x : toLoc.mapX;
+          var ty = zc.cities[toId] ? zc.cities[toId].y : toLoc.mapY;
+          line.setAttribute('x1', fx);
+          line.setAttribute('y1', fy);
+          line.setAttribute('x2', tx);
+          line.setAttribute('y2', ty);
+        }
+      } else {
+        line.setAttribute('x1', fromLoc.mapX);
+        line.setAttribute('y1', fromLoc.mapY);
+        line.setAttribute('x2', toLoc.mapX);
+        line.setAttribute('y2', toLoc.mapY);
+      }
+    });
+  }
+
+  // Draw zoomed geography (detailed outlines, labels, region names)
+  function drawZoomGeography(country) {
+    var geoGroup = $('#zoom-geo');
+    var ns = 'http://www.w3.org/2000/svg';
+    geoGroup.innerHTML = '';
+
+    if (!country || country === 'all') return;
+
+    var zc = ZOOM_COORDS[country];
+    if (!zc || !zc.geo) return;
+    var color = COUNTRY_COLORS[country] || '#c9973f';
+
+    zc.geo.forEach(function(item) {
+      if (item.type === 'path') {
+        // Country outline — cleaner, more detailed
+        var path = document.createElementNS(ns, 'path');
+        path.setAttribute('d', item.d);
+        path.setAttribute('fill', color.replace(')', ',0.08)').replace('rgb', 'rgba').replace('#', ''));
+        // Use rgba from hex
+        var r = parseInt(color.slice(1,3), 16);
+        var g = parseInt(color.slice(3,5), 16);
+        var b = parseInt(color.slice(5,7), 16);
+        path.setAttribute('fill', 'rgba(' + r + ',' + g + ',' + b + ',0.1)');
+        path.setAttribute('stroke', 'rgba(' + r + ',' + g + ',' + b + ',0.5)');
+        path.setAttribute('stroke-width', '0.8');
+        path.setAttribute('stroke-dasharray', '3,2.5');
+        path.setAttribute('stroke-linejoin', 'round');
+        path.setAttribute('class', 'zoom-geo-path');
+        geoGroup.appendChild(path);
+
+        // Dots along the path (border markers)
+        var totalLen = 120; // approximate
+        var numDots = 18;
+        for (var i = 0; i < numDots; i++) {
+          var angle = (2 * Math.PI * i) / numDots;
+          // Use the bounding box center as reference for dot placement
+        }
+      } else if (item.type === 'text') {
+        var txt = document.createElementNS(ns, 'text');
+        txt.setAttribute('x', item.x);
+        txt.setAttribute('y', item.y);
+        txt.setAttribute('fill', 'rgba(' + parseInt(color.slice(1,3),16) + ',' + parseInt(color.slice(3,5),16) + ',' + parseInt(color.slice(5,7),16) + ',0.25)');
+        txt.setAttribute('font-family', "'Press Start 2P', monospace");
+        txt.setAttribute('font-size', item.size || 2);
+        txt.setAttribute('text-anchor', 'middle');
+        txt.setAttribute('class', 'zoom-geo-label');
+        txt.textContent = item.text;
+        geoGroup.appendChild(txt);
+      }
+    });
+
+    // Draw zone boundary dots around the country's cities
+    var cities = zc.cities;
+    var pts = Object.keys(cities).map(function(id) { return cities[id]; });
+    if (pts.length > 1) {
+      var cx = 0, cy = 0;
+      pts.forEach(function(p) { cx += p.x; cy += p.y; });
+      cx /= pts.length; cy /= pts.length;
+      var maxR = 0;
+      pts.forEach(function(p) {
+        var d = Math.sqrt(Math.pow(p.x - cx, 2) + Math.pow(p.y - cy, 2));
+        if (d > maxR) maxR = d;
+      });
+      var rx = maxR + 10, ry = maxR + 8;
+
+      // Dashed ellipse around city cluster
+      var ellipse = document.createElementNS(ns, 'ellipse');
+      ellipse.setAttribute('cx', cx);
+      ellipse.setAttribute('cy', cy);
+      ellipse.setAttribute('rx', rx);
+      ellipse.setAttribute('ry', ry);
+      ellipse.setAttribute('class', 'zone-boundary zoom-geo-path');
+      var r2 = parseInt(color.slice(1,3),16);
+      var g2 = parseInt(color.slice(3,5),16);
+      var b2 = parseInt(color.slice(5,7),16);
+      ellipse.setAttribute('stroke', 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',0.35)');
+      geoGroup.appendChild(ellipse);
+
+      // Dots along the ellipse
+      var numDots = 16;
+      for (var i = 0; i < numDots; i++) {
+        var angle = (2 * Math.PI * i) / numDots;
+        var dot = document.createElementNS(ns, 'circle');
+        dot.setAttribute('cx', (cx + rx * Math.cos(angle)).toFixed(1));
+        dot.setAttribute('cy', (cy + ry * Math.sin(angle)).toFixed(1));
+        dot.setAttribute('r', '0.6');
+        dot.setAttribute('fill', 'rgba(' + r2 + ',' + g2 + ',' + b2 + ',0.35)');
+        dot.setAttribute('class', 'zone-dot zoom-geo-path');
+        geoGroup.appendChild(dot);
+      }
+    }
+  }
+
+  function zoomToCountry(country) {
+    var svg = $('#map-svg');
+    var wrapper = $('.map-wrapper');
+    currentZoom = country;
+
+    // Update pill buttons
+    $$('.country-pill').forEach(function(pill) {
+      pill.classList.toggle('active', pill.getAttribute('data-country') === country);
+    });
+
+    if (country === 'all') {
+      // Reset to full map
+      animateViewBox(svg, DEFAULT_VB);
+      wrapper.classList.remove('zoomed');
+      resetMarkerPositions();
+      updateRouteLines(null);
+      drawZoomGeography(null);
+      $$('.map-dot').forEach(function(dot) {
+        dot.classList.remove('in-zone');
+      });
+      $$('.route-line').forEach(function(line) {
+        line.classList.remove('in-zone-route');
+      });
+      return;
+    }
+
+    var zc = ZOOM_COORDS[country];
+    if (!zc) return;
+
+    // Draw zoomed geography first
+    drawZoomGeography(country);
+
+    // Animate viewBox zoom
+    animateViewBox(svg, zc.vb);
+    wrapper.classList.add('zoomed');
+
+    // Reposition city markers to zoomed coordinates
+    Object.keys(zc.cities).forEach(function(cityId) {
+      var pos = zc.cities[cityId];
+      repositionMarker(cityId, pos.x, pos.y);
+    });
+
+    // Update route lines to match new positions
+    updateRouteLines(country);
+
+    // Mark which cities are in the zone
+    $$('.map-dot').forEach(function(dot) {
+      var dotId = dot.getAttribute('data-id');
+      var loc = locById[dotId];
+      var inZone = loc && loc.country === country;
+      dot.classList.toggle('in-zone', inZone);
+      // Reset transform for cities not in this zoom
+      if (!inZone) dot.removeAttribute('transform');
+    });
+
+    // Select first city in this country
+    var firstInCountry = LOCATIONS.findIndex(function(l) { return l.country === country; });
+    if (firstInCountry >= 0) selectCity(firstInCountry);
+  }
+
+  // Country filter click handlers
+  document.addEventListener('DOMContentLoaded', function() {
+    var filters = document.getElementById('country-filters');
+    if (filters) {
+      filters.addEventListener('click', function(e) {
+        var pill = e.target.closest('.country-pill');
+        if (!pill) return;
+        var country = pill.getAttribute('data-country');
+        zoomToCountry(country);
+      });
+    }
+  });
+
+  // -----------------------------------------------------------
+  // DESTINATIONS GRID
+  // -----------------------------------------------------------
+  function renderDestinations() {
+    var grid = $('#dest-grid');
+    var html = '';
+    LOCATIONS.forEach(function(loc) {
+      var cc = getCountryColor(loc.country);
+      html += '<div class="dest-card" data-id="' + loc.id + '" style="--country-color:' + cc + '">' +
+        '<div class="dest-flag">' + loc.flag + '</div>' +
+        '<div class="dest-city">' + loc.city + '</div>' +
+        '<div class="dest-country">' + loc.country + '</div>' +
+        '<div class="dest-recipes">' + loc.recipes.length + ' receta' + (loc.recipes.length !== 1 ? 's' : '') + '</div>' +
+      '</div>';
+    });
+    grid.innerHTML = html;
+
+    $$('.dest-card', grid).forEach(function(card) {
+      card.addEventListener('click', function() {
+        openPanel(card.getAttribute('data-id'));
+      });
+    });
+  }
+
+  // -----------------------------------------------------------
+  // CHRONICLES
+  // -----------------------------------------------------------
+  function renderChronicles() {
+    var list = $('#chronicles-list');
+    var html = '';
+    CHRONICLES.forEach(function(ch) {
+      html += '<div class="chronicle-card">' +
+        '<div class="chronicle-header">' + ch.flag + ' ' + ch.country + ' &middot; ' + ch.region + '</div>' +
+        '<div class="chronicle-title">' + ch.title + '</div>' +
+        '<div class="chronicle-route">' + ch.route + '</div>' +
+        '<div class="chronicle-epigraph">' + ch.epigraph + '</div>' +
+        '<div class="chronicle-body">';
+      ch.body.forEach(function(p) {
+        html += '<p>' + p + '</p>';
+      });
+      html += '</div></div>';
+    });
+    list.innerHTML = html;
+  }
+
+  // -----------------------------------------------------------
+  // VIDEOS (lazy-load iframes)
+  // -----------------------------------------------------------
+  function renderVideos() {
+    var list = $('#videos-list');
+    var html = '';
+    VIDEOS.forEach(function(v) {
+      html += '<div class="video-card">' +
+        '<div class="video-thumb" data-vid="' + v.id + '">' +
+          '<img src="https://img.youtube.com/vi/' + v.id + '/hqdefault.jpg" alt="' + v.title + '" loading="lazy">' +
+          '<div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>' +
+        '</div>' +
+        '<div class="video-info">' +
+          '<div class="video-title">' + v.title + '</div>' +
+          '<div class="video-desc">' + v.desc + '</div>' +
+          '<div class="video-country">' + v.country + '</div>' +
+        '</div>' +
+      '</div>';
+    });
+    list.innerHTML = html;
+
+    // Lazy-load: click thumbnail -> replace with iframe
+    $$('.video-thumb', list).forEach(function(thumb) {
+      thumb.addEventListener('click', function() {
+        var vid = thumb.getAttribute('data-vid');
+        thumb.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + vid + '?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>';
+      });
+    });
+  }
+
+  // -----------------------------------------------------------
+  // DETAIL PANEL
+  // -----------------------------------------------------------
+  var overlay = $('#panel-overlay');
+  var panel = $('#detail-panel');
+  var panelScroll = $('#panel-scroll');
+
+  function openPanel(locId) {
+    var loc = LOCATIONS.find(function(l) { return l.id === locId; });
+    if (!loc) return;
+
+    var cc = getCountryColor(loc.country);
+    var fullStoryParagraphs = loc.fullStory.split('\n\n').map(function(p) {
+      return '<p>' + p + '</p>';
+    }).join('');
+
+    var recipesHtml = '';
+    loc.recipes.forEach(function(r, idx) {
+      var tagsHtml = r.tags.map(function(t) {
+        return '<span class="recipe-tag">' + t + '</span>';
+      }).join('');
+
+      var ingredientsHtml = r.fullRecipe.ingredients.map(function(ing) {
+        return '<li>' + ing + '</li>';
+      }).join('');
+
+      var stepsHtml = r.fullRecipe.steps.map(function(s) {
+        return '<li>' + s + '</li>';
+      }).join('');
+
+      recipesHtml += '<div class="recipe-card">' +
+        '<div class="recipe-head">' +
+          '<div class="recipe-emoji">' + r.emoji + '</div>' +
+          '<div class="recipe-name">' + r.name + '</div>' +
+          '<div class="recipe-desc">' + r.desc + '</div>' +
+          '<div class="recipe-tags">' + tagsHtml + '</div>' +
+          '<span class="recipe-expand-btn" data-recipe="' + locId + '-' + idx + '">Ver receta completa &rarr;</span>' +
+        '</div>' +
+        '<div class="recipe-full" id="recipe-' + locId + '-' + idx + '">' +
+          '<div class="recipe-badges">' +
+            '<span class="recipe-badge"><span class="badge-label">Porciones:</span> ' + r.fullRecipe.servings + '</span>' +
+            '<span class="recipe-badge"><span class="badge-label">Tiempo:</span> ' + r.fullRecipe.time + '</span>' +
+            '<span class="recipe-badge"><span class="badge-label">Dificultad:</span> ' + r.fullRecipe.difficulty + '</span>' +
+          '</div>' +
+          '<div class="recipe-sub-title">Ingredientes</div>' +
+          '<ul class="recipe-ingredients">' + ingredientsHtml + '</ul>' +
+          '<div class="recipe-sub-title">Preparacion</div>' +
+          '<ol class="recipe-steps">' + stepsHtml + '</ol>' +
+        '</div>' +
+      '</div>';
+    });
+
+    // Build photo gallery
+    var photos = (typeof LOCATION_PHOTOS !== 'undefined' && LOCATION_PHOTOS[loc.id]) ? LOCATION_PHOTOS[loc.id] : [];
+    var photosHtml = '';
+    if (photos.length > 0) {
+      photosHtml = '<div class="photo-gallery-title">Fotos de ' + loc.city + '</div><div class="photo-gallery">';
+      photos.forEach(function(photo, i) {
+        var wideClass = (i === 0) ? ' wide' : '';
+        photosHtml += '<div class="photo-card' + wideClass + '" data-photo-src="' + photo.file + '" data-photo-caption="' + photo.caption.replace(/"/g, '&quot;') + '">' +
+          '<img src="' + photo.file + '" alt="' + photo.caption.replace(/"/g, '&quot;') + '" loading="lazy">' +
+          '<div class="photo-caption">' + photo.caption + '</div>' +
+        '</div>';
+      });
+      photosHtml += '</div>';
+    }
+
+    // Book link for cross-navigation
+    var bookLinkHtml = '<a href="../ebook/index.html#chapter-' + loc.chapter + '" class="panel-book-link">' +
+      '&#x1f4d6; Leer Cap. ' + loc.chapter + ' en el Libro</a>';
+
+    // Build video embed
+    var videoHtml = '';
+    if (loc.video) {
+      videoHtml = '<div class="panel-video-section">' +
+        '<div class="panel-video-title">Video de ' + loc.city + '</div>' +
+        '<div class="panel-video-container" id="panel-video-thumb" data-vid="' + loc.video + '">' +
+          '<img src="https://img.youtube.com/vi/' + loc.video + '/hqdefault.jpg" alt="Video de ' + loc.city + '" loading="lazy">' +
+          '<div class="panel-video-play"><svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg></div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    // Build local videos section
+    var localMediaHtml = '';
+    var localVids = loc.localVideos || [];
+    var localPhotos = loc.localPhotos || [];
+    if (localVids.length > 0 || localPhotos.length > 0) {
+      localMediaHtml = '<div class="panel-local-media-section">' +
+        '<div class="panel-local-media-title">&#127909; Videos & Media del Viaje</div>';
+      localVids.forEach(function(v) {
+        localMediaHtml += '<div class="local-media-card">' +
+          '<video controls preload="metadata" playsinline><source src="' + v.file + '" type="video/quicktime"><source src="' + v.file + '" type="video/mp4">Tu navegador no soporta video.</video>' +
+          '<div class="local-media-info">' +
+            '<div class="local-media-name">' + v.title + '</div>' +
+            '<div class="local-media-intro">' + v.intro + '</div>' +
+            '<div class="local-media-nico">' +
+              '<img src="../assets/nico-avatar.png" alt="Nico" class="local-media-nico-avatar">' +
+              '<div class="local-media-nico-text"><span class="local-media-nico-label">NICO:</span>' + v.nico + '</div>' +
+            '</div>' +
+            '<div class="intro-choices">' +
+              '<button class="intro-choice-btn" data-response="' + encodeURIComponent('Me inspira a visitar este lugar. La comida y la cultura son lo que hace cada destino unico.') + '">Me inspira</button>' +
+              '<button class="intro-choice-btn" data-response="' + encodeURIComponent('Quiero saber mas sobre la comida de este lugar. Cada plato tiene una historia detras.') + '">Quiero saber mas</button>' +
+              '<button class="intro-choice-btn" data-response="' + encodeURIComponent('Increible captura! Los momentos reales del viaje son los que mejor cuentan la historia.') + '">Increible</button>' +
+            '</div>' +
+            '<div class="intro-response"></div>' +
+          '</div>' +
+        '</div>';
+      });
+      localPhotos.forEach(function(p) {
+        localMediaHtml += '<div class="local-media-card">' +
+          '<img src="' + p.file + '" alt="' + p.title + '" class="local-photo" loading="lazy">' +
+          '<div class="local-media-info">' +
+            '<div class="local-media-name">' + p.title + '</div>' +
+            '<div class="local-media-intro">' + p.intro + '</div>' +
+            '<div class="local-media-nico">' +
+              '<img src="../assets/nico-avatar.png" alt="Nico" class="local-media-nico-avatar">' +
+              '<div class="local-media-nico-text"><span class="local-media-nico-label">NICO:</span>' + p.nico + '</div>' +
+            '</div>' +
+            '<div class="intro-choices">' +
+              '<button class="intro-choice-btn" data-response="' + encodeURIComponent('Me inspira a visitar este lugar. La comida y la cultura son lo que hace cada destino unico.') + '">Me inspira</button>' +
+              '<button class="intro-choice-btn" data-response="' + encodeURIComponent('Quiero saber mas sobre la comida de este lugar. Cada plato tiene una historia detras.') + '">Quiero saber mas</button>' +
+              '<button class="intro-choice-btn" data-response="' + encodeURIComponent('Increible captura! Los momentos reales del viaje son los que mejor cuentan la historia.') + '">Increible</button>' +
+            '</div>' +
+            '<div class="intro-response"></div>' +
+          '</div>' +
+        '</div>';
+      });
+      localMediaHtml += '</div>';
+    }
+
+    var html = '<div class="panel-header">' +
+      '<div>' +
+        '<div class="panel-country-label" style="color:' + cc + '">' + loc.flag + ' ' + loc.country + '</div>' +
+        '<div class="panel-city">' + loc.city + '</div>' +
+        '<div class="panel-subtitle">Cap. ' + loc.chapter + ' &mdash; ' + loc.subtitle + '</div>' +
+      '</div>' +
+      '<button class="panel-close" id="panel-close-btn">&times;</button>' +
+    '</div>' +
+    bookLinkHtml +
+    videoHtml +
+    localMediaHtml +
+    photosHtml +
+    '<div class="panel-story">' + loc.story + '</div>' +
+    '<div class="panel-full-story" id="panel-full-story">' + fullStoryParagraphs + '</div>' +
+    '<span class="read-more-btn" id="read-more-btn">Leer mas...</span>' +
+    '<div class="panel-recipes-title">Recetas de ' + loc.city + '</div>' +
+    recipesHtml;
+
+    // Mark city as explored
+    markExplored(locId);
+
+    panelScroll.innerHTML = html;
+    panelScroll.scrollTop = 0;
+
+    // Show panel
+    overlay.classList.add('active');
+    panel.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Bind close
+    $('#panel-close-btn').addEventListener('click', closePanel);
+
+    // Bind read more
+    var readMoreBtn = $('#read-more-btn');
+    var fullStoryEl = $('#panel-full-story');
+    readMoreBtn.addEventListener('click', function() {
+      var expanded = fullStoryEl.classList.toggle('expanded');
+      readMoreBtn.textContent = expanded ? 'Leer menos' : 'Leer mas...';
+    });
+
+    // Bind recipe expanders
+    $$('.recipe-expand-btn', panelScroll).forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var recipeId = btn.getAttribute('data-recipe');
+        var fullEl = document.getElementById('recipe-' + recipeId);
+        var expanded = fullEl.classList.toggle('expanded');
+        btn.innerHTML = expanded ? 'Ocultar receta &larr;' : 'Ver receta completa &rarr;';
+      });
+    });
+
+    // Bind video thumbnail click -> embed iframe
+    var videoThumb = document.getElementById('panel-video-thumb');
+    if (videoThumb) {
+      videoThumb.addEventListener('click', function() {
+        var vid = videoThumb.getAttribute('data-vid');
+        videoThumb.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + vid + '?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>';
+        videoThumb.classList.add('playing');
+      });
+    }
+
+    // Bind photo lightbox
+    $$('.photo-card', panelScroll).forEach(function(card) {
+      card.addEventListener('click', function() {
+        var src = card.getAttribute('data-photo-src');
+        var caption = card.getAttribute('data-photo-caption');
+        openLightbox(src, caption);
+      });
+    });
+
+    // Bind interactive intro choice buttons
+    $$('.intro-choice-btn', panelScroll).forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var siblings = btn.parentElement.querySelectorAll('.intro-choice-btn');
+        siblings.forEach(function(s) { s.classList.remove('active'); });
+        btn.classList.add('active');
+        var responseEl = btn.parentElement.nextElementSibling;
+        if (responseEl && responseEl.classList.contains('intro-response')) {
+          responseEl.textContent = decodeURIComponent(btn.getAttribute('data-response'));
+          responseEl.classList.add('visible');
+        }
+      });
+    });
+  }
+
+  // -----------------------------------------------------------
+  // LIGHTBOX
+  // -----------------------------------------------------------
+  var lightbox = $('#lightbox');
+  var lightboxImg = $('#lightbox-img');
+  var lightboxCaption = $('#lightbox-caption');
+  var lightboxClose = $('#lightbox-close');
+
+  function openLightbox(src, caption) {
+    lightboxImg.src = src;
+    lightboxCaption.textContent = caption;
+    lightbox.classList.add('active');
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    lightboxImg.src = '';
+  }
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  function closePanel() {
+    overlay.classList.remove('active');
+    panel.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  overlay.addEventListener('click', closePanel);
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      if (lightbox.classList.contains('active')) closeLightbox();
+      else closePanel();
+    }
+  });
+
+  // -----------------------------------------------------------
+  // INIT
+  // -----------------------------------------------------------
+  renderMap();
+  renderDestinations();
+  renderChronicles();
+  renderVideos();
+  updateUnlockBar();
+
+  // Deep linking: handle #city-{id} from book links
+  function handleCityDeepLink() {
+    var hash = window.location.hash;
+    if (hash && hash.indexOf('#city-') === 0) {
+      var cityId = hash.replace('#city-', '');
+      var idx = LOCATIONS.findIndex(function(l) { return l.id === cityId; });
+      if (idx >= 0) {
+        selectCity(idx);
+        setTimeout(function() { enterCity(); }, 500);
+      }
+    }
+  }
+  handleCityDeepLink();
+  window.addEventListener('hashchange', handleCityDeepLink);
+
+})();
+</script>
+
+</body>
+</html>
