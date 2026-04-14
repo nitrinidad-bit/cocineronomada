@@ -504,8 +504,8 @@ const LAYERS = {
     patches: [],
     pins: [
       { x: 22, y: 40, name: "Americas",  zone: "AMERICAS \u2022 La ruta",  kind: "zone", target: "americas" },
-      { x: 82, y: 33, name: "Japon",     zone: "ASIA \u2022 Japon",        kind: "zone", target: "japon" },
-      { x: 73, y: 44, name: "Tailandia", zone: "ASIA \u2022 Sudeste",      kind: "zone", target: "tailandia" }
+      { x: 82, y: 33, name: "Japon",     zone: "ASIA \u2022 Japon",        kind: "comingsoon" },
+      { x: 73, y: 44, name: "Tailandia", zone: "ASIA \u2022 Sudeste",      kind: "comingsoon" }
     ]
   },
   americas: {
@@ -706,6 +706,10 @@ function renderCrumbs() {
 }
 
 function onPinClick(pin, el) {
+  if (pin.kind === "comingsoon") {
+    openComingSoonDialog(pin);
+    return;
+  }
   if (pin.kind === "zone" && LAYERS[pin.target]) {
     /* First tap on a zone shows tooltip; second tap enters */
     if (!el.classList.contains("show-tip")) {
@@ -718,6 +722,22 @@ function onPinClick(pin, el) {
   } else if (pin.target === "libro" && pin.chapter) {
     openCityDialog(pin);
   }
+}
+
+function openComingSoonDialog(pin) {
+  document.getElementById("dlg-title").textContent = pin.name.toUpperCase();
+  document.getElementById("dlg-sub").textContent   = pin.zone;
+  document.getElementById("dlg-body").innerHTML    =
+    "<p><b>COMING SOON</b></p>" +
+    "<p style='margin-top:8px;font-size:7px;color:var(--muted)'>Proximo capitulo del viaje.<br>En produccion.</p>";
+  const acts = document.getElementById("dlg-actions");
+  acts.innerHTML = "";
+  const aClose = document.createElement("button");
+  aClose.className = "secondary";
+  aClose.textContent = "B - VOLVER";
+  aClose.addEventListener("click", closeDialog);
+  acts.appendChild(aClose);
+  $dialog.classList.add("open");
 }
 
 function enterZone(key) {
