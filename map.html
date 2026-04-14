@@ -271,6 +271,26 @@
     border-radius: 50%;
   }
 
+  /* Pin bloqueado (ruta en orden desde el mapa) */
+  .pin.locked {
+    background: var(--border) !important;
+    border-color: var(--muted) !important;
+    animation: none !important;
+    opacity: 0.85;
+  }
+  .pin.locked::before {
+    content: "\1F512"; /* candado */
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--cream);
+    pointer-events: none;
+  }
+  .pin.zone.locked::before { font-size: 13px; }
+
   .pin-tip {
     position: absolute;
     left: 50%;
@@ -661,15 +681,17 @@ function render() {
   $pins.innerHTML = "";
   layer.pins.forEach((p, i) => {
     const el = document.createElement("button");
-    el.className = "pin" + (p.kind === "zone" ? " zone" : "");
+    const locked = isPinLocked(p);
+    el.className = "pin" + (p.kind === "zone" ? " zone" : "") + (locked ? " locked" : "");
     el.dataset.kind = p.kind;
+    el.dataset.locked = locked ? "1" : "0";
     el.style.left = p.x + "%";
     el.style.top  = p.y + "%";
-    el.setAttribute("aria-label", p.name + " - " + p.zone);
+    el.setAttribute("aria-label", p.name + " - " + p.zone + (locked ? " - bloqueado" : ""));
     el.innerHTML =
       '<span class="pin-tip">' +
         '<span class="tip-name">' + p.name.toUpperCase() + '</span>' +
-        '<span class="tip-sub">' + p.zone + '</span>' +
+        '<span class="tip-sub">' + (locked ? "BLOQUEADO" : p.zone) + '</span>' +
       '</span>';
     el.addEventListener("click", (ev) => { ev.stopPropagation(); onPinClick(p, el); });
     /* touch: toggle visible tooltip without firing nav */
@@ -705,7 +727,72 @@ function renderCrumbs() {
   });
 }
 
+/* ================= RUTA EN ORDEN (solo mapa) =================
+   El libro (libro/index.html) guarda `nomada_max_page` al leer.
+   Desde el mapa, los pins se desbloquean en orden de ruta.
+   El libro sigue libre (TOC permite saltar). */
+const ROUTE_ORDER = [2, 3, 5, 6, 7, 8, 9, 10, 11, 13, 14, 16, 17, 18, 19, 23, 24, 25, 27, 28, 29];
+
+function maxReached() {
+  try { return parseInt(localStorage.getItem('nomada_max_page')) || 0; } catch(e) { return 0; }
+}
+
+function nextUnlockedChapter() {
+  const max = maxReached();
+  for (const ch of ROUTE_ORDER) if (ch > max) return ch;
+  return ROUTE_ORDER[ROUTE_ORDER.length - 1];
+}
+
+function chapterNameFor(chapter) {
+  for (const key in LAYERS) {
+    for (const p of LAYERS[key].pins || []) {
+      if (p.chapter === chapter && p.target === 'libro') return p.name;
+    }
+  }
+  return 'capitulo anterior';
+}
+
+function isPinLocked(p) {
+  if (p.kind === 'comingsoon') return false;
+  if (p.target === 'libro' && p.chapter) {
+    return p.chapter > nextUnlockedChapter();
+  }
+  if (p.kind === 'zone' && LAYERS[p.target]) {
+    /* zona desbloqueada si al menos una ciudad adentro esta desbloqueada */
+    const inner = LAYERS[p.target].pins || [];
+    return !inner.some(ip => !isPinLocked(ip));
+  }
+  return false;
+}
+
+function openLockedDialog(pin) {
+  const nextCh = nextUnlockedChapter();
+  const needed = chapterNameFor(nextCh);
+  document.getElementById("dlg-title").textContent = "\uD83D\uDD12 BLOQUEADO";
+  document.getElementById("dlg-sub").textContent   = pin.name.toUpperCase();
+  document.getElementById("dlg-body").innerHTML    =
+    "<p>Este punto esta bloqueado.</p>" +
+    "<p style='margin-top:8px;font-size:7px;color:var(--muted)'>" +
+    "Termina primero <b>" + needed.toUpperCase() + "</b> para desbloquear el siguiente paso de la ruta." +
+    "</p>";
+  const acts = document.getElementById("dlg-actions");
+  acts.innerHTML = "";
+  const aOpen = document.createElement("a");
+  aOpen.href = "libro/index.html?page=" + nextCh;
+  aOpen.textContent = "A - IR AL SIGUIENTE";
+  const aClose = document.createElement("button");
+  aClose.className = "secondary";
+  aClose.textContent = "B - VOLVER";
+  aClose.addEventListener("click", closeDialog);
+  acts.appendChild(aOpen); acts.appendChild(aClose);
+  $dialog.classList.add("open");
+}
+
 function onPinClick(pin, el) {
+  if (isPinLocked(pin)) {
+    openLockedDialog(pin);
+    return;
+  }
   if (pin.kind === "comingsoon") {
     openComingSoonDialog(pin);
     return;
@@ -789,6 +876,12 @@ document.addEventListener("click", (e) => {
     document.querySelectorAll(".pin.show-tip").forEach(n => n.classList.remove("show-tip"));
   }
 });
+
+/* Al volver al mapa (desde libro), re-renderizar para actualizar candados */
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) render();
+});
+window.addEventListener("pageshow", () => render());
 
 /* buttons */
 document.getElementById("btn-back").addEventListener("click", goBack);

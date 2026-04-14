@@ -949,9 +949,14 @@ body {
   // ============================================================
 
   const STORAGE_KEY = 'nomada_libro_page';
+  const MAX_KEY = 'nomada_max_page';
 
   function saveProgress() {
-    try { localStorage.setItem(STORAGE_KEY, currentPage); } catch(e) {}
+    try {
+      localStorage.setItem(STORAGE_KEY, currentPage);
+      const prevMax = parseInt(localStorage.getItem(MAX_KEY)) || 0;
+      if (currentPage > prevMax) localStorage.setItem(MAX_KEY, currentPage);
+    } catch(e) {}
   }
 
   function loadProgress() {
