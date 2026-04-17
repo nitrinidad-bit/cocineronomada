@@ -201,40 +201,52 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   });
 });
 
-// ---- Newsletter form ----
+// ---- Form submission via Formspree ----
+async function submitForm(form, successHTML) {
+  const data = new FormData(form);
+  const btn = form.querySelector('button[type="submit"]');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (res.ok) {
+      form.innerHTML = successHTML;
+    } else {
+      btn.textContent = 'Error — intenta de nuevo';
+      btn.disabled = false;
+    }
+  } catch {
+    btn.textContent = 'Error — intenta de nuevo';
+    btn.disabled = false;
+  }
+}
+
+// Newsletter form
 document.getElementById('newsletterForm').addEventListener('submit', e => {
   e.preventDefault();
-  const form = e.target;
-  const name = form.querySelector('[name="name"]').value;
-  const email = form.querySelector('[name="email"]').value;
-
-  // For MVP: store locally and show confirmation
-  const subs = JSON.parse(localStorage.getItem('cn_subscribers') || '[]');
-  subs.push({ name, email, date: new Date().toISOString(), type: 'newsletter' });
-  localStorage.setItem('cn_subscribers', JSON.stringify(subs));
-
-  form.innerHTML = `
+  const name = e.target.querySelector('[name="name"]').value;
+  submitForm(e.target, `
     <div style="text-align:center;padding:20px">
       <p style="font-size:1.2rem;color:var(--gold);margin-bottom:8px">Bienvenido, ${name}!</p>
       <p style="color:var(--muted)">Manana recibes tu primer capitulo.</p>
     </div>
-  `;
+  `);
 });
 
 // Store waitlist form
 document.getElementById('storeForm').addEventListener('submit', e => {
   e.preventDefault();
-  const email = e.target.querySelector('[name="email"]').value;
-
-  const waitlist = JSON.parse(localStorage.getItem('cn_store_waitlist') || '[]');
-  waitlist.push({ email, date: new Date().toISOString() });
-  localStorage.setItem('cn_store_waitlist', JSON.stringify(waitlist));
-
-  e.target.innerHTML = `
+  submitForm(e.target, `
     <div style="text-align:center;padding:12px">
       <p style="color:var(--gold)">Te avisaremos cuando abramos!</p>
     </div>
-  `;
+  `);
 });
 
 // ---- Init ----
