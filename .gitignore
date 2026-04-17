@@ -1,6 +1,20 @@
 # Privados — no subir a GitHub
 legal/
 assets/COCINERO_NOMADA/Invoice.pdf
+landing/newsletter/subscribers.json
+
+# Variables de entorno y secretos
+.env
+.env.*
+*.key
+*.pem
+
+# Reportes de seguridad
+security-report.txt
+security-agent.sh
+
+# Newsletter generados
+landing/newsletter/preview.html
 
 # Material fuente (no usado en el sitio publicado)
 enlaces de contenido mapa/
