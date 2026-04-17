@@ -18,7 +18,10 @@ module.exports = {
   // Resend API
   RESEND_API_KEY: process.env.RESEND_API_KEY,
 
-  // Subscribers file path (relative to newsletter/)
+  // Resend Audience ID (create at resend.com/audiences)
+  RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID || '',
+
+  // Fallback subscribers file (dev/testing only — never commit with real emails)
   SUBSCRIBERS_FILE: './subscribers.json',
 
   // Total chapters in the book (including prólogo and epílogo)

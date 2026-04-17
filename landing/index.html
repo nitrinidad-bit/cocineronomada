@@ -97,14 +97,12 @@
           <p>Recibe un capitulo del libro cada dia durante 28 dias. Despues, una receta semanal con ingredientes, pasos e historias del camino.</p>
           <p class="highlight">Cada email te conecta con un lugar, una persona, un sabor.</p>
         </div>
-        <form class="newsletter-form" id="newsletterForm" action="https://formsubmit.co/cocineronomada@hotmail.com" method="POST">
-          <input type="hidden" name="_subject" value="Nuevo suscriptor Newsletter - Cocinero Nomada">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_next" value="https://nitrinidad-bit.github.io/cocineronomada/landing/index.html?subscribed=true#newsletter">
-          <input type="hidden" name="_template" value="table">
+        <form class="newsletter-form" id="newsletterForm" data-form-type="newsletter">
+          <input type="hidden" name="_form_type" value="newsletter">
           <input type="text" name="name" placeholder="Tu nombre" required>
           <input type="email" name="email" placeholder="tu@email.com" required>
           <button type="submit" class="btn btn-primary" style="justify-content:center">Suscribirme</button>
+          <p class="form-status" id="newsletterStatus" style="font-size:0.85rem;text-align:center;margin-top:8px;display:none"></p>
           <p style="font-size:0.75rem;color:var(--muted);text-align:center">Sin spam. Solo comida, viajes e historias honestas.</p>
         </form>
       </div>
@@ -118,13 +116,11 @@
         <div class="store-badge">Proximamente</div>
         <h2>Tienda Cocinero Nomada</h2>
         <p>Productos, merch y experiencias culinarias. Dejanos tu email y te avisamos cuando abramos.</p>
-        <form class="newsletter-form" id="storeForm" action="https://formsubmit.co/cocineronomada@hotmail.com" method="POST" style="max-width:400px;margin:0 auto">
-          <input type="hidden" name="_subject" value="Nuevo interesado Tienda - Cocinero Nomada">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_next" value="https://nitrinidad-bit.github.io/cocineronomada/landing/index.html?store=true#tienda">
-          <input type="hidden" name="_template" value="table">
+        <form class="newsletter-form" id="storeForm" data-form-type="store" style="max-width:400px;margin:0 auto">
+          <input type="hidden" name="_form_type" value="store">
           <input type="email" name="email" placeholder="tu@email.com" required>
           <button type="submit" class="btn btn-secondary" style="justify-content:center;width:100%">Avisame</button>
+          <p class="form-status" id="storeStatus" style="font-size:0.85rem;text-align:center;margin-top:8px;display:none"></p>
         </form>
       </div>
     </div>

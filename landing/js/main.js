@@ -201,12 +201,63 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   });
 });
 
-// ---- Form submission via FormSubmit.co ----
-// FormSubmit works best with native form submission (not AJAX on first use)
-// because it needs to confirm the email the first time.
-// After confirmation, AJAX works too.
+// ---- Newsletter / Store form submission via Cloudflare Worker ----
+// Worker URL — update after deploying with: npx wrangler deploy
+const SUBSCRIBE_WORKER_URL = 'https://cocinero-subscribe.YOUR_SUBDOMAIN.workers.dev';
 
-// Show success message if returning from FormSubmit redirect
+function setupForm(formId, statusId, successMsg) {
+  const form = document.getElementById(formId);
+  const status = document.getElementById(statusId);
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    status.style.display = 'none';
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch(SUBSCRIBE_WORKER_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        form.innerHTML = `
+          <div style="text-align:center;padding:20px">
+            <p style="font-size:1.2rem;color:var(--gold);margin-bottom:8px">${successMsg}</p>
+          </div>`;
+      } else {
+        const err = await res.json().catch(() => ({}));
+        status.textContent = err.error || 'Error al suscribir. Intenta de nuevo.';
+        status.style.color = '#b83220';
+        status.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    } catch {
+      status.textContent = 'Error de conexion. Intenta de nuevo.';
+      status.style.color = '#b83220';
+      status.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  });
+}
+
+setupForm('newsletterForm', 'newsletterStatus', 'Bienvenido! Manana recibes tu primer capitulo.');
+setupForm('storeForm', 'storeStatus', 'Te avisaremos cuando abramos!');
+
+// Handle redirect params (backwards compat)
 if (window.location.search.includes('subscribed=true')) {
   window.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('newsletterForm');

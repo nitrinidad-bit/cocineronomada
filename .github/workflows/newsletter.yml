@@ -16,6 +16,9 @@ on:
         type: boolean
         default: false
 
+permissions:
+  contents: read
+
 jobs:
   send-newsletter:
     runs-on: ubuntu-latest
@@ -33,6 +36,7 @@ jobs:
         working-directory: landing/newsletter
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_AUDIENCE_ID: ${{ secrets.RESEND_AUDIENCE_ID }}
           NEWSLETTER_START_DATE: ${{ secrets.NEWSLETTER_START_DATE }}
           LANDING_URL: ${{ secrets.LANDING_URL }}
           FROM_EMAIL: ${{ secrets.FROM_EMAIL }}

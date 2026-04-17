@@ -15,7 +15,8 @@ const config = require('./config');
 const args = process.argv.slice(2);
 const isTest = args.includes('--test');
 const forceDayIdx = args.indexOf('--day');
-const forceDay = forceDayIdx !== -1 ? parseInt(args[forceDayIdx + 1]) : null;
+const rawDay = forceDayIdx !== -1 ? parseInt(args[forceDayIdx + 1], 10) : null;
+const forceDay = (rawDay !== null && !isNaN(rawDay) && rawDay >= 1 && rawDay <= 100) ? rawDay : (rawDay !== null ? (() => { console.error('Error: --day debe ser un número entre 1 y 100'); process.exit(1); })() : null);
 
 // ---- Calculate day number ----
 function getDayNumber() {
@@ -37,9 +38,31 @@ function loadRecipes() {
   return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'recipes.json'), 'utf8'));
 }
 
-function loadSubscribers() {
+async function loadSubscribers() {
+  // Try Resend Audiences API first (production)
+  if (config.RESEND_API_KEY && config.RESEND_AUDIENCE_ID) {
+    console.log('   Loading subscribers from Resend Audiences...');
+    const response = await fetch(
+      `https://api.resend.com/audiences/${config.RESEND_AUDIENCE_ID}/contacts`,
+      {
+        headers: { 'Authorization': `Bearer ${config.RESEND_API_KEY}` }
+      }
+    );
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(`Failed to load audience contacts: ${response.status} - ${err}`);
+    }
+    const data = await response.json();
+    // Filter only subscribed contacts
+    return (data.data || [])
+      .filter(c => !c.unsubscribed)
+      .map(c => ({ email: c.email, name: c.first_name || '' }));
+  }
+
+  // Fallback to local file (development/testing only)
   const file = path.join(__dirname, config.SUBSCRIBERS_FILE);
   if (!fs.existsSync(file)) return [];
+  console.log('   Loading subscribers from local file (dev mode)...');
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
@@ -179,9 +202,9 @@ async function main() {
   }
 
   // Load subscribers and send
-  const subscribers = loadSubscribers();
+  const subscribers = await loadSubscribers();
   if (subscribers.length === 0) {
-    console.log('⚠️  No subscribers found. Add emails to subscribers.json');
+    console.log('⚠️  No subscribers found. Configure RESEND_AUDIENCE_ID or add to subscribers.json');
     return;
   }
 
