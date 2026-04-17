@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cocinero Nomada — Un viaje por lo que realmente alimenta</title>
+  <meta name="description" content="Cocinero Nomada: un viaje culinario por America Latina. 26 capitulos, 6 paises, 27 recetas. Lee el libro, explora el blog, suscribete al newsletter.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="../assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-WHITE.png" type="image/png">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <img src="../assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-WHITE.png" alt="Cocinero Nomada">
+        <span>Cocinero Nomada</span>
+      </a>
+      <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+      <div class="nav-links">
+        <a href="#libro">El Libro</a>
+        <a href="#blog">Blog</a>
+        <a href="#tienda">Tienda</a>
+        <a href="https://youtube.com/@cocineronomadapr" target="_blank">YouTube</a>
+        <a href="#newsletter" class="nav-cta">Suscribete</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO: EL LIBRO -->
+  <section class="hero" id="libro">
+    <div class="hero-content">
+      <img src="../assets/COCINERO_NOMADA/COCINERO-NOMADA-LOGOTIPO-WHITE.png" alt="Cocinero Nomada" class="hero-logo">
+      <h1>Un viaje por lo que <span>realmente alimenta</span></h1>
+      <p class="subtitle">"El viaje no empieza cuando compras el pasaje. Empieza cuando decides que no puedes quedarte."</p>
+      <p class="stats-line">
+        <strong>26</strong> capitulos &middot; <strong>6</strong> paises &middot; <strong>27</strong> recetas &middot; <strong>14</strong> ciudades
+      </p>
+      <div class="hero-actions">
+        <a href="../libro/index.html" class="btn btn-primary">Leer el Libro</a>
+        <a href="#newsletter" class="btn btn-secondary">Suscribete al Newsletter</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROUTE BAR -->
+  <div class="route-bar">
+    <div class="container">
+      <div class="route-stops">
+        <div class="route-stop"><div class="route-dot" style="background:var(--pr)"></div> Puerto Rico</div>
+        <span class="route-arrow">&rarr;</span>
+        <div class="route-stop"><div class="route-dot" style="background:var(--usa)"></div> New York</div>
+        <span class="route-arrow">&rarr;</span>
+        <div class="route-stop"><div class="route-dot" style="background:var(--col)"></div> Colombia</div>
+        <span class="route-arrow">&rarr;</span>
+        <div class="route-stop"><div class="route-dot" style="background:var(--ecu)"></div> Ecuador</div>
+        <span class="route-arrow">&rarr;</span>
+        <div class="route-stop"><div class="route-dot" style="background:var(--peru)"></div> Peru</div>
+        <span class="route-arrow">&rarr;</span>
+        <div class="route-stop"><div class="route-dot" style="background:var(--mex)"></div> Mexico</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOG SECTION -->
+  <section class="section" id="blog">
+    <div class="container">
+      <div class="section-header">
+        <h2>Cronicas y Recetas</h2>
+        <p>Historias de viaje y sabores de America Latina. Cada semana, contenido nuevo del camino.</p>
+      </div>
+      <div class="blog-filters">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="chapter">Cronicas</button>
+        <button class="filter-btn" data-filter="recipe">Recetas</button>
+        <button class="filter-btn" data-filter="Puerto Rico">Puerto Rico</button>
+        <button class="filter-btn" data-filter="Colombia">Colombia</button>
+        <button class="filter-btn" data-filter="Peru">Peru</button>
+        <button class="filter-btn" data-filter="Mexico">Mexico</button>
+      </div>
+      <div class="blog-grid" id="blogGrid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="blog-more">
+        <a href="blog/index.html" class="btn btn-secondary">Ver todo el blog</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="section newsletter-section" id="newsletter">
+    <div class="container">
+      <div class="newsletter-content">
+        <div class="newsletter-info">
+          <h2>28 dias, 28 historias</h2>
+          <p>Recibe un capitulo del libro cada dia durante 28 dias. Despues, una receta semanal con ingredientes, pasos e historias del camino.</p>
+          <p class="highlight">Cada email te conecta con un lugar, una persona, un sabor.</p>
+        </div>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="text" name="name" placeholder="Tu nombre" required>
+          <input type="email" name="email" placeholder="tu@email.com" required>
+          <button type="submit" class="btn btn-primary" style="justify-content:center">Suscribirme</button>
+          <p style="font-size:0.75rem;color:var(--muted);text-align:center">Sin spam. Solo comida, viajes e historias honestas.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIENDA (PLACEHOLDER) -->
+  <section class="section store-section" id="tienda">
+    <div class="container">
+      <div class="store-content">
+        <div class="store-badge">Proximamente</div>
+        <h2>Tienda Cocinero Nomada</h2>
+        <p>Productos, merch y experiencias culinarias. Dejanos tu email y te avisamos cuando abramos.</p>
+        <form class="newsletter-form" id="storeForm" style="max-width:400px;margin:0 auto">
+          <input type="email" name="email" placeholder="tu@email.com" required>
+          <button type="submit" class="btn btn-secondary" style="justify-content:center;width:100%">Avisame</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../assets/COCINERO_NOMADA/COCINERO-NOMADA-LOGOTIPO-WHITE.png" alt="Cocinero Nomada">
+          <p>Un viaje culinario por America Latina. Sabores sin fronteras.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Explorar</h4>
+          <a href="../libro/index.html">Leer el Libro</a>
+          <a href="../app/index.html">App Interactiva</a>
+          <a href="blog/index.html">Blog</a>
+        </div>
+        <div class="footer-col">
+          <h4>Conectar</h4>
+          <a href="https://youtube.com/@cocineronomadapr" target="_blank">YouTube</a>
+          <a href="https://instagram.com/cocineronomada" target="_blank">Instagram</a>
+          <a href="#newsletter">Newsletter</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="../legal/">Privacidad</a>
+          <a href="../legal/">Terminos</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Cocinero Nomada &middot; @cocineronomada</span>
+        <div class="footer-social">
+          <a href="https://youtube.com/@cocineronomadapr" target="_blank" title="YouTube">&#9654;</a>
+          <a href="https://instagram.com/cocineronomada" target="_blank" title="Instagram">&#9673;</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

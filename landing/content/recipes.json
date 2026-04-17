@@ -1,0 +1,777 @@
+[
+  {
+    "id": "el-acho-pijo",
+    "name": "El Acho Pijo",
+    "desc": "Sandwich de pernil boricua con escalivada catalana. Fusion de Puerto Rico y Espana nacida en Lote 23, Santurce.",
+    "city": "San Juan",
+    "country": "Puerto Rico",
+    "tags": ["Fusion", "Pernil", "Escalivada"],
+    "emoji": "\ud83e\udd6a",
+    "bookChapter": 2,
+    "servings": "4 sandwiches",
+    "time": "1 hora (+ marinado del pernil)",
+    "difficulty": "Media",
+    "ingredients": [
+      "1 lb pernil de cerdo desmechado con chicharron crujiente",
+      "2 pimientos rojos grandes",
+      "1 berenjena grande",
+      "2 cebollas medianas",
+      "4 cdas aceite de oliva extra virgen",
+      "Hierbas aromaticas frescas (romero, tomillo)",
+      "4 panes crujientes tipo baguette",
+      "Sal y pimienta al gusto"
+    ],
+    "steps": [
+      "Prepara el pernil: marina la carne de cerdo con adobo criollo y hornea lento hasta que se deshaga. Reserva el chicharron crujiente.",
+      "Para la escalivada: asa los pimientos, berenjenas y cebollas enteros al horno a 400F hasta que la piel se separe y la carne quede dulce y suave (40-50 min).",
+      "Pela los vegetales asados y corta en tiras. Alina con aceite de oliva, sal y hierbas aromaticas.",
+      "Ensambla: pan crujiente, base generosa de pernil desmechado con chicharron, escalivada encima.",
+      "Sirve caliente. Dos mundos en un bocado \u2014 Puerto Rico y Cataluna."
+    ]
+  },
+  {
+    "id": "cuchifritos-del-bronx",
+    "name": "Cuchifritos del Bronx",
+    "desc": "Frituras boricuas de la diaspora. Morcilla, rellenos de papa, alcapurrias, tostones y chicharron. Comidos de pie, en movimiento.",
+    "city": "New York",
+    "country": "Estados Unidos",
+    "tags": ["Diaspora", "Frituras", "Callejero"],
+    "emoji": "\ud83c\udf5f",
+    "bookChapter": 3,
+    "servings": "6-8 porciones para compartir",
+    "time": "1.5 horas",
+    "difficulty": "Media-Alta",
+    "ingredients": [
+      "Para alcapurrias: 2 lbs platano verde y yautia rallados, 1/2 lb carne molida sazonada",
+      "Para rellenos de papa: 6 papas, 1/2 lb carne molida con sofrito",
+      "Para tostones: 4 platanos verdes, sal, aceite",
+      "1 lb chicharron de cerdo",
+      "1 lb morcilla",
+      "Aceite vegetal para freir",
+      "Sofrito, sazon, sal al gusto"
+    ],
+    "steps": [
+      "Alcapurrias: mezcla platano y yautia rallados con achiote. Forma ovals, rellena con carne, cierra y frie en aceite caliente hasta dorar.",
+      "Rellenos de papa: sancoca papas, prensa en pure, forma bolitas rellenas de carne, empaniza y frie.",
+      "Tostones: corta platano en rodajas de 1 pulgada, frie, aplasta, frie de nuevo hasta crujir.",
+      "Chicharron: frie la piel de cerdo hasta que cruja. Morcilla: frie entera hasta que la piel este crujiente.",
+      "Sirve todo junto en bandeja de carton. Se come de pie, en la avenida, con salsa picante."
+    ]
+  },
+  {
+    "id": "pastel-de-arroz",
+    "name": "Pastel de Arroz",
+    "desc": "Arroz cocinado con especias, envuelto en hoja de bijao, cocido al vapor. Precision popular de siglos.",
+    "city": "Santa Marta",
+    "country": "Colombia",
+    "tags": ["Arroz", "Hoja de Platano", "Costeno"],
+    "emoji": "\ud83c\udf5a",
+    "bookChapter": 6,
+    "servings": "8-10 pasteles",
+    "time": "2 horas",
+    "difficulty": "Media-Alta",
+    "ingredients": [
+      "2 tazas arroz cocido",
+      "1/2 lb pollo desmechado",
+      "Hogao (cebolla y tomate sofrito)",
+      "Aceitunas",
+      "1 zanahoria rallada",
+      "Hojas de platano o bijao",
+      "Aji dulce, comino, sal",
+      "Hilo para amarrar"
+    ],
+    "steps": [
+      "Licua el arroz cocido con un poco de caldo hasta hacer una masa suave.",
+      "Prepara el relleno: pollo con hogao, zanahoria, aceitunas y especias.",
+      "Corta las hojas de platano en cuadros y pasalas por fuego para suavizarlas.",
+      "Pon una capa de masa de arroz en la hoja, agrega relleno, cierra y amarra con hilo.",
+      "Cocina al vapor por 45 minutos. Sirve con salsa de tomate o aji."
+    ]
+  },
+  {
+    "id": "guarapo-de-cana",
+    "name": "Guarapo de Cana",
+    "desc": "Jugo de cana prensada al momento. Dulzura que no es azucar refinada sino cana entera, con ese fondo terroso que recuerda la tierra.",
+    "city": "Santa Marta",
+    "country": "Colombia",
+    "tags": ["Bebida", "Callejero", "Natural"],
+    "emoji": "\ud83e\uddc3",
+    "bookChapter": 6,
+    "servings": "4 vasos",
+    "time": "5 min",
+    "difficulty": "Facil",
+    "ingredients": [
+      "4-5 tallos de cana de azucar fresca",
+      "Hielo",
+      "Jugo de limon (opcional)",
+      "Jengibre fresco (opcional)"
+    ],
+    "steps": [
+      "Pela los tallos de cana y corta en trozos que quepan en el trapiche o prensa.",
+      "Pasa la cana por el trapiche para extraer el jugo. Repite para sacar todo el liquido.",
+      "Cuela el jugo para remover fibras.",
+      "Sirve frio con hielo. Opcionalmente agrega un toque de limon o jengibre.",
+      "Se toma de pie, en el mercado, como combustible para lo que viene."
+    ]
+  },
+  {
+    "id": "bandeja-paisa",
+    "name": "Bandeja Paisa",
+    "desc": "Frijoles, arroz, carne molida, chicharron, huevo frito, platano maduro, aguacate, arepa. Abundancia sin pretension, nacida de alimentar gente que hacia trabajo fisico duro.",
+    "city": "Bogota",
+    "country": "Colombia",
+    "tags": ["Paisa", "Completo", "Tradicion"],
+    "emoji": "\ud83e\uded8",
+    "bookChapter": 9,
+    "servings": "2 porciones",
+    "time": "2 horas",
+    "difficulty": "Alta",
+    "ingredients": [
+      "1 taza frijoles rojos (remojados)",
+      "1 taza arroz blanco",
+      "1/2 lb carne molida",
+      "200g chicharron",
+      "2 huevos",
+      "1 aguacate",
+      "2 arepas blancas",
+      "2 tajadas de platano maduro",
+      "Hogao (tomate y cebolla sofrita)"
+    ],
+    "steps": [
+      "Cocina los frijoles con sal hasta que esten tiernos (1.5 horas o en presion 30 min).",
+      "Prepara el arroz blanco. Frie el chicharron hasta que cruja.",
+      "Cocina la carne molida con hogao.",
+      "Frie los huevos y las tajadas de platano maduro.",
+      "Ensambla: cada plato lleva todos los componentes. Sirve con aguacate y arepa. Un plato que es una declaracion."
+    ]
+  },
+  {
+    "id": "ajiaco-bogotano",
+    "name": "Ajiaco Bogotano",
+    "desc": "Bogota en un plato. Tres tipos de papa, pollo, mazorca, guasca, alcaparras. Un caldo con profundidad que solo dan los ingredientes que llevan tiempo juntos.",
+    "city": "Bogota",
+    "country": "Colombia",
+    "tags": ["Sopa", "Pollo", "Bogotano"],
+    "emoji": "\ud83c\udf57",
+    "bookChapter": 9,
+    "servings": "6 porciones",
+    "time": "1.5 horas",
+    "difficulty": "Media",
+    "ingredients": [
+      "1 pollo entero en presas",
+      "3 papas criollas",
+      "3 papas pastusas",
+      "3 papas sabaneras",
+      "3 mazorcas",
+      "Guascas frescas o secas",
+      "Crema de leche",
+      "Alcaparras",
+      "Aguacate"
+    ],
+    "steps": [
+      "Hierve el pollo en agua con sal hasta cocinar (40 min). Saca y desmecha.",
+      "En el mismo caldo, agrega las tres papas cortadas. La criolla se deshace y espesa el caldo naturalmente.",
+      "Agrega mazorcas y cocina 20 min. Agrega guascas al final.",
+      "Sirve con pollo desmechado, crema, alcaparras y aguacate."
+    ]
+  },
+  {
+    "id": "chocolate-santafereno",
+    "name": "Chocolate Santafereno",
+    "desc": "Espeso, caliente, con queso adentro y pan al lado. No es postre \u2014 es ritual. La forma en que Bogota ha cerrado la tarde durante siglos.",
+    "city": "Bogota",
+    "country": "Colombia",
+    "tags": ["Bebida", "Ritual", "Bogotano"],
+    "emoji": "\u2615",
+    "bookChapter": 9,
+    "servings": "2 porciones",
+    "time": "15 min",
+    "difficulty": "Facil",
+    "ingredients": [
+      "2 pastillas de chocolate santafereno (o chocolate de mesa colombiano)",
+      "2 tazas de leche",
+      "1 taza de agua",
+      "100g queso campesino o queso fresco",
+      "Pan artesanal para acompanar",
+      "Azucar al gusto (opcional)"
+    ],
+    "steps": [
+      "Hierve el agua con la leche a fuego medio.",
+      "Agrega las pastillas de chocolate y revuelve con molinillo o batidor hasta que se disuelvan y espumen.",
+      "Corta el queso en cubos y ponlo directamente dentro de la taza de chocolate caliente.",
+      "Sirve con pan al lado. El queso se funde lentamente \u2014 la grasa contra la acidez del cacao. El equilibrio entre dulce y salado que no deberia funcionar y funciona perfectamente."
+    ]
+  },
+  {
+    "id": "hormigas-culonas",
+    "name": "Hormigas Culonas",
+    "desc": "Crujientes como mani bien tostado. Saladas con precision. Un fondo de sabor terroso y graso. Mil anos de tradicion Guane \u2014 el limite no es el sabor, es la idea que tienes antes de probarlo.",
+    "city": "Barichara",
+    "country": "Colombia",
+    "tags": ["Ancestral", "Proteina", "Santander"],
+    "emoji": "\ud83d\udc1c",
+    "bookChapter": 11,
+    "servings": "Snack para compartir",
+    "time": "20 min",
+    "difficulty": "Facil (si las consigues)",
+    "ingredients": [
+      "1 taza de hormigas culonas frescas (hormigas reina, temporada lluviosa)",
+      "Sal al gusto",
+      "1 cda aceite (opcional)"
+    ],
+    "steps": [
+      "Remueve las alas y patas de las hormigas.",
+      "En un sarten seco o con minimo aceite, tuesta a fuego medio.",
+      "Agrega sal. Tuesta hasta que esten crujientes (5-8 min).",
+      "El abdomen es la parte principal \u2014 robusto, casi esferico.",
+      "Sirve como snack. La primera es dificil por la idea. Despues, el sabor habla por si mismo."
+    ]
+  },
+  {
+    "id": "bolon-de-verde",
+    "name": "Bolon de Verde",
+    "desc": "Platano verde aplastado y moldeado, relleno de queso o chicharron, frito hasta crujir afuera y quedar suave adentro. Desayuno popular que nacio de la necesidad y termino siendo indispensable.",
+    "city": "Quito",
+    "country": "Ecuador",
+    "tags": ["Platano", "Desayuno", "Guayaquil"],
+    "emoji": "\ud83c\udf4c",
+    "bookChapter": 13,
+    "servings": "4 bolones",
+    "time": "30 min",
+    "difficulty": "Media",
+    "ingredients": [
+      "4 platanos verdes grandes",
+      "200g queso fresco o chicharron desmenuzado",
+      "2 cdas mantequilla o manteca",
+      "Sal al gusto",
+      "Aceite para freir"
+    ],
+    "steps": [
+      "Pela los platanos y cocina en agua con sal hasta que esten suaves (15 min).",
+      "Escurre y machaca los platanos calientes con mantequilla hasta formar una masa.",
+      "Toma porciones, aplana, pon queso o chicharron en el centro, cierra y moldea en bola.",
+      "Frie en aceite caliente hasta que la superficie quede crujiente y dorada.",
+      "Sirve caliente. Barato, nutritivo, satisfactorio de una manera que los platos complicados no alcanzan."
+    ]
+  },
+  {
+    "id": "locro-de-papa",
+    "name": "Locro de Papa",
+    "desc": "Sopa del altiplano ecuatoriano. Papa cocinada hasta deshacerse y volver a formar algo diferente. Con queso, con aguacate. Calor y nutricion densa a casi 3,000 metros.",
+    "city": "Quito",
+    "country": "Ecuador",
+    "tags": ["Sopa", "Papa", "Andino"],
+    "emoji": "\ud83e\udd63",
+    "bookChapter": 13,
+    "servings": "4 porciones",
+    "time": "40 min",
+    "difficulty": "Facil",
+    "ingredients": [
+      "6 papas grandes",
+      "1 litro leche",
+      "200g queso fresco",
+      "1 aguacate",
+      "Cebolla, ajo, comino",
+      "Aji para servir",
+      "Achiote"
+    ],
+    "steps": [
+      "Sofrie cebolla y ajo con achiote. Agrega papas cortadas y agua.",
+      "Cocina hasta que las papas se deshagan. Agrega leche y queso.",
+      "Cocina 10 min mas. La papa se incorpora al caldo naturalmente.",
+      "Sirve con aguacate y aji. En la altura tiene un sentido diferente \u2014 es el cuerpo pidiendote que lo cuides."
+    ]
+  },
+  {
+    "id": "ceviche-de-mancora",
+    "name": "Ceviche de Mancora",
+    "desc": "Pescado del dia en limon acido del norte. Aji limo, cebolla morada, cilantro. Comido de pie con los pies en la arena.",
+    "city": "Mancora",
+    "country": "Peru",
+    "tags": ["Ceviche", "Playa", "Fresco"],
+    "emoji": "\ud83d\udc1f",
+    "bookChapter": 14,
+    "servings": "2 porciones",
+    "time": "15 min",
+    "difficulty": "Facil",
+    "ingredients": [
+      "1 lb corvina fresca del dia",
+      "8-10 limones (los del norte son mas acidos)",
+      "1 aji limo rojo",
+      "1 cebolla morada",
+      "Cilantro fresco",
+      "Sal, pimienta",
+      "Choclo y camote para servir"
+    ],
+    "steps": [
+      "Corta el pescado en cubos de 1 pulgada. Sazona con sal.",
+      "Exprime los limones sobre el pescado. Agrega aji limo picado fino.",
+      "Agrega cebolla en plumas perfectas y cilantro.",
+      "Mezcla y sirve inmediatamente. La frescura es todo.",
+      "Acompana con choclo y camote sancochado. Se come de pie, viendo el Pacifico."
+    ]
+  },
+  {
+    "id": "choclo-con-queso",
+    "name": "Choclo con Queso",
+    "desc": "Maiz andino cocido al vapor. Grande, de granos anchos, menos dulce. Con queso blanco salado que se derrite con el calor. La comida correcta en el lugar correcto.",
+    "city": "Huaraz",
+    "country": "Peru",
+    "tags": ["Andino", "Simple", "Callejero"],
+    "emoji": "\ud83c\udf3d",
+    "bookChapter": 15,
+    "servings": "4 porciones",
+    "time": "30 min",
+    "difficulty": "Facil",
+    "ingredients": [
+      "4 choclos andinos grandes (mazorcas de maiz serrano)",
+      "200g queso fresco andino salado",
+      "Sal al gusto",
+      "Agua suficiente para hervir"
+    ],
+    "steps": [
+      "Pela los choclos y coloca en una olla grande con agua y sal.",
+      "Hierve a fuego medio por 20-25 minutos hasta que los granos esten tiernos.",
+      "Corta el queso en rebanadas gruesas.",
+      "Sirve el choclo caliente con el queso encima \u2014 se derrite lentamente con el calor.",
+      "Se come en la carretera, en un paso andino, con el frio empezando a sentirse. No hay sofisticacion que mejore eso."
+    ]
+  },
+  {
+    "id": "te-de-coca",
+    "name": "Te de Coca",
+    "desc": "La hoja sagrada de los Andes. Medicina popular contra el soroche. Amargo, vegetal, con un ligero efecto anestesico. No es agradable. Pero funciona.",
+    "city": "Huaraz",
+    "country": "Peru",
+    "tags": ["Bebida", "Medicinal", "Andino"],
+    "emoji": "\ud83c\udf75",
+    "bookChapter": 15,
+    "servings": "2 tazas",
+    "time": "10 min",
+    "difficulty": "Facil",
+    "ingredients": [
+      "Un punado generoso de hojas de coca secas (o 2 bolsitas de te de coca)",
+      "2 tazas de agua hirviendo",
+      "Miel o azucar al gusto (opcional)",
+      "Rodaja de limon (opcional)"
+    ],
+    "steps": [
+      "Hierve el agua. Coloca las hojas de coca en la taza o tetera.",
+      "Vierte el agua hirviendo sobre las hojas. Deja reposar 5-8 minutos.",
+      "El color se vuelve verde amarillento. El aroma es herbal, terroso.",
+      "Bebe caliente, lentamente. La cabeza empieza a aliviarse de a poco. La respiracion se regula.",
+      "El cuerpo que llevaba horas peleando contra la altitud empieza a negociar en mejores terminos."
+    ]
+  },
+  {
+    "id": "sudado-de-pescado",
+    "name": "Sudado de Pescado",
+    "desc": "Cebolla, ajo, aji amarillo, tomate, pescado, yuca, limon. Un caldo con profundidad sin ser pesado, que sabe a mar y a tierra peruana.",
+    "city": "Lima",
+    "country": "Peru",
+    "tags": ["Pescado", "Caldo", "Limeno"],
+    "emoji": "\ud83d\udc1f",
+    "bookChapter": 18,
+    "servings": "4 porciones",
+    "time": "35 min",
+    "difficulty": "Media",
+    "ingredients": [
+      "4 filetes de pescado blanco fresco (corvina o mero)",
+      "2 cebollas moradas en plumas",
+      "6 dientes de ajo picados",
+      "3 ajies amarillos en tiras",
+      "3 tomates en gajos",
+      "2 yucas peladas y cortadas",
+      "Jugo de 4 limones",
+      "Aceite, sal, pimienta",
+      "Cilantro fresco"
+    ],
+    "steps": [
+      "Sofrie cebolla y ajo en aceite caliente hasta que los aromaticos se suavicen y liberen sus azucares.",
+      "Agrega el aji amarillo. El color cambia. El aroma cambia. Esa frescura particular, esa acidez luminosa.",
+      "Agrega tomate en gajos. El caldo empieza a tomar forma. Anade agua o caldo de pescado y la yuca.",
+      "Cuando la yuca este casi tierna, coloca los filetes de pescado encima. No se cocina demasiado \u2014 se respeta. Solo el calor necesario para cambiar de estado.",
+      "Agrega limon y sal. Sirve con cilantro. Un caldo que tiene profundidad sin ser pesado, que sabe a mar y a aji."
+    ]
+  },
+  {
+    "id": "chupe-de-pescado",
+    "name": "Chupe de Pescado",
+    "desc": "Mas denso que el sudado. Con papa amarilla incorporada al caldo, choclo y hierbas. Una sopa que no sirve para impresionar sino para sostener.",
+    "city": "Lima",
+    "country": "Peru",
+    "tags": ["Sopa", "Pescado", "Reconfortante"],
+    "emoji": "\ud83c\udf72",
+    "bookChapter": 18,
+    "servings": "4 porciones",
+    "time": "45 min",
+    "difficulty": "Media",
+    "ingredients": [
+      "1 lb pescado blanco en trozos",
+      "4 papas amarillas peladas y cortadas",
+      "2 mazorcas de choclo cortadas",
+      "2 ajies amarillos",
+      "1 taza de leche evaporada",
+      "1 huevo por porcion",
+      "Hierbas frescas (huacatay, cilantro)",
+      "Cebolla, ajo, aceite, sal"
+    ],
+    "steps": [
+      "Sofrie cebolla, ajo y aji amarillo en aceite.",
+      "Agrega agua o caldo de pescado, papa y choclo. Cocina hasta que la papa se incorpore al caldo naturalmente.",
+      "Agrega la leche evaporada para darle densidad.",
+      "Coloca el pescado y los huevos. Cocina 5-8 min, justo lo necesario.",
+      "Agrega hierbas frescas al final. Sirve caliente \u2014 una sopa que sostiene."
+    ]
+  },
+  {
+    "id": "picarones-con-chancaca",
+    "name": "Picarones con Chancaca",
+    "desc": "Donuts peruanos de zapallo y camote, banados en chancaca. Masa, fuego, tiempo, y alguien que sabe repetirlo bien todos los dias.",
+    "city": "Lima",
+    "country": "Peru",
+    "tags": ["Dulce", "Callejero", "Limeno"],
+    "emoji": "\ud83c\udf69",
+    "bookChapter": 19,
+    "servings": "12-15 picarones",
+    "time": "1 hora",
+    "difficulty": "Media",
+    "ingredients": [
+      "1/2 lb zapallo cocido y hecho pure",
+      "1/2 lb camote cocido y hecho pure",
+      "2 tazas harina",
+      "1 sobre levadura",
+      "1/2 taza agua tibia",
+      "Aceite para freir",
+      "Para la chancaca: 1 tapa de panela, cascara de naranja, cascara de pina, clavo, canela, agua"
+    ],
+    "steps": [
+      "Mezcla zapallo y camote con harina, levadura activada en agua tibia. Amasa hasta obtener una masa suave. Deja fermentar 1 hora.",
+      "Para la chancaca: hierve la panela con agua, cascara de naranja, pina, clavo y canela hasta obtener un sirope espeso y oscuro.",
+      "Calienta aceite. Toma porciones de masa, forma anillos con las manos (como lo hace el vendedor con precision de miles de repeticiones).",
+      "Frie hasta que doren por ambos lados. La masa cede con la presion justa \u2014 adentro suave, afuera crujiente.",
+      "Bana generosamente con chancaca. Sirve caliente, de pie en la acera, con las manos pegajosas y el ruido de Lima alrededor."
+    ]
+  },
+  {
+    "id": "pato-pekin-chifa",
+    "name": "Pato Pekin Chifa",
+    "desc": "El tercer camino que emerge cuando dos tradiciones llevan suficiente tiempo conviviendo. Pato con condimentos latinoamericanos, aji y limon que el pekin tradicional no tiene.",
+    "city": "Lima",
+    "country": "Peru",
+    "tags": ["Chifa", "Fusion", "Barrio Chino"],
+    "emoji": "\ud83e\udd86",
+    "bookChapter": 20,
+    "servings": "4 porciones",
+    "time": "3+ horas",
+    "difficulty": "Alta",
+    "ingredients": [
+      "1 pato entero (2-3 kg)",
+      "3 cdas salsa de soya",
+      "2 cdas salsa hoisin",
+      "1 cda five spice (cinco especias chinas)",
+      "2 ajies amarillos",
+      "Jugo de 2 limones",
+      "4 dientes de ajo",
+      "Jengibre fresco",
+      "Miel, sal, pimienta"
+    ],
+    "steps": [
+      "Marina el pato con soya, hoisin, cinco especias, ajo, jengibre y miel. Refrigera minimo 4 horas.",
+      "Hornea a 350F por 2.5-3 horas, banando con sus jugos. La piel debe quedar crujiente y laceada.",
+      "Prepara la salsa chifa: mezcla aji amarillo licuado con soya, limon y un toque de jengibre.",
+      "Corta el pato. Sirve con la salsa chifa al lado.",
+      "No es mejor ni peor que el pekin clasico. Es otra cosa \u2014 ese tercer camino de la mezcla real."
+    ]
+  },
+  {
+    "id": "causa-con-pejerrey",
+    "name": "Causa con Pejerrey",
+    "desc": "Papa amarilla sazonada con aji amarillo y limon, refrigerada y usada como base para pejerrey. Una preparacion que requiere mas tecnica de la que parece.",
+    "city": "Barranco",
+    "country": "Peru",
+    "tags": ["Papa", "Pescado", "Isolina"],
+    "emoji": "\ud83e\udd54",
+    "bookChapter": 17,
+    "servings": "4 porciones",
+    "time": "45 min",
+    "difficulty": "Media",
+    "ingredients": [
+      "1 kg papa amarilla",
+      "3 cdas pasta de aji amarillo",
+      "Jugo de 3 limones",
+      "3 cdas aceite vegetal",
+      "1/2 lb pejerrey fresco",
+      "Sal al gusto",
+      "Aguacate y aceituna para decorar"
+    ],
+    "steps": [
+      "Sancoca las papas. Pela y prensa hasta hacer pure liso \u2014 debe quedar exactamente en el punto que la hace moldeable sin que se rompa.",
+      "Mezcla con aji amarillo, limon, aceite y sal. Debe quedar una masa manejable y sazonada con precision.",
+      "Prepara el pejerrey: cocina brevemente o marina en limon. Delicadeza que el pescado blanco requiere.",
+      "En molde, pon capa de papa, pejerrey, y otra capa de papa.",
+      "Decora con aguacate y aceituna. Refrigera. El equilibrio entre papa, acidez del aji y pejerrey funciona como unidad."
+    ]
+  },
+  {
+    "id": "tiraditos",
+    "name": "Tiraditos",
+    "desc": "El primo peruano del ceviche, con herencia japonesa visible. Pescado en laminas finas marinado en leche de tigre con variaciones infinitas.",
+    "city": "Barranco",
+    "country": "Peru",
+    "tags": ["Tiradito", "Nikkei", "Isolina"],
+    "emoji": "\ud83d\udc20",
+    "bookChapter": 17,
+    "servings": "2 porciones",
+    "time": "20 min",
+    "difficulty": "Media-Alta",
+    "ingredients": [
+      "1/2 lb pescado blanco fresco (corvina)",
+      "6 limones sutiles",
+      "1 aji amarillo",
+      "1 diente de ajo",
+      "Un trozo de pescado extra para la leche de tigre",
+      "Cilantro, sal",
+      "Cebolla china para decorar"
+    ],
+    "steps": [
+      "Corta el pescado en laminas finas como sashimi \u2014 el corte es fundamental.",
+      "Prepara la leche de tigre: licua limon, aji amarillo, ajo, cilantro y un trozo de pescado hasta una salsa fluida.",
+      "Dispone las laminas en plato frio.",
+      "Bana con la leche de tigre. Decora con cebolla china.",
+      "Sirve inmediatamente \u2014 debe estar frio. La precision de quien ha hecho este plato muchas veces."
+    ]
+  },
+  {
+    "id": "aji-de-gallina",
+    "name": "Aji de Gallina",
+    "desc": "Pollo desmenuzado en salsa de aji amarillo, pan, leche, nueces. Cremosa, profunda, con ese color amarillo emblematico. Exactamente lo que promete ser.",
+    "city": "Barranco",
+    "country": "Peru",
+    "tags": ["Pollo", "Aji Amarillo", "Clasico"],
+    "emoji": "\ud83d\udc14",
+    "bookChapter": 17,
+    "servings": "4 porciones",
+    "time": "1 hora",
+    "difficulty": "Media",
+    "ingredients": [
+      "1 pechuga de pollo grande (o muslos)",
+      "3 ajies amarillos",
+      "3 rebanadas de pan de molde",
+      "1 taza de leche evaporada",
+      "1/2 taza nueces o pecanas",
+      "1 cebolla, 3 dientes de ajo",
+      "Aceite, sal, comino",
+      "Arroz blanco, huevo duro, aceituna"
+    ],
+    "steps": [
+      "Sancoca el pollo, reserva el caldo. Desmenuza la carne.",
+      "Remoja el pan en leche. Licua con aji amarillo, nueces y un poco de caldo hasta obtener una salsa cremosa.",
+      "Sofrie cebolla y ajo. Agrega la salsa licuada y cocina a fuego bajo 15 min.",
+      "Incorpora el pollo desmenuzado. Ajusta sal y comino. El color amarillo del aji es emblematico.",
+      "Sirve sobre arroz blanco con huevo duro y aceituna. No porque sea innovador \u2014 porque es exactamente lo que promete ser."
+    ]
+  },
+  {
+    "id": "anticuchos-de-corazon",
+    "name": "Anticuchos de corazon",
+    "desc": "Corazon de res marinado en aji panca, ajo, comino y vinagre. A la parrilla de carbon hasta que la marinada se carameliza y el carbon tine todo de humo.",
+    "city": "Lince",
+    "country": "Peru",
+    "tags": ["Callejero", "Parrilla", "Limeno"],
+    "emoji": "\ud83c\udf56",
+    "bookChapter": 22,
+    "servings": "4 porciones",
+    "time": "4 horas (con marinada)",
+    "difficulty": "Media",
+    "ingredients": [
+      "1 kg corazon de res limpio, cortado en cubos de 3 cm",
+      "4 cucharadas de pasta de aji panca",
+      "6 dientes de ajo molidos",
+      "2 cucharaditas de comino molido",
+      "1/4 taza de vinagre tinto",
+      "2 cucharadas de aceite vegetal",
+      "Sal y pimienta al gusto",
+      "Papa sancochada y salsa de aji amarillo para acompanar"
+    ],
+    "steps": [
+      "Limpia bien el corazon quitando grasa y membranas. Corta en cubos de 3 cm.",
+      "Mezcla aji panca, ajo, comino, vinagre, aceite y sal. Marina el corazon minimo 3 horas, idealmente toda la noche.",
+      "Ensarta 3-4 trozos en cada palito. Precalienta brasas de carbon.",
+      "Asa sobre brasas fuertes: no los muevas mucho. Da vuelta una sola vez cuando la marinada se caramelice. 2-3 min por lado.",
+      "Sirve con papa sancochada y salsa cremosa de aji amarillo. El carbon por encima de todo."
+    ]
+  },
+  {
+    "id": "pallares-de-ica",
+    "name": "Pallares de Ica",
+    "desc": "Frijol de grano grande, sabor suave, textura mantecosa. Los habitantes precolombinos lo cultivaban hace miles de anos. Sabe exactamente a lo que es y nada mas.",
+    "city": "Ica",
+    "country": "Peru",
+    "tags": ["Legumbres", "Iqueno", "Ancestral"],
+    "emoji": "\ud83e\uded8",
+    "bookChapter": 21,
+    "servings": "4 porciones",
+    "time": "1.5 horas (+ remojo)",
+    "difficulty": "Media",
+    "ingredients": [
+      "2 tazas de pallares secos (remojados toda la noche)",
+      "1 cebolla morada picada",
+      "4 dientes de ajo",
+      "2 ajies amarillos",
+      "2 tomates",
+      "Aceite, sal, comino, oregano",
+      "Cilantro fresco"
+    ],
+    "steps": [
+      "Remoja los pallares toda la noche. Escurre y cocina en agua fresca hasta que esten tiernos (1 hora aprox).",
+      "Sofrie cebolla, ajo y aji amarillo en aceite. Agrega tomate picado.",
+      "Incorpora los pallares cocidos con un poco de su caldo. Sazona con sal, comino y oregano.",
+      "Cocina a fuego bajo 15 min para que absorban los sabores.",
+      "Sirve con cilantro fresco. Textura mantecosa, sabor suave \u2014 la paciencia que requieren todos los legumbres."
+    ]
+  },
+  {
+    "id": "pan-con-butifarra",
+    "name": "Pan con Butifarra",
+    "desc": "Pan de panaderia local con corteza perfecta y butifarra. Caliente, en el mercado San Pedro, con el frio de la manana cusquena.",
+    "city": "Cusco",
+    "country": "Peru",
+    "tags": ["Pan", "Embutido", "Mercado"],
+    "emoji": "\ud83e\udd56",
+    "bookChapter": 22,
+    "servings": "4 porciones",
+    "time": "15 min (con pan comprado)",
+    "difficulty": "Facil",
+    "ingredients": [
+      "4 panes artesanales crujientes (de panaderia local, con corteza y peso en la mano)",
+      "400g butifarra (embutido peruano, curado y especiado)",
+      "Salsa criolla (cebolla morada, aji amarillo, limon, cilantro)",
+      "Lechuga (opcional)",
+      "Sal y pimienta"
+    ],
+    "steps": [
+      "Calienta los panes en horno o plancha hasta que la corteza cruja.",
+      "Corta la butifarra en rebanadas generosas.",
+      "Prepara salsa criolla: cebolla morada en plumas, aji amarillo picado, limon, cilantro y sal.",
+      "Ensambla: pan abierto, butifarra, salsa criolla encima.",
+      "Come de pie en el mercado a mas de 3,400 metros. No es la sofisticacion \u2014 es la calidez."
+    ]
+  },
+  {
+    "id": "maca-con-leche",
+    "name": "Maca con Leche",
+    "desc": "Tuberculo de las alturas andinas, en bebida con leche. Dulce pero terrosa, espesa pero no pesada. No busca gustar \u2014 busca sostener.",
+    "city": "Cusco",
+    "country": "Peru",
+    "tags": ["Bebida", "Andino", "Energetico"],
+    "emoji": "\ud83e\udd5b",
+    "bookChapter": 22,
+    "servings": "2 porciones",
+    "time": "10 min",
+    "difficulty": "Facil",
+    "ingredients": [
+      "2 cdas de maca en polvo (o harina de maca)",
+      "2 tazas de leche caliente",
+      "Miel o azucar al gusto",
+      "Canela en polvo (opcional)",
+      "1/2 cdita de vainilla (opcional)"
+    ],
+    "steps": [
+      "Calienta la leche sin dejar hervir.",
+      "Disuelve la maca en polvo en un poco de leche tibia para evitar grumos.",
+      "Incorpora al resto de la leche caliente. Endulza al gusto.",
+      "Sirve caliente. Espesa pero no pesada, dulce pero terrosa.",
+      "Una bebida que no busca gustar \u2014 busca sostener. En la altura tiene sentido."
+    ]
+  },
+  {
+    "id": "tacos-al-pastor",
+    "name": "Tacos al Pastor",
+    "desc": "Tradicion del Libano llegando a Mexico, transformandose, volviendose este taco que ahora es tan mexicano como el maiz. La carne que gira en el trompo.",
+    "city": "Ciudad de Mexico",
+    "country": "Mexico",
+    "tags": ["Tacos", "Calle", "Pastor"],
+    "emoji": "\ud83c\udf2e",
+    "bookChapter": 24,
+    "servings": "8-10 tacos",
+    "time": "3+ horas (marinado + coccion)",
+    "difficulty": "Media-Alta",
+    "ingredients": [
+      "1 lb carne de cerdo en laminas finas",
+      "4 chiles guajillo secos",
+      "2 chiles ancho",
+      "1/4 pina fresca",
+      "2 cdas achiote",
+      "3 dientes de ajo",
+      "1 cda comino",
+      "1 cda oregano",
+      "Vinagre, sal",
+      "Tortillas de maiz",
+      "Cebolla, cilantro, limon, salsa verde"
+    ],
+    "steps": [
+      "Hidrata los chiles en agua caliente. Licua con achiote, ajo, comino, oregano, vinagre y sal hasta una pasta roja.",
+      "Marina la carne en la pasta por minimo 2 horas (mejor toda la noche).",
+      "Asa la carne en plancha o trompo a fuego alto hasta dorar. Corta en trozos pequenos.",
+      "Asa rodajas de pina en la misma plancha.",
+      "Sirve en tortillas de maiz calientes con pina, cebolla, cilantro, limon y salsa. El taco que ya no necesita mejorar."
+    ]
+  },
+  {
+    "id": "insectos-del-mercado",
+    "name": "Insectos del Mercado",
+    "desc": "Chapulines, gusanos de maguey, escorpiones tostados. Cinco siglos de tradicion mesoamericana. La repulsion no es instintiva \u2014 es cultural.",
+    "city": "Ciudad de Mexico",
+    "country": "Mexico",
+    "tags": ["Insectos", "Ancestral", "Mercado"],
+    "emoji": "\ud83e\udd97",
+    "bookChapter": 24,
+    "servings": "Snack para compartir",
+    "time": "15-20 min",
+    "difficulty": "Facil",
+    "ingredients": [
+      "1 taza de chapulines limpios",
+      "1/2 taza de gusanos de maguey",
+      "Aceite vegetal",
+      "Sal, chile en polvo, limon",
+      "Ajo picado fino (opcional)"
+    ],
+    "steps": [
+      "Limpia los chapulines y gusanos. Remoja brevemente si estan secos.",
+      "En sarten con poco aceite, tuesta los chapulines a fuego medio hasta crujir (5 min). Reserva.",
+      "En el mismo sarten, frie los gusanos de maguey hasta crujientes y dorados (3-4 min).",
+      "Sazona con sal, chile en polvo y un toque de limon.",
+      "Sirve como snack o sobre guacamole y tacos. La primera es dificil por la idea. Despues, el sabor habla."
+    ]
+  },
+  {
+    "id": "tlayuda",
+    "name": "Tlayuda",
+    "desc": "Tortilla grande de Oaxaca, casi tostada, con frijoles, tasajo, quesillo, aguacate. No es pizza. No es taco gigante. Es una tlayuda. Y eso es suficiente.",
+    "city": "Ciudad de Mexico",
+    "country": "Mexico",
+    "tags": ["Oaxaca", "Maiz", "Completo"],
+    "emoji": "\ud83e\uded3",
+    "bookChapter": 25,
+    "servings": "2 tlayudas",
+    "time": "30 min",
+    "difficulty": "Media",
+    "ingredients": [
+      "2 tortillas grandes de maiz tipo tlayuda (30 cm)",
+      "1 taza de frijoles negros refritos (pasta concentrada)",
+      "200g tasajo o cecina oaxaquena",
+      "200g quesillo de Oaxaca (queso de hebras)",
+      "1 aguacate",
+      "Hierba santa (opcional)",
+      "Sal"
+    ],
+    "steps": [
+      "Calienta la tlayuda en comal hasta que pierda la flexibilidad y adquiera rigidez \u2014 eso es estructura, arquitectura.",
+      "Unta generosamente con la pasta de frijoles negros.",
+      "Agrega tasajo asado en tiras y quesillo deshebrado. El quesillo se derrite con una lentitud casi cinematografica.",
+      "Agrega aguacate y hierba santa. Dobla a la mitad o sirve abierta.",
+      "Come de pie en el mercado de Coyoacan. La base rigida con la suavidad del quesillo y la profundidad de los frijoles \u2014 no tiene equivalente."
+    ]
+  }
+]

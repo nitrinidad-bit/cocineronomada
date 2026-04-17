@@ -1,0 +1,339 @@
+/* ============================================================
+   COCINERO NOMADA — Landing Page Styles
+   Brand: black #0f0d0b, red #b83220, orange #d4622a,
+          gold #c9973f, cream #e8dcc8
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0f0d0b;
+  --dark-brown: #1a1612;
+  --mid-brown: #211d18;
+  --border: #2e2820;
+  --red: #b83220;
+  --orange: #d4622a;
+  --gold: #c9973f;
+  --cream: #e8dcc8;
+  --muted: #7a6e62;
+  --pr: #b83220;
+  --usa: #5a7d9a;
+  --col: #c9973f;
+  --ecu: #6a5acd;
+  --peru: #d4622a;
+  --mex: #4a7a5f;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--black);
+  color: var(--cream);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--orange); }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ---- NAV ---- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(15, 13, 11, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+.nav .container {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; }
+.nav-logo img { height: 40px; }
+.nav-logo span { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--cream); }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { color: var(--muted); font-size: 0.9rem; font-weight: 500; letter-spacing: 0.02em; }
+.nav-links a:hover { color: var(--cream); }
+.nav-cta {
+  background: var(--red); color: var(--cream) !important;
+  padding: 8px 20px; border-radius: 6px; font-weight: 600;
+}
+.nav-cta:hover { background: var(--orange); color: var(--cream) !important; }
+
+.nav-toggle { display: none; background: none; border: none; color: var(--cream); font-size: 1.5rem; cursor: pointer; }
+
+/* ---- HERO ---- */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 24px 80px;
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: url('../assets/COCINERO_NOMADA/COCINERO-NOMADA-WALLPAPER-UNO.png') center/cover;
+  opacity: 0.12;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(15,13,11,0.4) 0%, var(--black) 100%);
+}
+.hero-content { position: relative; z-index: 2; max-width: 720px; }
+.hero-logo { width: 180px; margin-bottom: 32px; filter: drop-shadow(0 4px 24px rgba(0,0,0,0.5)); }
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  line-height: 1.15; margin-bottom: 16px;
+}
+.hero h1 span { color: var(--gold); }
+.hero .subtitle {
+  font-size: 1.15rem; color: var(--muted); margin-bottom: 12px;
+  font-style: italic;
+}
+.hero .stats-line {
+  font-size: 0.95rem; color: var(--muted); margin-bottom: 40px;
+  letter-spacing: 0.03em;
+}
+.hero .stats-line strong { color: var(--cream); }
+.hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 32px; border-radius: 8px;
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  border: none; transition: all 0.25s;
+}
+.btn-primary { background: var(--red); color: var(--cream); }
+.btn-primary:hover { background: var(--orange); color: var(--cream); transform: translateY(-2px); }
+.btn-secondary {
+  background: transparent; color: var(--cream);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+/* ---- ROUTE MAP ---- */
+.route-bar {
+  background: var(--dark-brown); border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border); padding: 28px 0;
+}
+.route-stops {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+}
+.route-stop {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.85rem; font-weight: 500; letter-spacing: 0.03em;
+}
+.route-dot { width: 10px; height: 10px; border-radius: 50%; }
+.route-arrow { color: var(--muted); font-size: 0.8rem; }
+
+/* ---- BLOG SECTION ---- */
+.section { padding: 80px 0; }
+.section-header {
+  text-align: center; margin-bottom: 48px;
+}
+.section-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  margin-bottom: 12px;
+}
+.section-header p { color: var(--muted); max-width: 600px; margin: 0 auto; }
+
+/* Blog filters */
+.blog-filters {
+  display: flex; gap: 8px; justify-content: center; margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 8px 18px; border-radius: 20px;
+  background: var(--dark-brown); border: 1px solid var(--border);
+  color: var(--muted); font-size: 0.85rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--gold); color: var(--cream); background: var(--mid-brown);
+}
+
+/* Blog grid */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+.blog-card {
+  background: var(--dark-brown); border: 1px solid var(--border);
+  border-radius: 12px; padding: 28px;
+  transition: all 0.3s; cursor: pointer;
+}
+.blog-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.blog-card-type {
+  display: inline-block; font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 4px; margin-bottom: 12px;
+}
+.blog-card-type.chapter { background: rgba(184,50,32,0.2); color: var(--red); }
+.blog-card-type.recipe { background: rgba(212,98,42,0.2); color: var(--orange); }
+.blog-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; margin-bottom: 8px; line-height: 1.3;
+}
+.blog-card-meta {
+  font-size: 0.8rem; color: var(--muted); margin-bottom: 12px;
+  display: flex; gap: 12px; align-items: center;
+}
+.blog-card p { font-size: 0.9rem; color: #a09888; line-height: 1.6; }
+.blog-card-tags { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+.blog-card-tags span {
+  font-size: 0.7rem; color: var(--muted); background: var(--mid-brown);
+  padding: 3px 8px; border-radius: 3px;
+}
+
+.blog-more {
+  text-align: center; margin-top: 40px;
+}
+
+/* ---- NEWSLETTER SECTION ---- */
+.newsletter-section {
+  background: var(--dark-brown); border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.newsletter-content {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+  align-items: center;
+}
+.newsletter-info h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; margin-bottom: 16px;
+}
+.newsletter-info p { color: var(--muted); margin-bottom: 8px; }
+.newsletter-info .highlight { color: var(--gold); font-weight: 500; }
+.newsletter-form { display: flex; flex-direction: column; gap: 14px; }
+.newsletter-form input {
+  padding: 14px 18px; border-radius: 8px;
+  background: var(--mid-brown); border: 1px solid var(--border);
+  color: var(--cream); font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+.newsletter-form input::placeholder { color: var(--muted); }
+.newsletter-form input:focus { outline: none; border-color: var(--gold); }
+
+/* ---- STORE SECTION ---- */
+.store-section {
+  position: relative; text-align: center; overflow: hidden;
+}
+.store-section::before {
+  content: ''; position: absolute; inset: 0;
+  background: url('../assets/COCINERO_NOMADA/COCINERO-NOMADA-PALMS-PATTERN-BLACK.png') center/400px repeat;
+  opacity: 0.04;
+}
+.store-content { position: relative; z-index: 2; }
+.store-badge {
+  display: inline-block; background: rgba(201,151,63,0.15);
+  color: var(--gold); padding: 6px 16px; border-radius: 20px;
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.store-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; margin-bottom: 16px;
+}
+.store-content p { color: var(--muted); max-width: 500px; margin: 0 auto 32px; }
+
+/* ---- FOOTER ---- */
+.footer {
+  background: var(--dark-brown); border-top: 1px solid var(--border);
+  padding: 48px 0 32px;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px; margin-bottom: 40px;
+}
+.footer-brand img { height: 50px; margin-bottom: 12px; }
+.footer-brand p { color: var(--muted); font-size: 0.85rem; max-width: 280px; }
+.footer-col h4 {
+  color: var(--cream); font-size: 0.8rem; text-transform: uppercase;
+  letter-spacing: 0.08em; margin-bottom: 14px;
+}
+.footer-col a { display: block; color: var(--muted); font-size: 0.85rem; margin-bottom: 8px; }
+.footer-col a:hover { color: var(--gold); }
+.footer-bottom {
+  border-top: 1px solid var(--border); padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.8rem; color: var(--muted);
+}
+.footer-social { display: flex; gap: 16px; }
+.footer-social a { font-size: 1rem; }
+
+/* ---- MODAL ---- */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(15,13,11,0.92); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: var(--dark-brown); border: 1px solid var(--border);
+  border-radius: 16px; max-width: 720px; width: 100%;
+  max-height: 85vh; overflow-y: auto; padding: 40px;
+}
+.modal-close {
+  float: right; background: none; border: none;
+  color: var(--muted); font-size: 1.5rem; cursor: pointer;
+}
+.modal-close:hover { color: var(--cream); }
+.modal h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; margin-bottom: 8px;
+}
+.modal-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; }
+.modal-body { line-height: 1.8; }
+.modal-body p { margin-bottom: 16px; color: #b8a898; }
+
+/* Recipe in modal */
+.recipe-details { margin-top: 24px; }
+.recipe-details h3 {
+  font-size: 1rem; font-weight: 600; color: var(--gold);
+  margin-bottom: 12px;
+}
+.recipe-meta-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-bottom: 20px;
+}
+.recipe-meta-item {
+  background: var(--mid-brown); padding: 12px; border-radius: 8px;
+  text-align: center;
+}
+.recipe-meta-item .label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.recipe-meta-item .value { font-size: 0.9rem; font-weight: 600; }
+.recipe-details ul, .recipe-details ol { padding-left: 20px; margin-bottom: 16px; }
+.recipe-details li { margin-bottom: 8px; color: #b8a898; font-size: 0.9rem; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: 60px; left: 0; right: 0;
+    background: rgba(15,13,11,0.98); padding: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-toggle { display: block; }
+  .hero { min-height: 90vh; padding: 100px 20px 60px; }
+  .hero-logo { width: 130px; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .newsletter-content { grid-template-columns: 1fr; gap: 32px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .route-stops { gap: 8px; }
+  .route-stop { font-size: 0.75rem; }
+}

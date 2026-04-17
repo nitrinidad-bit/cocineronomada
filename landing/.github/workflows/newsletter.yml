@@ -1,0 +1,47 @@
+name: Cocinero Nomada Newsletter
+
+on:
+  schedule:
+    # Run daily at 10:00 AM UTC (6:00 AM AST / Puerto Rico time)
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+    inputs:
+      day:
+        description: 'Force specific day number (optional)'
+        required: false
+        type: string
+      test:
+        description: 'Test mode (preview only, no emails sent)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Send daily newsletter
+        working-directory: landing/newsletter
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEWSLETTER_START_DATE: ${{ secrets.NEWSLETTER_START_DATE }}
+          LANDING_URL: ${{ secrets.LANDING_URL }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+        run: |
+          ARGS=""
+          if [ "${{ github.event.inputs.test }}" = "true" ]; then
+            ARGS="$ARGS --test"
+          fi
+          if [ -n "${{ github.event.inputs.day }}" ]; then
+            ARGS="$ARGS --day ${{ github.event.inputs.day }}"
+          fi
+          node send-email.js $ARGS
