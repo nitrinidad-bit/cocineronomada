@@ -201,53 +201,35 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   });
 });
 
-// ---- Form submission via Formspree ----
-async function submitForm(form, successHTML) {
-  const data = new FormData(form);
-  const btn = form.querySelector('button[type="submit"]');
-  btn.textContent = 'Enviando...';
-  btn.disabled = true;
+// ---- Form submission via FormSubmit.co ----
+// FormSubmit works best with native form submission (not AJAX on first use)
+// because it needs to confirm the email the first time.
+// After confirmation, AJAX works too.
 
-  try {
-    const res = await fetch(form.action, {
-      method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
-    });
-
-    if (res.ok) {
-      form.innerHTML = successHTML;
-    } else {
-      btn.textContent = 'Error — intenta de nuevo';
-      btn.disabled = false;
+// Show success message if returning from FormSubmit redirect
+if (window.location.search.includes('subscribed=true')) {
+  window.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('newsletterForm');
+    if (form) {
+      form.innerHTML = `
+        <div style="text-align:center;padding:20px">
+          <p style="font-size:1.2rem;color:var(--gold);margin-bottom:8px">Bienvenido!</p>
+          <p style="color:var(--muted)">Manana recibes tu primer capitulo.</p>
+        </div>`;
     }
-  } catch {
-    btn.textContent = 'Error — intenta de nuevo';
-    btn.disabled = false;
-  }
+  });
 }
-
-// Newsletter form
-document.getElementById('newsletterForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const name = e.target.querySelector('[name="name"]').value;
-  submitForm(e.target, `
-    <div style="text-align:center;padding:20px">
-      <p style="font-size:1.2rem;color:var(--gold);margin-bottom:8px">Bienvenido, ${name}!</p>
-      <p style="color:var(--muted)">Manana recibes tu primer capitulo.</p>
-    </div>
-  `);
-});
-
-// Store waitlist form
-document.getElementById('storeForm').addEventListener('submit', e => {
-  e.preventDefault();
-  submitForm(e.target, `
-    <div style="text-align:center;padding:12px">
-      <p style="color:var(--gold)">Te avisaremos cuando abramos!</p>
-    </div>
-  `);
-});
+if (window.location.search.includes('store=true')) {
+  window.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('storeForm');
+    if (form) {
+      form.innerHTML = `
+        <div style="text-align:center;padding:12px">
+          <p style="color:var(--gold)">Te avisaremos cuando abramos!</p>
+        </div>`;
+    }
+  });
+}
 
 // ---- Init ----
 loadContent();
