@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cocinero Nomada — Links</title>
+  <meta name="description" content="Cocinero Nomada: todos los links en un solo lugar.">
+  <link rel="icon" href="../assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-WHITE.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f0d0b;
+      color: #e8dcc8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #b83220;
+      margin: 0 auto 16px;
+      overflow: hidden;
+      background: #1a1612;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 12px;
+    }
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .handle {
+      color: #7a6e62;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .bio {
+      color: #7a6e62;
+      font-size: 0.85rem;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .bio span { color: #c9973f; }
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .link-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      background: #1a1612;
+      border: 1px solid #2e2820;
+      color: #e8dcc8;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.25s;
+    }
+    .link-btn:hover {
+      border-color: #c9973f;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .link-btn .icon {
+      font-size: 1.3rem;
+      width: 32px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .link-btn .text { flex: 1; text-align: left; }
+    .link-btn .arrow { color: #7a6e62; font-size: 0.8rem; }
+
+    .link-btn.featured {
+      background: #b83220;
+      border-color: #b83220;
+    }
+    .link-btn.featured:hover {
+      background: #d4622a;
+      border-color: #d4622a;
+    }
+
+    .divider {
+      margin: 20px 0;
+      border: none;
+      border-top: 1px solid #2e2820;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #7a6e62;
+      margin-bottom: 12px;
+    }
+
+    footer {
+      margin-top: 32px;
+      font-size: 0.75rem;
+      color: #4a4038;
+    }
+    footer a { color: #7a6e62; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="avatar">
+      <img src="../assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-WHITE.png" alt="Cocinero Nomada">
+    </div>
+    <h1>Cocinero Nomada</h1>
+    <p class="handle">@cocineronomada</p>
+    <p class="bio">
+      Chef boricua viajando America Latina.<br>
+      <span>26 capitulos &middot; 6 paises &middot; 27 recetas</span>
+    </p>
+
+    <div class="links">
+      <!-- FEATURED -->
+      <a href="index.html#newsletter" class="link-btn featured">
+        <span class="icon">&#9993;</span>
+        <span class="text">Suscribete al Newsletter</span>
+        <span class="arrow">&rsaquo;</span>
+      </a>
+
+      <p class="section-label">Contenido</p>
+
+      <a href="index.html" class="link-btn">
+        <span class="icon">&#127758;</span>
+        <span class="text">Landing Page</span>
+        <span class="arrow">&rsaquo;</span>
+      </a>
+
+      <a href="../libro/index.html" class="link-btn">
+        <span class="icon">&#128214;</span>
+        <span class="text">Leer el Libro</span>
+        <span class="arrow">&rsaquo;</span>
+      </a>
+
+      <a href="blog/index.html" class="link-btn">
+        <span class="icon">&#128221;</span>
+        <span class="text">Blog — Cronicas y Recetas</span>
+        <span class="arrow">&rsaquo;</span>
+      </a>
+
+      <a href="../app/index.html" class="link-btn">
+        <span class="icon">&#128506;</span>
+        <span class="text">App Interactiva — Mapa</span>
+        <span class="arrow">&rsaquo;</span>
+      </a>
+
+      <hr class="divider">
+      <p class="section-label">Redes</p>
+
+      <a href="https://youtube.com/@cocineronomadapr" target="_blank" class="link-btn">
+        <span class="icon">&#9654;</span>
+        <span class="text">YouTube</span>
+        <span class="arrow">&rsaquo;</span>
+      </a>
+
+      <a href="https://instagram.com/cocineronomada" target="_blank" class="link-btn">
+        <span class="icon">&#128247;</span>
+        <span class="text">Instagram</span>
+        <span class="arrow">&rsaquo;</span>
+      </a>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 Cocinero Nomada</p>
+    </footer>
+  </div>
+</body>
+</html>
