@@ -34,3 +34,11 @@ desktop.ini
 # Logs de build / conversión local
 convert_videos.log
 *.log
+
+# Videos demasiado pesados para GitHub/Pages (>100MB o cerca)
+# Hospedar en Cloudflare R2 / YouTube y embeber por URL.
+assets/videos/barichara/
+assets/videos/minca/
+assets/videos/palo-quemado/
+assets/videos/parque-tayrona/
+assets/videos/san-gil/
