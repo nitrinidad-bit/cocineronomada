@@ -30,3 +30,7 @@ desktop.ini
 .idea/
 *.swp
 *~
+
+# Logs de build / conversión local
+convert_videos.log
+*.log
