@@ -14,11 +14,12 @@ database_name = "cocinero_analytics"
 database_id = "38563dea-6d8c-4446-92a6-c2b48c2d8e08"
 
 # Secrets (set with `wrangler secret put <NAME>`):
-#   TELEGRAM_BOT_TOKEN
-#   TELEGRAM_CHAT_ID
-#   ADMIN_TOKEN
-#   IP_SALT
-#   ALLOWED_ORIGIN   (e.g. https://nitrinidad-bit.github.io)
+#   TELEGRAM_BOT_TOKEN   (optional — silence alerts if not set)
+#   TELEGRAM_CHAT_ID     (optional — silence alerts if not set)
+#   ADMIN_TOKEN          (REQUIRED — used by /admin/login cookie auth)
+#   IP_SALT              (REQUIRED — for daily visitor hash rotation)
+#   ALLOWED_ORIGIN       (REQUIRED — exact origin for CORS, no path, no trailing slash
+#                         e.g. https://nitrinidad-bit.github.io)
 
 [observability]
 enabled = true

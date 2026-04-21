@@ -30,6 +30,15 @@ export default {
       if (url.pathname === "/event" && request.method === "POST") {
         return await ingestEvent(request, env, ctx);
       }
+      if (url.pathname === "/admin/login" && request.method === "GET") {
+        return adminLoginPage();
+      }
+      if (url.pathname === "/admin/login" && request.method === "POST") {
+        return await adminLoginSubmit(request, env);
+      }
+      if (url.pathname === "/admin/logout" && request.method === "POST") {
+        return adminLogout();
+      }
       if (url.pathname === "/admin") {
         return await adminDashboard(request, env);
       }
@@ -357,18 +366,121 @@ async function pruneOldData(env) {
 // ADMIN DASHBOARD
 // ============================================================
 
+// Constant-time string compare (avoids token-length leak).
+function safeEqual(a, b) {
+  if (typeof a !== "string" || typeof b !== "string") return false;
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+function parseCookie(header, name) {
+  if (!header) return null;
+  const parts = header.split(/;\s*/);
+  for (const p of parts) {
+    const eq = p.indexOf("=");
+    if (eq === -1) continue;
+    if (p.slice(0, eq) === name) return decodeURIComponent(p.slice(eq + 1));
+  }
+  return null;
+}
+
 function authed(request, env) {
-  const url = new URL(request.url);
-  return env.ADMIN_TOKEN && url.searchParams.get("token") === env.ADMIN_TOKEN;
+  if (!env.ADMIN_TOKEN) return false;
+  const cookie = parseCookie(request.headers.get("Cookie"), "cn_admin");
+  return cookie ? safeEqual(cookie, env.ADMIN_TOKEN) : false;
+}
+
+function adminLoginPage(errorMsg) {
+  const safe = errorMsg ? String(errorMsg).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])) : '';
+  const errHtml = safe ? `<p class="err">${safe}</p>` : '';
+  const html = `<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cocinero Nómada — Admin Login</title>
+<style>
+  body{font-family:-apple-system,system-ui,sans-serif;background:#0f0d0b;color:#e8dcc8;
+    display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:20px}
+  form{background:#1a1612;border:1px solid #2e2820;border-radius:12px;padding:32px;max-width:340px;width:100%}
+  h1{font-family:Georgia,serif;color:#c9973f;font-size:1.2rem;margin:0 0 20px}
+  input{width:100%;box-sizing:border-box;padding:12px;background:#211d18;color:#e8dcc8;
+    border:1px solid #2e2820;border-radius:6px;font-size:0.95rem;margin-bottom:12px}
+  button{width:100%;padding:12px;background:#c9973f;color:#0f0d0b;border:0;border-radius:6px;
+    font-weight:700;cursor:pointer;font-size:0.95rem}
+  button:hover{background:#e8dcc8}
+  .err{color:#b83220;font-size:0.85rem;margin:0 0 12px}
+</style></head>
+<body><form method="POST" action="/admin/login">
+  <h1>Admin · ingresar token</h1>
+  ${errHtml}
+  <input type="password" name="token" autocomplete="off" autofocus required>
+  <button type="submit">Entrar</button>
+</form></body></html>`;
+  return new Response(html, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      ...securityHeaders(true)
+    }
+  });
+}
+
+async function adminLoginSubmit(request, env) {
+  if (!env.ADMIN_TOKEN) {
+    return adminLoginPage("Admin no configurado");
+  }
+  let token = "";
+  try {
+    const ct = request.headers.get("Content-Type") || "";
+    if (ct.includes("form")) {
+      const fd = await request.formData();
+      token = String(fd.get("token") || "");
+    } else {
+      const body = await request.json();
+      token = String(body.token || "");
+    }
+  } catch {
+    return adminLoginPage("Solicitud inválida");
+  }
+
+  if (!safeEqual(token, env.ADMIN_TOKEN)) {
+    return adminLoginPage("Token inválido");
+  }
+
+  // 8 horas. Secure/HttpOnly/SameSite=Strict/Path=/.
+  const cookie = `cn_admin=${encodeURIComponent(token)}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=28800`;
+  return new Response(null, {
+    status: 303,
+    headers: {
+      "Location": "/admin",
+      "Set-Cookie": cookie,
+      ...securityHeaders(true)
+    }
+  });
+}
+
+function adminLogout() {
+  const cookie = `cn_admin=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`;
+  return new Response(null, {
+    status: 303,
+    headers: {
+      "Location": "/admin/login",
+      "Set-Cookie": cookie,
+      ...securityHeaders(true)
+    }
+  });
 }
 
 async function adminDashboard(request, env) {
   if (!authed(request, env)) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response(null, { status: 303, headers: { "Location": "/admin/login" } });
   }
   return new Response(DASHBOARD_HTML, {
     status: 200,
-    headers: { "Content-Type": "text/html; charset=utf-8" }
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      ...securityHeaders(true)
+    }
   });
 }
 
@@ -453,19 +565,44 @@ async function adminStatsJson(request, env) {
 // HELPERS
 // ============================================================
 
+function securityHeaders(admin) {
+  const h = {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
+  };
+  if (admin) {
+    // Inline-heavy dashboard: allow inline script/style but nothing else.
+    h["Content-Security-Policy"] =
+      "default-src 'self'; script-src 'self' 'unsafe-inline'; " +
+      "style-src 'self' 'unsafe-inline'; img-src 'self' data:; " +
+      "connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'";
+  }
+  return h;
+}
+
 function corsHeaders(env) {
-  return {
-    "Access-Control-Allow-Origin": env.ALLOWED_ORIGIN || "*",
+  const headers = {
     "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Max-Age": "86400"
+    "Access-Control-Max-Age": "86400",
+    "Vary": "Origin"
   };
+  if (env && env.ALLOWED_ORIGIN) {
+    headers["Access-Control-Allow-Origin"] = env.ALLOWED_ORIGIN;
+  }
+  return headers;
 }
 
 function json(data, status, env) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { "Content-Type": "application/json", ...corsHeaders(env) }
+    headers: {
+      "Content-Type": "application/json",
+      ...securityHeaders(false),
+      ...corsHeaders(env)
+    }
   });
 }
 
@@ -514,7 +651,7 @@ const DASHBOARD_HTML = `<!DOCTYPE html>
 <body>
 <header>
   <h1>📊 Cocinero Nómada — Admin</h1>
-  <span class="live"><span class="dot"></span><b id="live">—</b> en vivo · <a href="#" onclick="load();return false;" style="color:var(--gold);margin-left:12px">↻ refrescar</a></span>
+  <span class="live"><span class="dot"></span><b id="live">—</b> en vivo · <a href="#" id="refreshLink" style="color:var(--gold);margin-left:12px">↻ refrescar</a> · <a href="#" id="logoutLink" style="color:var(--muted);margin-left:12px">salir</a></span>
 </header>
 <main id="app">
   <div class="card"><h2>Cargando…</h2></div>
@@ -522,19 +659,32 @@ const DASHBOARD_HTML = `<!DOCTYPE html>
 <footer>Últimos 24 h · se actualiza cada 30s</footer>
 <script>
 const $ = id => document.getElementById(id);
-const token = new URLSearchParams(location.search).get('token');
 
 async function load() {
   try {
-    const res = await fetch('/admin/api/stats?token=' + encodeURIComponent(token));
-    if (!res.ok) throw new Error('auth');
+    const res = await fetch('/admin/api/stats', { credentials: 'same-origin' });
+    if (res.status === 401) {
+      location.href = '/admin/login';
+      return;
+    }
+    if (!res.ok) throw new Error('load');
     const d = await res.json();
     $('live').textContent = d.live;
     render(d);
   } catch (e) {
-    $('app').innerHTML = '<div class="card"><h2>Error</h2><p class="empty">No se pudo cargar. Token inválido?</p></div>';
+    $('app').innerHTML = '<div class="card"><h2>Error</h2><p class="empty">No se pudo cargar.</p></div>';
   }
 }
+
+async function logout() {
+  try {
+    await fetch('/admin/logout', { method: 'POST', credentials: 'same-origin' });
+  } catch {}
+  location.href = '/admin/login';
+}
+
+document.getElementById('refreshLink').addEventListener('click', e => { e.preventDefault(); load(); });
+document.getElementById('logoutLink').addEventListener('click', e => { e.preventDefault(); logout(); });
 
 function render(d) {
   const t = d.last24 || {};
