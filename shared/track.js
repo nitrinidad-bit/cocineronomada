@@ -21,11 +21,12 @@
   try {
     sid = sessionStorage.getItem(SS_KEY);
     if (!sid) {
-      sid = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2));
+      sid = crypto.randomUUID();
       sessionStorage.setItem(SS_KEY, sid);
     }
   } catch (_) {
-    sid = String(Date.now()) + Math.random().toString(36).slice(2);
+    // Private mode / storage disabled — keep a per-pageview id in memory only.
+    sid = crypto.randomUUID();
   }
 
   var isNewSession = false;

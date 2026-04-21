@@ -2,6 +2,8 @@
 // COCINERO NOMADA — Landing Page JS
 // ============================================================
 
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
 const COUNTRY_COLORS = {
   "Puerto Rico": "#b83220",
   "Estados Unidos": "#5a7d9a",
@@ -76,26 +78,35 @@ function renderBlogGrid(posts) {
   grid.innerHTML = posts.map((post, i) => {
     const color = COUNTRY_COLORS[post.country] || '#c9973f';
     const typeLabel = post.type === 'chapter' ? 'Cronica' : 'Receta';
+    const type = post.type === 'chapter' ? 'chapter' : 'recipe';
 
     let tagsHTML = '';
     if (post.tags) {
-      tagsHTML = `<div class="blog-card-tags">${post.tags.map(t => `<span>${t}</span>`).join('')}</div>`;
+      tagsHTML = `<div class="blog-card-tags">${post.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div>`;
     }
 
     return `
-      <article class="blog-card" data-type="${post.type}" data-country="${post.country}" data-index="${i}" onclick="openPost(${i})">
-        <span class="blog-card-type ${post.type}">${typeLabel}</span>
-        <h3>${post.title}</h3>
+      <article class="blog-card" data-type="${esc(type)}" data-country="${esc(post.country)}" data-index="${i}">
+        <span class="blog-card-type ${esc(type)}">${esc(typeLabel)}</span>
+        <h3>${esc(post.title)}</h3>
         <div class="blog-card-meta">
-          <span style="color:${color}">${post.city}</span>
-          <span>${post.country}</span>
+          <span style="color:${esc(color)}">${esc(post.city)}</span>
+          <span>${esc(post.country)}</span>
         </div>
-        <p>${post.excerpt}</p>
+        <p>${esc(post.excerpt)}</p>
         ${tagsHTML}
       </article>
     `;
   }).join('');
 }
+
+// Delegate clicks on blog cards (replaces inline onclick — CSP-friendly).
+document.getElementById('blogGrid').addEventListener('click', e => {
+  const card = e.target.closest('.blog-card');
+  if (!card) return;
+  const idx = Number(card.dataset.index);
+  if (Number.isFinite(idx)) openPost(idx);
+});
 
 // ---- Filters ----
 document.addEventListener('click', e => {
@@ -127,45 +138,45 @@ function openPost(index) {
   let html = '';
 
   if (post.type === 'chapter') {
-    const paragraphs = post.content
+    const paragraphs = String(post.content || '')
       .split('\n\n')
       .filter(p => p.trim())
-      .map(p => `<p>${p.trim()}</p>`)
+      .map(p => `<p>${esc(p.trim())}</p>`)
       .join('');
 
     html = `
-      <span class="blog-card-type chapter">Capitulo ${post.number}</span>
-      <h2>${post.title}</h2>
-      <div class="modal-meta">${post.city}, ${post.country}</div>
+      <span class="blog-card-type chapter">Capitulo ${esc(post.number)}</span>
+      <h2>${esc(post.title)}</h2>
+      <div class="modal-meta">${esc(post.city)}, ${esc(post.country)}</div>
       <div class="modal-body">${paragraphs}</div>
     `;
   } else {
     const r = post.recipe;
     html = `
       <span class="blog-card-type recipe">Receta</span>
-      <h2>${r.emoji} ${r.name}</h2>
-      <div class="modal-meta">${r.city}, ${r.country} &middot; Capitulo ${r.bookChapter}</div>
+      <h2>${esc(r.emoji)} ${esc(r.name)}</h2>
+      <div class="modal-meta">${esc(r.city)}, ${esc(r.country)} &middot; Capitulo ${esc(r.bookChapter)}</div>
       <div class="modal-body">
-        <p>${r.desc}</p>
+        <p>${esc(r.desc)}</p>
         <div class="recipe-details">
           <div class="recipe-meta-grid">
             <div class="recipe-meta-item">
               <div class="label">Porciones</div>
-              <div class="value">${r.servings}</div>
+              <div class="value">${esc(r.servings)}</div>
             </div>
             <div class="recipe-meta-item">
               <div class="label">Tiempo</div>
-              <div class="value">${r.time}</div>
+              <div class="value">${esc(r.time)}</div>
             </div>
             <div class="recipe-meta-item">
               <div class="label">Dificultad</div>
-              <div class="value">${r.difficulty}</div>
+              <div class="value">${esc(r.difficulty)}</div>
             </div>
           </div>
           <h3>Ingredientes</h3>
-          <ul>${r.ingredients.map(i => `<li>${i}</li>`).join('')}</ul>
+          <ul>${r.ingredients.map(i => `<li>${esc(i)}</li>`).join('')}</ul>
           <h3>Preparacion</h3>
-          <ol>${r.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+          <ol>${r.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol>
         </div>
       </div>
     `;
@@ -213,7 +224,7 @@ window.addEventListener('scroll', setNavScrolled, { passive: true });
 
 // ---- Newsletter / Store form submission via Cloudflare Worker ----
 // Worker URL — update after deploying with: npx wrangler deploy
-const SUBSCRIBE_WORKER_URL = 'https://cocinero-subscribe.YOUR_SUBDOMAIN.workers.dev';
+const SUBSCRIBE_WORKER_URL = 'https://cocinero-subscribe.cocineronomada.workers.dev';
 
 function setupForm(formId, statusId, successMsg) {
   const form = document.getElementById(formId);

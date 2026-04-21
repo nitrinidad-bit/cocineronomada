@@ -1,0 +1,12 @@
+name = "cocinero-subscribe"
+main = "subscribe-worker.js"
+compatibility_date = "2025-01-01"
+
+# Secrets (ALL REQUIRED — set with `wrangler secret put <NAME>`):
+#   RESEND_API_KEY       (re_xxx from resend.com)
+#   RESEND_AUDIENCE_ID   (uuid of the audience in Resend)
+#   ALLOWED_ORIGIN       (exact origin — scheme://host, no path, no trailing slash
+#                         e.g. https://nitrinidad-bit.github.io)
+
+[observability]
+enabled = true

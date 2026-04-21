@@ -2,21 +2,37 @@
 // COCINERO NOMADA — Cloudflare Worker: Newsletter Subscription
 // Receives form submissions and adds contacts to Resend Audiences
 //
-// Deploy: npx wrangler deploy subscribe-worker.js --name cocinero-subscribe
-// Secrets: wrangler secret put RESEND_API_KEY
-//          wrangler secret put RESEND_AUDIENCE_ID
-//          wrangler secret put ALLOWED_ORIGIN
+// Deploy: npx wrangler deploy
+// Secrets (all REQUIRED):
+//   wrangler secret put RESEND_API_KEY
+//   wrangler secret put RESEND_AUDIENCE_ID
+//   wrangler secret put ALLOWED_ORIGIN   (e.g. https://nitrinidad-bit.github.io)
 // ============================================================
 
 export default {
   async fetch(request, env) {
+    const allowedOrigin = env.ALLOWED_ORIGIN;
+    if (!allowedOrigin) {
+      console.error('ALLOWED_ORIGIN not configured');
+      return jsonResponse({ error: 'Misconfigured' }, 500, null);
+    }
+
+    const reqOrigin = request.headers.get('Origin') || '';
+
     // CORS preflight
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeaders(env) });
+      return new Response(null, { status: 204, headers: corsHeaders(allowedOrigin, reqOrigin) });
     }
 
     if (request.method !== 'POST') {
-      return jsonResponse({ error: 'Method not allowed' }, 405, env);
+      return jsonResponse({ error: 'Method not allowed' }, 405, allowedOrigin, reqOrigin);
+    }
+
+    // Enforce origin: reject CSRF-style cross-origin submits.
+    // Allow missing Origin (same-origin native form POSTs sometimes omit it) but
+    // if present, it must match.
+    if (reqOrigin && reqOrigin !== allowedOrigin) {
+      return jsonResponse({ error: 'Forbidden' }, 403, allowedOrigin, reqOrigin);
     }
 
     try {
@@ -24,9 +40,10 @@ export default {
       const email = (data.email || '').trim().toLowerCase();
       const name = (data.name || '').trim();
 
-      // Validate email
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        return jsonResponse({ error: 'Email invalido' }, 400, env);
+      // Stricter email validation: require TLD of at least 2 chars, no spaces.
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      if (!email || email.length > 254 || !emailRe.test(email)) {
+        return jsonResponse({ error: 'Email invalido' }, 400, allowedOrigin, reqOrigin);
       }
 
       // Sanitize name (max 100 chars, no HTML)
@@ -52,25 +69,32 @@ export default {
       if (!resendRes.ok) {
         const err = await resendRes.text();
         console.error('Resend error:', err);
-        return jsonResponse({ error: 'Error al suscribir. Intenta de nuevo.' }, 502, env);
+        return jsonResponse({ error: 'Error al suscribir. Intenta de nuevo.' }, 502, allowedOrigin, reqOrigin);
       }
 
-      // Determine redirect URL based on form type
       const formType = data._form_type || 'newsletter';
-      const redirectBase = env.ALLOWED_ORIGIN || 'https://nitrinidad-bit.github.io/cocineronomada/landing';
       const redirectParam = formType === 'store' ? 'store=true#tienda' : 'subscribed=true#newsletter';
 
       // If Accept header wants JSON (AJAX), return JSON
       if (request.headers.get('Accept')?.includes('application/json')) {
-        return jsonResponse({ success: true, message: 'Suscrito!' }, 200, env);
+        return jsonResponse({ success: true, message: 'Suscrito!' }, 200, allowedOrigin, reqOrigin);
       }
 
-      // Otherwise redirect (native form submit)
-      return Response.redirect(`${redirectBase}/index.html?${redirectParam}`, 303);
+      // Native form submit: redirect back to the referring page within the allowed origin.
+      // Prevents open-redirect by requiring referer to start with allowedOrigin.
+      const referer = request.headers.get('Referer') || '';
+      let redirectTo = `${allowedOrigin}/?${redirectParam}`;
+      try {
+        const refUrl = new URL(referer);
+        if (`${refUrl.protocol}//${refUrl.host}` === allowedOrigin) {
+          redirectTo = `${refUrl.origin}${refUrl.pathname}?${redirectParam}`;
+        }
+      } catch {}
+      return Response.redirect(redirectTo, 303);
 
     } catch (err) {
       console.error('Worker error:', err);
-      return jsonResponse({ error: 'Error interno' }, 500, env);
+      return jsonResponse({ error: 'Error interno' }, 500, allowedOrigin, reqOrigin);
     }
   }
 };
@@ -84,21 +108,25 @@ function parseBody(request) {
   return request.json();
 }
 
-function corsHeaders(env) {
-  return {
-    'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || '*',
+function corsHeaders(allowedOrigin, reqOrigin) {
+  const headers = {
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Accept',
-    'Access-Control-Max-Age': '86400'
+    'Access-Control-Max-Age': '86400',
+    'Vary': 'Origin'
   };
+  if (allowedOrigin && reqOrigin === allowedOrigin) {
+    headers['Access-Control-Allow-Origin'] = allowedOrigin;
+  }
+  return headers;
 }
 
-function jsonResponse(data, status, env) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      'Content-Type': 'application/json',
-      ...corsHeaders(env)
-    }
-  });
+function jsonResponse(data, status, allowedOrigin, reqOrigin) {
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Content-Type-Options': 'nosniff',
+    'Referrer-Policy': 'strict-origin-when-cross-origin'
+  };
+  if (allowedOrigin) Object.assign(headers, corsHeaders(allowedOrigin, reqOrigin));
+  return new Response(JSON.stringify(data), { status, headers });
 }
