@@ -190,16 +190,26 @@ function closeModal() {
 }
 
 // ---- Mobile nav ----
-document.querySelector('.nav-toggle').addEventListener('click', () => {
-  document.querySelector('.nav-links').classList.toggle('open');
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+navToggle.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', String(isOpen));
 });
 
 // Close mobile nav on link click
 document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => {
-    document.querySelector('.nav-links').classList.remove('open');
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
   });
 });
+
+// ---- Nav scroll state (subtle premium) ----
+const navEl = document.querySelector('.nav');
+const setNavScrolled = () => navEl.classList.toggle('scrolled', window.scrollY > 12);
+setNavScrolled();
+window.addEventListener('scroll', setNavScrolled, { passive: true });
 
 // ---- Newsletter / Store form submission via Cloudflare Worker ----
 // Worker URL — update after deploying with: npx wrangler deploy

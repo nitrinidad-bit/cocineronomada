@@ -2269,6 +2269,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     currentCityIndex = index;
     selectedCity = LOCATIONS[index];
 
+    if (window.cnTrack && selectedCity) {
+      window.cnTrack('city_select', { cityId: selectedCity.id, country: selectedCity.country, city: selectedCity.city });
+    }
+
     var chef = $('#chef-sprite');
     if (chef) {
       // Use zoomed position if available
@@ -3116,5 +3120,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 })();
 </script>
 
+<script src="../shared/track.js" defer></script>
 </body>
 </html>

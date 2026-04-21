@@ -17,12 +17,12 @@
         <img src="../assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-WHITE.png" alt="Cocinero Nomada">
         <span>Cocinero Nomada</span>
       </a>
-      <button class="nav-toggle" aria-label="Menu">&#9776;</button>
-      <div class="nav-links">
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">&#9776;</button>
+      <div class="nav-links" id="nav-links">
         <a href="#libro">El Libro</a>
         <a href="#blog">Blog</a>
         <a href="#tienda">Tienda</a>
-        <a href="https://youtube.com/@cocineronomadapr" target="_blank">YouTube</a>
+        <a href="https://youtube.com/@cocineronomadapr" target="_blank" rel="noopener">YouTube</a>
         <a href="#newsletter" class="nav-cta">Suscribete</a>
       </div>
     </div>
@@ -70,12 +70,14 @@
         <h2>Cronicas y Recetas</h2>
         <p>Historias de viaje y sabores de America Latina. Cada semana, contenido nuevo del camino.</p>
       </div>
-      <div class="blog-filters">
+      <div class="blog-filters" role="tablist" aria-label="Filtros de contenido">
         <button class="filter-btn active" data-filter="all">Todos</button>
         <button class="filter-btn" data-filter="chapter">Cronicas</button>
         <button class="filter-btn" data-filter="recipe">Recetas</button>
         <button class="filter-btn" data-filter="Puerto Rico">Puerto Rico</button>
+        <button class="filter-btn" data-filter="Estados Unidos">New York</button>
         <button class="filter-btn" data-filter="Colombia">Colombia</button>
+        <button class="filter-btn" data-filter="Ecuador">Ecuador</button>
         <button class="filter-btn" data-filter="Peru">Peru</button>
         <button class="filter-btn" data-filter="Mexico">Mexico</button>
       </div>
@@ -142,8 +144,8 @@
         </div>
         <div class="footer-col">
           <h4>Conectar</h4>
-          <a href="https://youtube.com/@cocineronomadapr" target="_blank">YouTube</a>
-          <a href="https://instagram.com/cocineronomada" target="_blank">Instagram</a>
+          <a href="https://youtube.com/@cocineronomadapr" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://instagram.com/cocineronomada" target="_blank" rel="noopener">Instagram</a>
           <a href="#newsletter">Newsletter</a>
         </div>
         <div class="footer-col">
@@ -155,8 +157,8 @@
       <div class="footer-bottom">
         <span>&copy; 2026 Cocinero Nomada &middot; @cocineronomada</span>
         <div class="footer-social">
-          <a href="https://youtube.com/@cocineronomadapr" target="_blank" title="YouTube">&#9654;</a>
-          <a href="https://instagram.com/cocineronomada" target="_blank" title="Instagram">&#9673;</a>
+          <a href="https://youtube.com/@cocineronomadapr" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">&#9654;</a>
+          <a href="https://instagram.com/cocineronomada" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">&#9673;</a>
         </div>
       </div>
     </div>
@@ -171,5 +173,6 @@
   </div>
 
   <script src="js/main.js"></script>
+  <script src="../shared/track.js" defer></script>
 </body>
 </html>

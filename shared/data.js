@@ -111,6 +111,9 @@ const LOCATIONS = [
     subtitle: "El lugar del que vengo",
     story: "Naci en el Bronx. 27 de noviembre de 1989. La ciudad no me crio, pero cada verano me reclamaba. Entre los bloques del Bronx y los cuchifritos de la avenida, entendi la comida como identidad.",
     fullStory: "Naci en el Bronx. Hospital Mount Sinai. Pero esa ciudad no me crio. Me tuvo dos anos y me solto hacia el Caribe. Me llevaron a Puerto Rico cuando todavia no tenia palabras para entender lo que estaba pasando.\n\nY ahi fue donde creci. La isla me formo. Pero cada verano, el Bronx me reclamaba. Era un ritual. Verano tras verano en los bloques del Bronx.\n\nLo que mas marcaba cada visita eran los cuchifritos. El puesto de cuchifritos en el Bronx no es un lugar donde la gente va a sentarse. Es un lugar donde la gente para en movimiento, pide, come de pie o caminando, y sigue. Morcilla, rellenos de papa, alcapurrias, tostones, chicharron. Todo en una bandeja de carton caliente.\n\nComer cuchifritos en el Bronx siendo puertorriqueno nacido en ese mismo barrio pero criado en la isla es un acto de reconocimiento. El sabor te dice quien eres. La diaspora boricua tiene una geografia particular \u2014 circular, de ida y vuelta. Con dos acentos que negociaban entre si. Con la salsa y el hip-hop como el mismo idioma en dos dialectos diferentes.\n\nNueva York no te da la bienvenida. Te reconoce.",
+    localVideos: [
+      { file: "../assets/videos/new-york/new-york.mp4", title: "New York \u2014 Verano en el Bronx", intro: "Video de mis veranos en Nueva York. La ciudad donde naci y que cada verano me reclamaba.", nico: "Este es un video que guardo con carino \u2014 los veranos del Bronx, los cuchifritos, la diaspora boricua en movimiento." }
+    ],
     recipes: [
       {
         name: "Cuchifritos del Bronx",
@@ -151,14 +154,15 @@ const LOCATIONS = [
     chapter: 5,
     subtitle: "La diferencia entre lo que se muestra y lo que es",
     story: "Colombia fue mi primer destino cuando la idea de ser un cocinero nomada comenzo a tomar forma. La calidez de Cartagena me hizo sentir como en casa desde el primer momento.",
-    fullStory: "Cartagena de Indias \u2014 fundada el 1 de junio de 1533 por Pedro Heredia \u2014 se convirtio rapidamente en un centro prospero gracias a la exportacion de oro, esmeraldas y otras riquezas que la posicionaron como un puerto comercial vital para las rutas que conectaban Peru con Cuba y Espana. Mi viaje a Cartagena en 2019 marco el inicio de mi aventura como cocinero nomada, y fue un verdadero tesoro de experiencias y sabores que quedaron grabados en mi memoria.\n\nColombia fue mi primer destino cuando la idea de ser un cocinero nomada comenzo a tomar forma. La calidez y amabilidad de la gente de Cartagena me hicieron sentir como en casa desde el primer momento. La esencia caribena que impregna cada rincon de esta ciudad me recordaba a mis propias raices, creando un lazo especial que se reflejaba en cada sonrisa y gesto de hospitalidad.\n\nDurante mi semana en Cartagena, quede maravillado por la diversidad y frescura de los productos locales. Los vendedores de frutas y jugos ofrecian una explosion de colores y sabores en cada esquina, algo completamente nuevo para mi. Descubri los 'menu' locales, lugares donde la autenticidad de la cocina cartagenera se revelaba en platos como el salpicon de pescado, una delicia marinera que cautivo mi paladar y desperto mi curiosidad gastronomica.\n\nUno de los encantos mas emblematicos de Cartagena son las palenqueras, mujeres hermosamente vestidas con ropas coloridas que llevan consigo la tradicion y el legado de la cultura afrodescendiente. Su presencia en las calles es un recordatorio de la diversidad y la historia viva que define a esta ciudad.\n\nEl costo accesible de la comida tambien fue una grata sorpresa. Por solo 5,000 pesos colombianos, pude disfrutar de autenticos sabores locales y explorar las delicias de la gastronomia cartagenera. Si hay un lugar al que estoy seguro de volver, ese sera Cartagena \u2014 una ciudad que cautiva corazones y paladares por igual.",
+    fullStory: "Cartagena de Indias \u2014 fundada el 1 de junio de 1533 por Pedro Heredia \u2014 se convirtio rapidamente en un centro prospero gracias a la exportacion de oro, esmeraldas y otras riquezas que la posicionaron como un puerto comercial vital para las rutas que conectaban Peru con Cuba y Espana. Mi viaje a Cartagena en 2017 marco el inicio de mi aventura como cocinero nomada, y fue un verdadero tesoro de experiencias y sabores que quedaron grabados en mi memoria.\n\nColombia fue mi primer destino cuando la idea de ser un cocinero nomada comenzo a tomar forma. La calidez y amabilidad de la gente de Cartagena me hicieron sentir como en casa desde el primer momento. La esencia caribena que impregna cada rincon de esta ciudad me recordaba a mis propias raices, creando un lazo especial que se reflejaba en cada sonrisa y gesto de hospitalidad.\n\nDurante mi semana en Cartagena, quede maravillado por la diversidad y frescura de los productos locales. Los vendedores de frutas y jugos ofrecian una explosion de colores y sabores en cada esquina, algo completamente nuevo para mi. Descubri los 'menu' locales, lugares donde la autenticidad de la cocina cartagenera se revelaba en platos como el salpicon de pescado, una delicia marinera que cautivo mi paladar y desperto mi curiosidad gastronomica.\n\nUno de los encantos mas emblematicos de Cartagena son las palenqueras, mujeres hermosamente vestidas con ropas coloridas que llevan consigo la tradicion y el legado de la cultura afrodescendiente. Su presencia en las calles es un recordatorio de la diversidad y la historia viva que define a esta ciudad.\n\nEl costo accesible de la comida tambien fue una grata sorpresa. Por solo 5,000 pesos colombianos, pude disfrutar de autenticos sabores locales y explorar las delicias de la gastronomia cartagenera. Si hay un lugar al que estoy seguro de volver, ese sera Cartagena \u2014 una ciudad que cautiva corazones y paladares por igual.",
     localVideos: [
       { file: "../assets/videos/cartagena/DSCN1051.MOV", title: "Calles de Cartagena", intro: "Un paseo por las calles coloniales de la ciudad amurallada, donde cada esquina esconde historia y sabor.", nico: "Cartagena me recibio con los brazos abiertos. Esta caminata fue mi primer dia como cocinero nomada." },
       { file: "../assets/videos/cartagena/DSCN1055.MOV", title: "Sabores del Caribe", intro: "Los mercados y puestos callejeros donde la comida cartagenera cobra vida.", nico: "La frescura de los ingredientes aqui no se compara con nada. Todo huele a mar y a especias." },
       { file: "../assets/videos/cartagena/DSCN1056.MOV", title: "Getsemani Vivo", intro: "El barrio mas autentico de Cartagena, lleno de color, musica y comida real.", nico: "Getsemani es donde late el corazon verdadero de Cartagena. Lejos del turismo, cerca de la gente." },
       { file: "../assets/videos/cartagena/DSCN1060.MOV", title: "Mercado Local", intro: "Dentro de los mercados donde los cartageneros compran y comen cada dia.", nico: "Aqui encontre los menus de 5,000 pesos que cambiaron mi manera de ver la comida callejera." },
       { file: "../assets/videos/cartagena/DSCN1072.MOV", title: "Atardecer Cartagenero", intro: "Los colores del atardecer sobre las murallas de la ciudad.", nico: "Ese momento donde el sol cae sobre la muralla y todo se vuelve dorado. Cartagena pura magia." },
-      { file: "../assets/videos/cartagena/Menu-Colombia.MOV", title: "Menu Colombia", intro: "La experiencia completa de un menu colombiano — arroz, proteina, ensalada, jugo y sopa.", nico: "Por menos de 2 dolares te comes un almuerzo completo. Eso es Colombia." }
+      { file: "../assets/videos/cartagena/Menu-Colombia.MOV", title: "Menu Colombia", intro: "La experiencia completa de un menu colombiano — arroz, proteina, ensalada, jugo y sopa.", nico: "Por menos de 2 dolares te comes un almuerzo completo. Eso es Colombia." },
+      { file: "../assets/videos/cartagena/cartagena.mp4", title: "Cartagena \u2014 Primer viaje", intro: "El video completo de mi primer viaje a Cartagena en 2017. El comienzo de Cocinero Nomada.", nico: "Este es el video madre \u2014 aqui empezo todo. Si vas a ver uno solo, que sea este." }
     ],
     recipes: []
   },
@@ -204,6 +208,9 @@ const LOCATIONS = [
     subtitle: "El calor que precede al ascenso",
     story: "Santa Marta no es el destino. Es el punto de partida. En el mercado de los carros publicos, entre el ruido y el calor, encontre el pastel de arroz y el guarapo de cana.",
     fullStory: "Taganga es un pueblo que todavia vive del mar. La bahia rodeada de montanas verdes, los botes de colores amarrados en la orilla, los pescadores que salen antes del amanecer y regresan con la pesca del dia. Aqui no hay pretension \u2014 hay estaderos con techos de zinc donde te sirven el pescado que salio del agua esa manana.\n\nEn la playa probe el pastel de arroz \u2014 envuelto en hoja de platano, cocido al vapor, con su salsa por encima. Comido con los pies en la arena, bajo la sombra de una palmera, con el sonido de las olas de fondo. Eso es lujo real.\n\nEl raspao \u2014 hielo raspado con sirope de colores \u2014 es la tradicion callejera que refresca las tardes calientes del Caribe colombiano. Los carritos con sus sombrillas de colores son parte del paisaje tanto como las montanas.\n\nSanta Marta tiene ese encanto de ciudad antigua. Los 'menu' locales donde comes mojarra en coco, salpicon de pescado, o carne guisada con arroz de frijoles y tajadas maduras \u2014 todo por precios que no existen en el resto del mundo. Los techos de zinc de los estaderos, las letras pintadas a mano, el olor a pescado frito \u2014 eso es el Caribe real.",
+    localVideos: [
+      { file: "../assets/videos/taganga/taganga.mp4", title: "Taganga \u2014 Bahia pesquera", intro: "Los botes de colores, la bahia rodeada de montanas, el pescado que salio del mar esta manana.", nico: "Taganga es el Caribe sin filtro. Este video lo grabe caminando por la bahia antes de comerme una mojarra frita." }
+    ],
     recipes: [
       {
         name: "Pastel de Arroz",
@@ -357,6 +364,9 @@ const LOCATIONS = [
     subtitle: "Romper lo que crees saber",
     story: "El pueblo mas hermoso de Colombia. Piedra sobre piedra, silencioso y brillante al sol. Pero yo vine por las hormigas culonas.",
     fullStory: "Barichara esta hecho de piedra. Las calles, las casas, las iglesias \u2014 todo es piedra tallada a mano bajo un sol que no perdona. Es el pueblo mas hermoso de Colombia, dicen. Yo no discuto.\n\nPero no vine por la vista. Vine por las hormigas culonas. Si, hormigas. Las tostadas con sal son crujientes como corn nuts pero con un sabor terroso, casi a nuez. Los Guane las comian hace mil anos. Hoy las venden en bolsitas en la plaza.\n\nEl camino real de Barichara a Guane es de piedra tambien. Dos horas caminando entre montanas, y al llegar a Guane, una senora te vende limonada con panela y hormigas culonas de postre. Colombia es asi \u2014 te sorprende cuando menos lo esperas.",
+    localVideos: [
+      { file: "../assets/videos/barichara/barichara.mp4", title: "Barichara \u2014 Pueblo de piedra", intro: "Las calles de piedra tallada a mano, el sol de Santander, el silencio del pueblo mas bonito de Colombia.", nico: "Barichara tiene un silencio que no se encuentra en otras partes. Este video es una caminata por sus calles." }
+    ],
     recipes: [
       {
         name: "Hormigas Culonas",
@@ -383,6 +393,67 @@ const LOCATIONS = [
         }
       }
     ]
+  },
+  {
+    id: "minca",
+    city: "Minca",
+    country: "Colombia",
+    flag: "\u{1f1e8}\u{1f1f4}",
+    mapX: 55, mapY: 28,
+    upcoming: true,
+    subtitle: "Sierra Nevada \u2022 Proximamente",
+    story: "Pueblo escondido en la Sierra Nevada de Santa Marta. Cafe, cacao, cascadas y la selva cayendo sobre el Caribe.",
+    fullStory: "Proximamente. El contexto completo de Minca se anadira pronto \u2014 el cafe de altura, las fincas, el sonido de la selva al amanecer.",
+    localVideos: [
+      { file: "../assets/videos/minca/minca.mp4", title: "Minca \u2014 Sierra Nevada", intro: "La Sierra Nevada de Santa Marta desde adentro. Cafe, cacao y el verde que no se acaba.", nico: "Minca fue un descubrimiento. Subes de Santa Marta y el calor se transforma en niebla y el mar se vuelve selva." }
+    ],
+    recipes: []
+  },
+  {
+    id: "parque-tayrona",
+    city: "Parque Tayrona",
+    country: "Colombia",
+    flag: "\u{1f1e8}\u{1f1f4}",
+    mapX: 50, mapY: 19,
+    upcoming: true,
+    subtitle: "Magdalena \u2022 Proximamente",
+    story: "Donde la selva tropical baja directo al mar. Playas virgenes, rocas gigantes y la cultura Tayrona viva en sus senderos.",
+    fullStory: "Proximamente. La caminata a las playas escondidas, la comida en los kioscos de la entrada, los Kogui como guardianes de la Sierra.",
+    localVideos: [
+      { file: "../assets/videos/parque-tayrona/parque-tayrona.mp4", title: "Parque Tayrona", intro: "La selva que baja al mar. Uno de los paisajes mas brutales del Caribe colombiano.", nico: "Tayrona es un paisaje que parece imposible. Selva, rocas, mar y silencio \u2014 todo junto." }
+    ],
+    recipes: []
+  },
+  {
+    id: "san-gil",
+    city: "San Gil",
+    country: "Colombia",
+    flag: "\u{1f1e8}\u{1f1f4}",
+    mapX: 60, mapY: 47,
+    upcoming: true,
+    subtitle: "Santander \u2022 Proximamente",
+    story: "La capital de aventura de Colombia. Rafting en el Fonce, hormigas culonas en la plaza y comida santandereana honesta.",
+    fullStory: "Proximamente. Los mercados de San Gil, el rafting, la gastronomia santandereana \u2014 la mute, el cabro, las hormigas culonas de temporada.",
+    localVideos: [
+      { file: "../assets/videos/san-gil/san-gil.mp4", title: "San Gil \u2014 Santander", intro: "El corazon aventurero de Santander. Rios, montanas y comida de pueblo.", nico: "San Gil fue parada obligada camino a Barichara. Este video lo grabe explorando el pueblo y sus alrededores." },
+      { file: "../assets/videos/san-gil/san-gil-2.mp4", title: "San Gil \u2014 Segundo dia", intro: "Mas del pueblo santandereano \u2014 otro angulo, otra caminata, mas gente.", nico: "Volvi con la camara al dia siguiente porque San Gil merece mas de un video." }
+    ],
+    recipes: []
+  },
+  {
+    id: "palo-quemado",
+    city: "Palo Quemado Plaza",
+    country: "Colombia",
+    flag: "\u{1f1e8}\u{1f1f4}",
+    mapX: 59, mapY: 46,
+    upcoming: true,
+    subtitle: "Santander \u2022 Proximamente",
+    story: "La plaza del pueblo de Palo Quemado en Santander. Un rincon donde la vida rural colombiana se muestra sin filtro.",
+    fullStory: "Proximamente. El contexto de Palo Quemado \u2014 la plaza, la gente, el mercado, la comida de la region.",
+    localVideos: [
+      { file: "../assets/videos/palo-quemado/palo-quemado.mp4", title: "Palo Quemado Plaza", intro: "La plaza del pueblo, la vida santandereana sin turismo, la comida de diario.", nico: "Palo Quemado fue una parada breve pero dejo grabacion. La plaza dice mucho de un pueblo." }
+    ],
+    recipes: []
   },
   {
     id: "quito",
@@ -1049,7 +1120,7 @@ const CHRONICLES = [
     route: "Ciudad Amurallada \u2022 Bazurto \u2022 Getsemani",
     epigraph: "Colombia fue mi primer destino cuando la idea de ser un cocinero nomada comenzo a tomar forma.",
     body: [
-      "Mi viaje a Cartagena en 2019 marco el inicio de mi aventura como cocinero nomada. Cartagena de Indias, fundada el 1 de junio de 1533 por Pedro Heredia, se convirtio rapidamente en un centro prospero gracias a la exportacion de oro, esmeraldas y otras riquezas.",
+      "Mi viaje a Cartagena en 2017 marco el inicio de mi aventura como cocinero nomada. Cartagena de Indias, fundada el 1 de junio de 1533 por Pedro Heredia, se convirtio rapidamente en un centro prospero gracias a la exportacion de oro, esmeraldas y otras riquezas.",
       "La calidez y amabilidad de la gente de Cartagena me hicieron sentir como en casa desde el primer momento. La esencia caribena que impregna cada rincon de esta ciudad me recordaba a mis propias raices puertorriquenas, creando un lazo especial que se reflejaba en cada sonrisa y gesto de hospitalidad.",
       "Durante mi semana en Cartagena, quede maravillado por la diversidad y frescura de los productos locales. Descubri los 'menu' locales, donde la autenticidad de la cocina cartagenera se revelaba en platos como el salpicon de pescado. Por solo 5,000 pesos colombianos, pude disfrutar de autenticos sabores locales.",
       "Uno de los encantos mas emblematicos son las palenqueras, mujeres hermosamente vestidas con ropas coloridas que llevan consigo la tradicion y el legado de la cultura afrodescendiente. Su presencia en las calles es un recordatorio de la diversidad y la historia viva que define a esta ciudad.",
@@ -1103,6 +1174,84 @@ const CHRONICLES = [
       "Las hormigas culonas las probe con miedo y termine pidiendolas de nuevo. Crujientes, saladas, con un sabor a tierra que no se parece a nada. Mil anos de tradicion Guane en cada mordida.",
       "Colombia no te deja ir. Te agarra por el estomago y no te suelta."
     ]
+  },
+  {
+    id: "gallo-negro-maria",
+    title: "Regreso de Peru: Tres Meses en Gallo Negro",
+    country: "Puerto Rico",
+    region: "Gallo Negro \u2022 San Juan",
+    flag: "\u{1f1f5}\u{1f1f7}",
+    route: "Regreso de Peru \u2022 Chef Maria \u2022 Ultimo trimestre de Gallo Negro",
+    epigraph: "Volvi de Peru buscando cocina, y encontre los ultimos tres meses de Gallo Negro \u2014 un cierre con chef Maria que fue una escuela en si mismo.",
+    upcoming: true,
+    body: [
+      "Regrese de Peru con la cabeza llena de mercados, emolientes y sabores andinos, pero con las manos pidiendo volver a una linea. Buscaba cocina.",
+      "Entre a Gallo Negro con la chef Maria. Fueron tres meses \u2014 los ultimos tres. El restaurante cerraba el capitulo despues de seis anos de operacion, y yo caia justo en ese ultimo trimestre, cuando cada servicio pesa distinto porque ya todos saben que no va a repetirse.",
+      "Cocinar en los meses finales de un proyecto de seis anos es otra cosa. No estas construyendo, estas despidiendo. Y ahi fue donde conoci de cerca la cultura de los pop-up events: cenas de un solo dia, menus de un solo equipo, chefs invitados que entraban a nuestra cocina a contar su historia.",
+      "En esos tres meses vi pasar \u2018Greetings from Vietnam\u2019 \u2014 un pop-up que monto una chef amiga \u2014 y conoci a Pierre cuando Arado estaba empezando, en un evento de presentacion de su menu. Tambien documente la cena especial de degustacion que hizo Mario Juan en Lote 23, un menu distinto al de su operacion habitual.",
+      "Gallo Negro se cerro, pero esos tres meses me dejaron claro que la cocina boricua estaba cambiando de forma \u2014 menos restaurantes permanentes, mas encuentros, pop-ups, eventos. Una generacion moviendose."
+    ]
+  },
+  {
+    id: "greetings-vietnam",
+    title: "Greetings from Vietnam: Pop-up en Gallo Negro",
+    country: "Puerto Rico",
+    region: "Gallo Negro",
+    flag: "\u{1f1f5}\u{1f1f7}",
+    route: "Gallo Negro \u2022 Chef invitada \u2022 Pop-up Vietnam",
+    epigraph: "Durante esos ultimos tres meses en Gallo Negro, una chef amiga monto su pop-up vietnamita en nuestra cocina.",
+    upcoming: true,
+    body: [
+      "Mientras yo trabajaba en Gallo Negro con la chef Maria \u2014 en el ultimo trimestre del restaurante \u2014 una chef amiga llego con su proyecto: \u2018Greetings from Vietnam\u2019, un pop-up dedicado a la cocina vietnamita.",
+      "Asi funcionan los pop-up events: un chef invitado toma la cocina por una noche, con su menu, su estilo, su historia. Gallo Negro ya tenia esa cultura instalada, y en mis tres meses ahi vi de cerca como se monta, se cocina y se sirve.",
+      "El lenguaje esa noche fue vietnamita: hierbas frescas, caldo claro, banh mi, pho, y ese balance entre lo dulce, lo salado, lo acido y lo picante que define el sudeste asiatico.",
+      "Fue una de las cenas que me hizo entender por que estos eventos le estaban ganando terreno al modelo del restaurante fijo. Cronica completa con fotos y menu \u2014 en produccion."
+    ],
+    photos: [
+      { file: "../assets/fotos/vietnam/IMG_4016.JPG", caption: "Greetings from Vietnam \u2014 montaje en Gallo Negro" },
+      { file: "../assets/fotos/vietnam/IMG_4025.JPG", caption: "Cocina compartida con la chef invitada" },
+      { file: "../assets/fotos/vietnam/IMG_4026.JPG", caption: "Mise en place del menu vietnamita" },
+      { file: "../assets/fotos/vietnam/IMG_4029.JPG", caption: "Sabores del sudeste asiatico en San Juan" },
+      { file: "../assets/fotos/vietnam/IMG_4041.JPG", caption: "Hierbas frescas, caldo claro" },
+      { file: "../assets/fotos/vietnam/IMG_4043.JPG", caption: "Plato del pop-up" },
+      { file: "../assets/fotos/vietnam/IMG_4051.JPG", caption: "Greetings from Vietnam \u2014 pop-up en Gallo Negro" }
+    ]
+  },
+  {
+    id: "mario-juan-popup",
+    title: "Mario Juan: Pop-up Dinner en Lote 23",
+    country: "Puerto Rico",
+    region: "Lote 23 \u2022 Santurce",
+    flag: "\u{1f1f5}\u{1f1f7}",
+    route: "Lote 23 Pop-up Dinners \u2022 4-5 tiempos \u2022 Cena documentada",
+    epigraph: "Mario Juan armo las cenas en Lote 23 como parte del evento de Pop-up Dinners \u2014 cuatro o cinco tiempos, distintos a su menu semanal del pernil. Yo estuve ahi y lo documente.",
+    upcoming: true,
+    body: [
+      "El chef Mario Juan fue parte de la serie de Pop-up Dinners que Lote 23 estaba organizando en ese momento. Las cenas se montaron en Lote 23, en formato de degustacion \u2014 cuatro o cinco tiempos armados especificamente para la ocasion.",
+      "La propuesta fue completamente distinta a su menu semanal, que giraba alrededor del pernil. Aqui no habia pernil: era otro registro, otro ritmo, otro Mario Juan. Tiempos divinos, pensados plato por plato, que mostraban una faceta suya fuera de lo que la gente esperaba de el en la semana.",
+      "Tuve la oportunidad de estar ahi y documentar la cena: los montajes, el ritmo de la cocina, cada uno de los tiempos saliendo de la linea. La ensalada tropical de aguacate fue uno de los momentos frescos del recorrido.",
+      "Ver a un chef salir de su menu habitual y armar una carta de degustacion para un evento unico fue una leccion en si mismo. Cronica completa con fotos, videos y el detalle de cada tiempo \u2014 en produccion."
+    ],
+    photos: [
+      { file: "../assets/fotos/mario-juan-popup/IMG_4559.JPG", caption: "Pop-up Dinner de Mario Juan en Lote 23 \u2014 4-5 tiempos de degustacion" },
+      { file: "../assets/fotos/mario-juan-popup/eensalda tropical de aguacate.jpg", caption: "Ensalada tropical de aguacate \u2014 uno de los tiempos del menu de degustacion" }
+    ]
+  },
+  {
+    id: "arado-pierre",
+    title: "Arado: Conociendo a Pierre en el Comienzo",
+    country: "Puerto Rico",
+    region: "Arado \u2022 San Juan",
+    flag: "\u{1f1f5}\u{1f1f7}",
+    route: "Evento de presentacion \u2022 Menu de Arado \u2022 Comienzos",
+    epigraph: "Conoci a Pierre cuando Arado estaba empezando. Fui a un evento de presentacion de su menu \u2014 asi arrancan los proyectos que despues dejan huella.",
+    upcoming: true,
+    body: [
+      "Arado estaba empezando cuando conoci a Pierre. No fue en un restaurante establecido ni en un servicio de rutina \u2014 fue en un evento de presentacion de su menu, esos encuentros donde un proyecto nuevo se muestra por primera vez a la gente.",
+      "Ir a ese tipo de eventos en Puerto Rico es ver como se esta formando la proxima generacion de cocinas. Se prueba, se conversa, se entiende el lenguaje del chef antes de que el proyecto tome su forma definitiva.",
+      "De Pierre y Arado me quede con esa sensacion de comienzo: cuando una cocina todavia se esta definiendo y cada plato es una declaracion de intencion.",
+      "Cronica completa con fotos, videos y el menu que presentaron esa noche \u2014 en produccion."
+    ]
   }
 ];
 
@@ -1129,7 +1278,9 @@ const LOCATION_PHOTOS = {
     { file: "../assets/fotos/colombia-taganga-santa-marta/DSCN1300.JPG", caption: "Escaleras de piedra entre playas" }
   ],
   "san-juan": [],
-  "new-york": [],
+  "new-york": [
+    { file: "../assets/fotos/nueva-york/DSCN0727.JPG", caption: "Nueva York \u2014 el Bronx de mis veranos, los cuchifritos de la diaspora" }
+  ],
   "bogota": [],
   "barichara": [],
   "quito": [],
@@ -1140,8 +1291,19 @@ const LOCATION_PHOTOS = {
   "ica": [],
   "cusco": [],
   "cdmx": [],
-  "rincon-del-mar": [],
-  "palomino": []
+  "rincon-del-mar": [
+    { file: "../assets/fotos/colombia-extra/G0022907.JPG", caption: "Rincon del Mar \u2014 pueblo de pescadores en la costa caribe" },
+    { file: "../assets/fotos/colombia-extra/G0032918.JPG", caption: "Playa y botes de madera" },
+    { file: "../assets/fotos/colombia-extra/G0042921.JPG", caption: "Atardecer sobre el Caribe" },
+    { file: "../assets/fotos/colombia-extra/G0042922.JPG", caption: "La quietud de Rincon del Mar" }
+  ],
+  "palomino": [
+    { file: "../assets/fotos/colombia-extra/G0072950.JPG", caption: "Palomino \u2014 donde la Sierra Nevada baja al mar" },
+    { file: "../assets/fotos/colombia-extra/G0072955.JPG", caption: "Rio Palomino \u2014 tubing entre la selva" },
+    { file: "../assets/fotos/colombia-extra/G0072960.JPG", caption: "Playas interminables de Palomino" },
+    { file: "../assets/fotos/colombia-extra/G0072970.JPG", caption: "Selva y mar al encuentro" },
+    { file: "../assets/fotos/colombia-extra/G0072985.JPG", caption: "El Caribe desde la costa Guajira" }
+  ]
 };
 
 const TAGANGA_SANTA_MARTA_PHOTOS = [

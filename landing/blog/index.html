@@ -17,12 +17,12 @@
         <img src="../../assets/COCINERO_NOMADA/COCINERO-NOMADA-ISOLOGO-WHITE.png" alt="Cocinero Nomada">
         <span>Cocinero Nomada</span>
       </a>
-      <button class="nav-toggle" aria-label="Menu">&#9776;</button>
-      <div class="nav-links">
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">&#9776;</button>
+      <div class="nav-links" id="nav-links">
         <a href="../index.html#libro">El Libro</a>
         <a href="../index.html#blog">Blog</a>
         <a href="../index.html#tienda">Tienda</a>
-        <a href="https://youtube.com/@cocineronomadapr" target="_blank">YouTube</a>
+        <a href="https://youtube.com/@cocineronomadapr" target="_blank" rel="noopener">YouTube</a>
         <a href="../index.html#newsletter" class="nav-cta">Suscribete</a>
       </div>
     </div>
@@ -36,7 +36,7 @@
           <p>Todas las historias y recetas del viaje por America Latina. Filtra por tipo o por pais.</p>
         </div>
 
-        <div class="blog-filters">
+        <div class="blog-filters" role="tablist" aria-label="Filtros de contenido">
           <button class="filter-btn active" data-filter="all">Todos</button>
           <button class="filter-btn" data-filter="chapter">Cronicas</button>
           <button class="filter-btn" data-filter="recipe">Recetas</button>
@@ -66,8 +66,8 @@
       <div class="footer-bottom" style="border:none;padding:0">
         <span>&copy; 2026 Cocinero Nomada &middot; <a href="../index.html">Volver al inicio</a></span>
         <div class="footer-social">
-          <a href="https://youtube.com/@cocineronomadapr" target="_blank">&#9654;</a>
-          <a href="https://instagram.com/cocineronomada" target="_blank">&#9673;</a>
+          <a href="https://youtube.com/@cocineronomadapr" target="_blank" rel="noopener" aria-label="YouTube">&#9654;</a>
+          <a href="https://instagram.com/cocineronomada" target="_blank" rel="noopener" aria-label="Instagram">&#9673;</a>
         </div>
       </div>
     </div>
@@ -206,11 +206,27 @@
     }
 
     // Mobile nav
-    document.querySelector('.nav-toggle').addEventListener('click', () => {
-      document.querySelector('.nav-links').classList.toggle('open');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
     });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Nav scroll state
+    const navEl = document.querySelector('.nav');
+    const setNavScrolled = () => navEl.classList.toggle('scrolled', window.scrollY > 12);
+    setNavScrolled();
+    window.addEventListener('scroll', setNavScrolled, { passive: true });
 
     loadContent();
   </script>
+  <script src="../../shared/track.js" defer></script>
 </body>
 </html>

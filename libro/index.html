@@ -778,6 +778,20 @@ body {
     currentPage = index;
     updateUI();
     saveProgress();
+
+    if (window.cnTrack) {
+      const p = pages[index] || {};
+      window.cnTrack('chapter_view', { pageIndex: index, chapterId: p.id, label: p.label, total: pages.length });
+      const pct = Math.round(((index + 1) / pages.length) * 100);
+      const milestones = [25, 50, 75, 100];
+      window._cnBookPct = window._cnBookPct || {};
+      for (const m of milestones) {
+        if (pct >= m && !window._cnBookPct[m]) {
+          window._cnBookPct[m] = 1;
+          window.cnTrack('book_progress_milestone', { percent: m, pageIndex: index });
+        }
+      }
+    }
   }
 
   function updateUI() {
@@ -941,7 +955,7 @@ body {
     return svg;
   }
 
-  function openTOC() { buildTOC(); tocOverlay.classList.add('open'); }
+  function openTOC() { buildTOC(); tocOverlay.classList.add('open'); window.cnTrack && window.cnTrack('toc_open'); }
   function closeTOC() { tocOverlay.classList.remove('open'); }
 
   // ============================================================
@@ -1037,6 +1051,7 @@ body {
       toast.classList.add('show');
       document.getElementById('resume-yes').addEventListener('click', () => {
         toast.classList.remove('show');
+        window.cnTrack && window.cnTrack('resume_click', { page: saved });
         goTo(saved);
       });
       document.getElementById('resume-no').addEventListener('click', () => {
@@ -1049,5 +1064,6 @@ body {
 
 })();
 </script>
+<script src="../shared/track.js" defer></script>
 </body>
 </html>
