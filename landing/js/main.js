@@ -277,6 +277,7 @@ function setupForm(formId, statusId, successMsg) {
 
 setupForm('newsletterForm', 'newsletterStatus', 'Bienvenido! Manana recibes tu primer capitulo.');
 setupForm('storeForm', 'storeStatus', 'Te avisaremos cuando abramos!');
+setupForm('eventsForm', 'eventsStatus', 'Recibido! Te respondo en 24-48 horas.');
 
 // Handle redirect params (backwards compat)
 if (window.location.search.includes('subscribed=true')) {

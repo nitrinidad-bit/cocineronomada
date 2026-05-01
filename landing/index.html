@@ -30,6 +30,7 @@
       <div class="nav-links" id="nav-links">
         <a href="#libro">El Libro</a>
         <a href="#blog">Blog</a>
+        <a href="#eventos">Eventos</a>
         <a href="#tienda">Tienda</a>
         <a href="https://youtube.com/@cocineronomadapr" target="_blank" rel="noopener">YouTube</a>
         <a href="#newsletter" class="nav-cta">Suscribete</a>
@@ -99,6 +100,47 @@
     </div>
   </section>
 
+  <!-- EVENTOS / CONTRATARME -->
+  <section class="section events-section" id="eventos">
+    <div class="container">
+      <div class="events-content">
+        <div class="events-info">
+          <span class="events-badge">Contratame</span>
+          <h2>Cenas privadas &amp; eventos</h2>
+          <p>Llevo la cocina nomada a tu mesa. Cenas intimas, eventos privados, pop-ups: cada plato cuenta una historia del camino &mdash; desde el sancocho de Cartagena hasta el ceviche de Lima.</p>
+          <p class="highlight">Cuentame de tu evento y te respondo en 24-48 horas.</p>
+          <ul class="events-list">
+            <li>Cenas privadas (4-12 personas)</li>
+            <li>Eventos &amp; celebraciones</li>
+            <li>Pop-ups y colaboraciones</li>
+            <li>Menu a medida segun tu vision</li>
+          </ul>
+        </div>
+        <form class="newsletter-form events-form" id="eventsForm" data-form-type="events">
+          <input type="hidden" name="_form_type" value="events">
+          <input type="text" name="name" placeholder="Tu nombre" required maxlength="100">
+          <input type="email" name="email" placeholder="tu@email.com" required>
+          <select name="event_type" required>
+            <option value="" disabled selected>Tipo de evento</option>
+            <option value="cena_privada">Cena privada</option>
+            <option value="evento_privado">Evento privado</option>
+            <option value="pop_up">Pop-up / colaboracion</option>
+            <option value="otro">Otro</option>
+          </select>
+          <div class="events-form-row">
+            <input type="date" name="event_date" aria-label="Fecha tentativa">
+            <input type="number" name="guest_count" placeholder="# invitados" min="1" max="500" aria-label="Numero de invitados">
+          </div>
+          <input type="text" name="city" placeholder="Ciudad / ubicacion" maxlength="120">
+          <textarea name="message" placeholder="Cuentame brevemente: ocasion, ambiente, restricciones alimentarias, presupuesto..." required rows="4" maxlength="2000"></textarea>
+          <button type="submit" class="btn btn-primary" style="justify-content:center">Enviar consulta</button>
+          <p class="form-status" id="eventsStatus" style="font-size:0.85rem;text-align:center;margin-top:8px;display:none"></p>
+          <p style="font-size:0.75rem;color:var(--muted);text-align:center">Te respondo personalmente. Sin intermediarios.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <!-- NEWSLETTER -->
   <section class="section newsletter-section" id="newsletter">
     <div class="container">
@@ -153,6 +195,7 @@
         </div>
         <div class="footer-col">
           <h4>Conectar</h4>
+          <a href="#eventos">Contratame</a>
           <a href="https://youtube.com/@cocineronomadapr" target="_blank" rel="noopener">YouTube</a>
           <a href="https://instagram.com/cocineronomada" target="_blank" rel="noopener">Instagram</a>
           <a href="#newsletter">Newsletter</a>

@@ -1,12 +1,15 @@
 // ============================================================
-// COCINERO NOMADA — Cloudflare Worker: Newsletter Subscription
-// Receives form submissions and adds contacts to Resend Audiences
+// COCINERO NOMADA — Cloudflare Worker: Newsletter + Events Form
+// Newsletter/Store: adds contacts to Resend Audience
+// Events: sends transactional email to OWNER_EMAIL via Resend
 //
 // Deploy: npx wrangler deploy
 // Secrets (all REQUIRED):
 //   wrangler secret put RESEND_API_KEY
 //   wrangler secret put RESEND_AUDIENCE_ID
-//   wrangler secret put ALLOWED_ORIGIN   (e.g. https://nitrinidad-bit.github.io)
+//   wrangler secret put ALLOWED_ORIGIN       (e.g. https://nitrinidad-bit.github.io)
+//   wrangler secret put OWNER_EMAIL          (where event inquiries land, e.g. cocineronomada@hotmail.com)
+//   wrangler secret put RESEND_FROM_EMAIL    (verified Resend sender, e.g. "Cocinero Nomada <eventos@your-domain.com>")
 // ============================================================
 
 export default {
@@ -49,7 +52,63 @@ export default {
       // Sanitize name (max 100 chars, no HTML)
       const safeName = name.replace(/<[^>]*>/g, '').substring(0, 100);
 
-      // Add to Resend Audience
+      const formType = data._form_type || 'newsletter';
+
+      // ---- EVENTS INQUIRY: send transactional email to owner ----
+      if (formType === 'events') {
+        const message = sanitizeMultiline(data.message, 2000);
+        if (!message || message.length < 10) {
+          return jsonResponse({ error: 'Describe brevemente el evento' }, 400, allowedOrigin, reqOrigin);
+        }
+        const eventType = sanitizeOneLine(data.event_type, 50);
+        const eventDate = sanitizeOneLine(data.event_date, 30);
+        const city = sanitizeOneLine(data.city, 120);
+        const guestCount = sanitizeOneLine(data.guest_count, 10);
+
+        if (!env.OWNER_EMAIL || !env.RESEND_FROM_EMAIL) {
+          console.error('Events form missing OWNER_EMAIL or RESEND_FROM_EMAIL');
+          return jsonResponse({ error: 'Form no configurado' }, 500, allowedOrigin, reqOrigin);
+        }
+
+        const html = `
+          <h2 style="font-family:Georgia,serif;color:#b83220">Nueva consulta de evento &mdash; Cocinero Nomada</h2>
+          <p><strong>Nombre:</strong> ${escapeHtml(safeName)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+          <p><strong>Tipo:</strong> ${escapeHtml(eventType) || '(no especificado)'}</p>
+          <p><strong>Fecha:</strong> ${escapeHtml(eventDate) || '(no especificada)'}</p>
+          <p><strong>Ciudad:</strong> ${escapeHtml(city) || '(no especificada)'}</p>
+          <p><strong>Invitados:</strong> ${escapeHtml(guestCount) || '(no especificado)'}</p>
+          <p><strong>Mensaje:</strong></p>
+          <p style="white-space:pre-wrap;background:#f6f1e7;padding:14px;border-left:3px solid #c9973f">${escapeHtml(message)}</p>
+          <hr>
+          <p style="font-size:12px;color:#888">Responde directo a este correo &mdash; el reply-to apunta al cliente.</p>
+        `;
+
+        const emailRes = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: env.RESEND_FROM_EMAIL,
+            to: env.OWNER_EMAIL,
+            reply_to: email,
+            subject: `[Eventos] ${eventType || 'consulta'} - ${safeName}`,
+            html
+          })
+        });
+
+        if (!emailRes.ok) {
+          const err = await emailRes.text();
+          console.error('Resend email error:', err);
+          return jsonResponse({ error: 'No pudimos enviar tu consulta. Intenta de nuevo.' }, 502, allowedOrigin, reqOrigin);
+        }
+
+        return jsonResponse({ success: true, message: 'Consulta enviada' }, 200, allowedOrigin, reqOrigin);
+      }
+
+      // ---- NEWSLETTER / STORE: add to Resend Audience ----
       const resendRes = await fetch(
         `https://api.resend.com/audiences/${env.RESEND_AUDIENCE_ID}/contacts`,
         {
@@ -72,7 +131,6 @@ export default {
         return jsonResponse({ error: 'Error al suscribir. Intenta de nuevo.' }, 502, allowedOrigin, reqOrigin);
       }
 
-      const formType = data._form_type || 'newsletter';
       const redirectParam = formType === 'store' ? 'store=true#tienda' : 'subscribed=true#newsletter';
 
       // If Accept header wants JSON (AJAX), return JSON
@@ -129,4 +187,21 @@ function jsonResponse(data, status, allowedOrigin, reqOrigin) {
   };
   if (allowedOrigin) Object.assign(headers, corsHeaders(allowedOrigin, reqOrigin));
   return new Response(JSON.stringify(data), { status, headers });
+}
+
+function sanitizeOneLine(val, max) {
+  return String(val || '').replace(/<[^>]*>/g, '').replace(/[\r\n\t]+/g, ' ').trim().substring(0, max);
+}
+
+function sanitizeMultiline(val, max) {
+  return String(val || '').replace(/<[^>]*>/g, '').trim().substring(0, max);
+}
+
+function escapeHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
